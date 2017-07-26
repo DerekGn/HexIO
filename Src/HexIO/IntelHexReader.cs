@@ -40,7 +40,7 @@ namespace HexIO
 
         public void Read(out int address)
         {
-            IntelHexRecord hexRecord = _hexFileReader.ReadLine();
+            IntelHexRecord hexRecord = _hexFileReader.ReadLine().ParseHexRecord();
 
             address = 0;
         }

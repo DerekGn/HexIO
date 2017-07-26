@@ -24,7 +24,11 @@
 
 namespace HexIO
 {
-    internal static class IntelHexLineExtensions
+    internal static class IntelHexRecordExtensions
     {
+        public static IntelHexRecord ParseHexRecord(this string intelHexRecord)
+        {
+            return new IntelHexRecord();
+        }
     }
 }
