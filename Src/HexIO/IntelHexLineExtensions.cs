@@ -22,27 +22,9 @@
 * SOFTWARE.
 */
 
-using System;
-using System.IO;
-
 namespace HexIO
 {
-    public class IntelHexReader
+    internal static class IntelHexLineExtensions
     {
-        private readonly StreamReader _hexFileReader;
-        
-        public IntelHexReader(Stream stream)
-        {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-
-            _hexFileReader = new StreamReader(stream);
-        }
-
-        public void Read(out int address)
-        {
-            IntelHexRecord hexRecord = _hexFileReader.ReadLine();
-
-            address = 0;
-        }
     }
 }

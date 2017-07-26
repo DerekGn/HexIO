@@ -22,27 +22,33 @@
 * SOFTWARE.
 */
 
-using System;
-using System.IO;
-
 namespace HexIO
 {
-    public class IntelHexReader
+    internal enum IntelHexRecordType
     {
-        private readonly StreamReader _hexFileReader;
-        
-        public IntelHexReader(Stream stream)
-        {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-
-            _hexFileReader = new StreamReader(stream);
-        }
-
-        public void Read(out int address)
-        {
-            IntelHexRecord hexRecord = _hexFileReader.ReadLine();
-
-            address = 0;
-        }
+        /// <summary>
+        /// Indicates the record contains data and a 16-bit starting address for the data
+        /// </summary>
+        Data,
+        /// <summary>
+        /// Indicates the record contains no data
+        /// </summary>
+        EndOfFile,
+        /// <summary>
+        /// Indicates the record data field contains a 16-bit segment base address
+        /// </summary>
+        ExtendedSegmentAddress,
+        /// <summary>
+        /// Indicates the record specifies the initial content of the CS:IP registers
+        /// </summary>
+        StartSegmentAddress,
+        /// <summary>
+        /// Indicates the record contains a the upper 16 bit address
+        /// </summary>
+        ExtendedLinearAddress,
+        /// <summary>
+        /// Indicates the record contains a 32 bit address
+        /// </summary>
+        StartLinearAddress
     }
 }
