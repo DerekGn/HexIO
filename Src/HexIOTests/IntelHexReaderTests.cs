@@ -24,15 +24,15 @@
 
 using System;
 using System.IO;
-using HexIO;
+using System.Collections.Generic;
 using NUnit.Framework;
+using HexIO;
 
-namespace Hex.IO.Tests
+namespace HexIOTests
 {
     [TestFixture]
     public class IntelHexReaderTests
-    {
-
+    {        
         [Test]
         public void TestThrowExceptionIfStreamNull()
         {
@@ -43,6 +43,34 @@ namespace Hex.IO.Tests
         public void TestNoExceptionIfStreamNotNull()
         {
             Assert.That(() => new IntelHexReader(new MemoryStream()), Throws.Nothing);
+        }
+
+        [Test]
+        public void TestReadOnEmptyStream()
+        {
+            IList<byte> data;
+            int address;
+
+            var intelHexReder = new IntelHexReader(new MemoryStream());
+            
+            Assert.That(() => intelHexReder.Read(out address, out data), Is.False);
+        }
+
+        [Test]
+        public void TestReadSimpleStream()
+        {
+            int readCount = 0;
+            IList<byte> data;
+            int address;
+            
+            var intelHexReder = new IntelHexReader(IntelHexData.SimpleStream);
+
+            while(intelHexReder.Read(out address, out data))
+            {
+                readCount++;
+            }
+
+            Assert.AreEqual(4, readCount);
         }
     }
 }

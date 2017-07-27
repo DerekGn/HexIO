@@ -22,16 +22,12 @@
 * SOFTWARE.
 */
 
-using System.Collections.Generic;
+using NUnit.Framework;
 
-namespace HexIO
+namespace HexIOTests
 {
-    internal class IntelHexRecord
+    [TestFixture]
+    public class IntelHexRecordExtensions
     {
-        public IntelHexRecordType RecordType { get; set; }
-        public int ByteCount { get; set; }
-        public int Address { get; set; }
-        public List<byte> Data { get; set; }
-        public int CheckSum { get; set; }
     }
 }

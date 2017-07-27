@@ -23,26 +23,53 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace HexIO
 {
+    /// <summary>
+    /// A reader capable of reading intel hex file formatted stream
+    /// </summary>
     public class IntelHexReader
     {
         private readonly StreamReader _hexFileReader;
         
+        /// <summary>
+        /// Construct instance of an <see cref="IntelHexReader"/>
+        /// </summary>
+        /// <param name="stream">The ssource stream of the hex file</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="stream"/> is null</exception>
         public IntelHexReader(Stream stream)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             _hexFileReader = new StreamReader(stream);
         }
-
-        public void Read(out int address)
+        
+        /// <summary>
+        /// Read data with address information from the stream
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool Read(out int address, out IList<byte> data)
         {
-            IntelHexRecord hexRecord = _hexFileReader.ReadLine().ParseHexRecord();
+            bool result = false;
+
+            var hexLine = _hexFileReader.ReadLine();
+            
+            if(!string.IsNullOrWhiteSpace(hexLine))
+            {
+                IntelHexRecord hexRecord = hexLine.ParseHexRecord();
+
+                result = true;
+            }
 
             address = 0;
+            data = null;
+
+            return result;
         }
     }
 }

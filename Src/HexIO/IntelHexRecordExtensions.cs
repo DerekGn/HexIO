@@ -22,13 +22,86 @@
 * SOFTWARE.
 */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
 namespace HexIO
 {
     internal static class IntelHexRecordExtensions
     {
-        public static IntelHexRecord ParseHexRecord(this string intelHexRecord)
+        public static IntelHexRecord ParseHexRecord(this string hexRecord)
         {
-            return new IntelHexRecord();
+            if (hexRecord == null) throw new IOException("Hex line to parse can not be null");
+            if (hexRecord.Length < 11) throw new IOException($"Hex line [{hexRecord}] is less than 11");
+            if (!hexRecord.StartsWith(":")) throw new IOException($"Illegal line start character [{hexRecord}]");
+
+            var hexData = TryParseData(hexRecord.Substring(1));
+
+            if (hexData.Count != hexData[0] + 5)
+                throw new IOException($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]");
+
+            if (!Enum.IsDefined(typeof(IntelHexRecordType), (int)hexData[3]))
+                throw new IOException($"Invalid record type value: [{hexData[3]}]");
+
+            var checkSum = hexData[hexData[0] + 4];
+            hexData.RemoveAt(hexData[0] + 4);
+
+            if (!VerifyChecksum(hexData, checkSum))
+                throw new IOException($"Checksum for line [{hexRecord}] is incorrect");
+
+            var dataSize = hexData[0];
+            hexData.RemoveRange(0, 4);
+
+            return new IntelHexRecord
+            {
+                ByteCount = hexData[0],
+                Address = hexData[0] << 8 | hexData[1],
+                RecordType = (IntelHexRecordType)hexData[3],
+                Data = hexData,
+                CheckSum = checkSum
+            };
+        }
+
+        private static bool VerifyChecksum(List<byte> checkSumData, int checkSum)
+        {
+            var maskedSumBytes = checkSumData.Sum(x => x) & 0xff;
+            var checkSumCalculated = (byte)(256 - maskedSumBytes);
+
+            return checkSumCalculated == checkSum;
+        }
+
+        private static int TryParseHexValue(string hexValue)
+        {
+            try
+            {
+                return Convert.ToInt32(hexValue, 16);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Unable to extract byte count for '{hexValue}'.", ex);
+            }
+        }
+
+        private static List<byte> TryParseData(string hexData)
+        {
+            try
+            {
+                List<byte> data = new List<byte>();
+
+                for (int i = 0; i < hexData.Length; i++)
+                {
+                    data.Add(Convert.ToByte(hexData.Substring(i, 2), 16));
+                    i++;
+                }
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Unable to extract bytes for [{hexData}]", ex);
+            }
         }
     }
 }
