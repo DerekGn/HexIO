@@ -29,5 +29,6 @@ namespace HexIOTests
     [TestFixture]
     public class IntelHexRecordExtensions
     {
+        
     }
 }
