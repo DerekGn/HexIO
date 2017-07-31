@@ -34,7 +34,8 @@ namespace HexIO
     public class IntelHexReader
     {
         private readonly StreamReader _hexFileReader;
-        
+        private readonly Address _lastAddress;
+
         /// <summary>
         /// Construct instance of an <see cref="IntelHexReader"/>
         /// </summary>
@@ -53,7 +54,7 @@ namespace HexIO
         /// <param name="address"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool Read(out int address, out IList<byte> data)
+        public bool Read(out address address, out IList<byte> data)
         {
             bool result = false;
 
@@ -62,7 +63,9 @@ namespace HexIO
             if(!string.IsNullOrWhiteSpace(hexLine))
             {
                 IntelHexRecord hexRecord = hexLine.ParseHexRecord();
-
+                
+                HandleAddress(hexRecord);
+                
                 result = true;
             }
 

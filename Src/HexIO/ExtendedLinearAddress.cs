@@ -1,4 +1,4 @@
-﻿/**
+/**
 * MIT License
 *
 * Copyright (c) 2017 Derek Goslin < http://corememorydump.blogspot.ie/ >
@@ -21,14 +21,3 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-
-using NUnit.Framework;
-
-namespace HexIOTests
-{
-    [TestFixture]
-    public class IntelHexRecordExtensionsTests
-    {
-        
-    }
-}
