@@ -30,7 +30,7 @@ namespace HexIO
     {
         public IntelHexRecordType RecordType { get; set; }
         public int ByteCount { get; set; }
-        public int Address { get; set; }
+        public uint Address { get; set; }
         public List<byte> Data { get; set; }
         public int CheckSum { get; set; }
     }

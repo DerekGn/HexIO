@@ -34,7 +34,7 @@ namespace HexIO
     public class IntelHexReader
     {
         private readonly StreamReader _hexFileReader;
-        private Address _currentAddress;
+        private uint _addressBase = 0;
 
         /// <summary>
         /// Construct instance of an <see cref="IntelHexReader"/>
@@ -51,12 +51,14 @@ namespace HexIO
         /// <summary>
         /// Read data with address information from the stream
         /// </summary>
-        /// <param name="address"></param>
-        /// <param name="data"></param>
+        /// <param name="address">The current address for the block</param>
+        /// <param name="data">The data</param>
         /// <returns></returns>
-        public bool Read(out Address address, out IList<byte> data)
+        public bool Read(out uint address, out IList<byte> data)
         {
             bool result = false;
+            data = null;
+            address = 0;
 
             var hexLine = _hexFileReader.ReadLine();
             
@@ -64,38 +66,47 @@ namespace HexIO
             {
                 IntelHexRecord hexRecord = hexLine.ParseHexRecord();
 
-                HandleAddress(hexRecord);
-
                 if (hexRecord.RecordType != IntelHexRecordType.EndOfFile)
+                {
+                    address = HandleAddress(hexRecord);
+
+                    if(hexRecord.RecordType == IntelHexRecordType.Data)
+                        data = hexRecord.Data;
+
                     result = true;
+                }
             }
-
-            address = _currentAddress;
-            data = null;
-
+                        
             return result;
         }
 
-        private void HandleAddress(IntelHexRecord hexRecord)
+        private uint HandleAddress(IntelHexRecord hexRecord)
         {
+            uint result = 0;
             switch (hexRecord.RecordType)
             {
                 case IntelHexRecordType.Data:
-                    _currentAddress = new LinearAddress { Value = hexRecord.Address };
+                    result = _addressBase + hexRecord.Address;
                     break;
                 case IntelHexRecordType.EndOfFile:
                     break;
                 case IntelHexRecordType.ExtendedSegmentAddress:
+                    _addressBase = (uint) (hexRecord.Data[0] << 8 | hexRecord.Data[1]) << 4;
+                    result = _addressBase;
                     break;
                 case IntelHexRecordType.StartSegmentAddress:
                     break;
                 case IntelHexRecordType.ExtendedLinearAddress:
+                    _addressBase = (uint)(hexRecord.Data[0] << 8 | hexRecord.Data[1]) << 16;
+                    result = _addressBase;
                     break;
                 case IntelHexRecordType.StartLinearAddress:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Unknown value read for [{nameof(hexRecord.RecordType)}]");
             }
+
+            return result;
         }
     }
 }

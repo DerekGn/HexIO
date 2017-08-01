@@ -28,7 +28,7 @@ namespace HexIOTests
 {
     internal static class IntelHexData
     {
-        public static MemoryStream SimpleStream
+        public static MemoryStream I8HexData
         {
             get
             {
@@ -48,20 +48,39 @@ namespace HexIOTests
             }
         }
 
-        public static MemoryStream CompleteStream
+        public static MemoryStream I16HexData
         {
             get
             {
                 var ms = new MemoryStream();
                 var sw = new StreamWriter(ms);
-                
-                sw.WriteLine(":10001300AC12AD13AE10AF1112002F8E0E8F0F2244\r");
-                sw.WriteLine(":10000300E50B250DF509E50A350CF5081200132259\r");
-                sw.WriteLine(":03000000020023D8");
-                sw.WriteLine(":0C002300787FE4F6D8FD7581130200031D\r");
-                sw.WriteLine(":10002F00EFF88DF0A4FFEDC5F0CEA42EFEEC88F016\r");
-                sw.WriteLine(":04003F00A42EFE22CB\r");
-                sw.WriteLine(":00000001FF\r");
+
+                sw.WriteLine(":020000020000FC");
+                sw.WriteLine(":020000021000EC");
+                sw.WriteLine(":020000022000DC");
+                sw.WriteLine(":020000023000CC");
+                sw.WriteLine(":00000001FF");
+
+                sw.Flush();
+                ms.Position = 0;
+
+                return ms;
+            }
+        }
+
+        public static MemoryStream I32HexData
+        {
+            get
+            {
+                var ms = new MemoryStream();
+                var sw = new StreamWriter(ms);
+               
+                sw.WriteLine(":020000040000FA");
+                sw.WriteLine(":020000040001F9");
+                sw.WriteLine(":020000040002F8");
+                sw.WriteLine(":020000040003F7");
+                sw.WriteLine(":020000040004F6");
+                sw.WriteLine(":00000001FF");
                 
                 sw.Flush();
                 ms.Position = 0;

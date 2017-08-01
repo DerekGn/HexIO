@@ -49,7 +49,7 @@ namespace HexIOTests
         public void TestReadOnEmptyStream()
         {
             IList<byte> data;
-            Address address;
+            uint address;
 
             var intelHexReder = new IntelHexReader(new MemoryStream());
             
@@ -57,20 +57,64 @@ namespace HexIOTests
         }
 
         [Test]
-        public void TestReadSimpleStream()
+        public void TestReadI8HexData()
         {
             int readCount = 0;
             IList<byte> data;
-            Address address;
+            uint address;
             
-            var intelHexReder = new IntelHexReader(IntelHexData.SimpleStream);
+            var intelHexReder = new IntelHexReader(IntelHexData.I8HexData);
 
             while(intelHexReder.Read(out address, out data))
             {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(data, Is.Not.Null);
+                    Assert.That(data.Count, Is.EqualTo(16));
+                    Assert.That(address, Is.EqualTo(0x100 + (0x10 * readCount)));
+                });
+
                 readCount++;
             }
 
             Assert.AreEqual(4, readCount);
+        }
+
+        [Test]
+        public void TestReadI16Hex()
+        {
+            int readCount = 0;
+            IList<byte> data;
+            uint address;
+
+            var intelHexReder = new IntelHexReader(IntelHexData.I16HexData);
+
+            while (intelHexReder.Read(out address, out data))
+            {
+                Assert.That(address, Is.EqualTo(0x10000 * readCount));
+                
+                readCount++;
+            }
+
+            Assert.AreEqual(4, readCount);
+        }
+
+        [Test]
+        public void TestReadI32Hex()
+        {
+            int readCount = 0;
+            IList<byte> data;
+            uint address;
+
+            var intelHexReder = new IntelHexReader(IntelHexData.I32HexData);
+
+            while (intelHexReder.Read(out address, out data))
+            {
+                Assert.That(address, Is.EqualTo(0x10000 * readCount));
+                readCount++;
+            }
+
+            Assert.AreEqual(5, readCount);
         }
     }
 }

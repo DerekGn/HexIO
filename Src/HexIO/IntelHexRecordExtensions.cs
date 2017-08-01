@@ -56,7 +56,7 @@ namespace HexIO
             var newRecord = new IntelHexRecord
             {
                 ByteCount = dataSize,
-                Address = hexData[1] << 8 | hexData[2],
+                Address = (uint) (hexData[1] << 8 | hexData[2]),
                 RecordType = (IntelHexRecordType)hexData[3],
                 Data = hexData,
                 CheckSum = checkSum
@@ -71,7 +71,7 @@ namespace HexIO
         {
             var maskedSumBytes = checkSumData.Sum(x => x) & 0xff;
             var checkSumCalculated = (byte)(256 - maskedSumBytes);
-
+            
             return checkSumCalculated == checkSum;
         }
 
