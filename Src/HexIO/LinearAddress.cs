@@ -1,4 +1,4 @@
-/**
+﻿/**
 * MIT License
 *
 * Copyright (c) 2017 Derek Goslin < http://corememorydump.blogspot.ie/ >
@@ -24,7 +24,8 @@
 
 namespace HexIO
 {
-    public abstract class Address
+    public class LinearAddress : Address
     {
+        public int Value { get; set; }
     }
 }

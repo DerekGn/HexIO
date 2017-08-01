@@ -35,10 +35,10 @@ namespace HexIOTests
                 var ms = new MemoryStream();
                 var sw = new StreamWriter(ms);
 
-                sw.WriteLine(":10010000214601360121470136007EFE09D2190140\r");
-                sw.WriteLine(":100110002146017E17C20001FF5F16002148011928\r");
-                sw.WriteLine(":10012000194E79234623965778239EDA3F01B2CAA7\r");
-                sw.WriteLine(":100130003F0156702B5E712B722B732146013421C7\r");
+                sw.WriteLine(":10010000214601360121470136007EFE09D2190140");
+                sw.WriteLine(":100110002146017E17C20001FF5F16002148011928");
+                sw.WriteLine(":10012000194E79234623965778239EDA3F01B2CAA7");
+                sw.WriteLine(":100130003F0156702B5E712B722B732146013421C7");
                 sw.WriteLine(":00000001FF");
 
                 sw.Flush();

@@ -49,7 +49,7 @@ namespace HexIOTests
         public void TestReadOnEmptyStream()
         {
             IList<byte> data;
-            int address;
+            Address address;
 
             var intelHexReder = new IntelHexReader(new MemoryStream());
             
@@ -61,7 +61,7 @@ namespace HexIOTests
         {
             int readCount = 0;
             IList<byte> data;
-            int address;
+            Address address;
             
             var intelHexReder = new IntelHexReader(IntelHexData.SimpleStream);
 

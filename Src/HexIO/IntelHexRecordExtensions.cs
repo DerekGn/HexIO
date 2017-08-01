@@ -52,16 +52,19 @@ namespace HexIO
                 throw new IOException($"Checksum for line [{hexRecord}] is incorrect");
 
             var dataSize = hexData[0];
-            hexData.RemoveRange(0, 4);
-
-            return new IntelHexRecord
+            
+            var newRecord = new IntelHexRecord
             {
-                ByteCount = hexData[0],
-                Address = hexData[0] << 8 | hexData[1],
+                ByteCount = dataSize,
+                Address = hexData[1] << 8 | hexData[2],
                 RecordType = (IntelHexRecordType)hexData[3],
                 Data = hexData,
                 CheckSum = checkSum
             };
+
+            hexData.RemoveRange(0, 4);
+
+            return newRecord;
         }
 
         private static bool VerifyChecksum(List<byte> checkSumData, int checkSum)

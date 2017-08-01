@@ -34,7 +34,7 @@ namespace HexIO
     public class IntelHexReader
     {
         private readonly StreamReader _hexFileReader;
-        private readonly Address _lastAddress;
+        private Address _currentAddress;
 
         /// <summary>
         /// Construct instance of an <see cref="IntelHexReader"/>
@@ -54,7 +54,7 @@ namespace HexIO
         /// <param name="address"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool Read(out address address, out IList<byte> data)
+        public bool Read(out Address address, out IList<byte> data)
         {
             bool result = false;
 
@@ -63,16 +63,39 @@ namespace HexIO
             if(!string.IsNullOrWhiteSpace(hexLine))
             {
                 IntelHexRecord hexRecord = hexLine.ParseHexRecord();
-                
+
                 HandleAddress(hexRecord);
-                
-                result = true;
+
+                if (hexRecord.RecordType != IntelHexRecordType.EndOfFile)
+                    result = true;
             }
 
-            address = 0;
+            address = _currentAddress;
             data = null;
 
             return result;
+        }
+
+        private void HandleAddress(IntelHexRecord hexRecord)
+        {
+            switch (hexRecord.RecordType)
+            {
+                case IntelHexRecordType.Data:
+                    _currentAddress = new LinearAddress { Value = hexRecord.Address };
+                    break;
+                case IntelHexRecordType.EndOfFile:
+                    break;
+                case IntelHexRecordType.ExtendedSegmentAddress:
+                    break;
+                case IntelHexRecordType.StartSegmentAddress:
+                    break;
+                case IntelHexRecordType.ExtendedLinearAddress:
+                    break;
+                case IntelHexRecordType.StartLinearAddress:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"Unknown value read for [{nameof(hexRecord.RecordType)}]");
+            }
         }
     }
 }
