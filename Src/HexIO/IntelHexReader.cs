@@ -101,6 +101,8 @@ namespace HexIO
                     result = _addressBase;
                     break;
                 case IntelHexRecordType.StartLinearAddress:
+                    _addressBase = (uint)(hexRecord.Data[0] << 24 | hexRecord.Data[1] << 16 | hexRecord.Data[2] << 8 | hexRecord.Data[3]);
+                    result = _addressBase;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Unknown value read for [{nameof(hexRecord.RecordType)}]");

@@ -28,7 +28,7 @@ namespace HexIOTests
 {
     internal static class IntelHexData
     {
-        public static MemoryStream I8HexData
+        public static MemoryStream DataRecords
         {
             get
             {
@@ -48,7 +48,7 @@ namespace HexIOTests
             }
         }
 
-        public static MemoryStream I16HexData
+        public static MemoryStream ExtendedSegmentAddressRecords 
         {
             get
             {
@@ -68,7 +68,7 @@ namespace HexIOTests
             }
         }
 
-        public static MemoryStream I32HexData
+        public static MemoryStream ExtendedLinearAddressRecords 
         {
             get
             {
@@ -82,6 +82,26 @@ namespace HexIOTests
                 sw.WriteLine(":020000040004F6");
                 sw.WriteLine(":00000001FF");
                 
+                sw.Flush();
+                ms.Position = 0;
+
+                return ms;
+            }
+        }
+
+        public static MemoryStream LinearAddressData 
+        {
+            get
+            {
+                var ms = new MemoryStream();
+                var sw = new StreamWriter(ms);
+
+                sw.WriteLine(":04000005000000102A");
+                sw.WriteLine(":04000005000001002A");
+                sw.WriteLine(":04000005000010002A");
+                sw.WriteLine(":04000005000100002A");
+                sw.WriteLine(":00000001FF");
+
                 sw.Flush();
                 ms.Position = 0;
 

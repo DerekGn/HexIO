@@ -33,8 +33,8 @@ namespace HexIO
     {
         public static IntelHexRecord ParseHexRecord(this string hexRecord)
         {
-            if (hexRecord == null) throw new IOException("Hex line to parse can not be null");
-            if (hexRecord.Length < 11) throw new IOException($"Hex line [{hexRecord}] is less than 11");
+            if (hexRecord == null) throw new IOException("Hex record line can not be null");
+            if (hexRecord.Length < 11) throw new IOException($"Hex record line length [{hexRecord}] is less than 11");
             if (!hexRecord.StartsWith(":")) throw new IOException($"Illegal line start character [{hexRecord}]");
 
             var hexData = TryParseData(hexRecord.Substring(1));

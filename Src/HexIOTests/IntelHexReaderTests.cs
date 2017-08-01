@@ -36,7 +36,8 @@ namespace HexIOTests
         [Test]
         public void TestThrowExceptionIfStreamNull()
         {
-            Assert.That(() => new IntelHexReader(null), Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("stream"));
+            Assert.That(() => new IntelHexReader(null), 
+                Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("stream"));
         }
 
         [Test]
@@ -57,13 +58,13 @@ namespace HexIOTests
         }
 
         [Test]
-        public void TestReadI8HexData()
+        public void TestReadDataRecords()
         {
             int readCount = 0;
             IList<byte> data;
             uint address;
             
-            var intelHexReder = new IntelHexReader(IntelHexData.I8HexData);
+            var intelHexReder = new IntelHexReader(IntelHexData.DataRecords);
 
             while(intelHexReder.Read(out address, out data))
             {
@@ -81,13 +82,13 @@ namespace HexIOTests
         }
 
         [Test]
-        public void TestReadI16Hex()
+        public void TestReadExtendedSegmentAddressRecords()
         {
             int readCount = 0;
             IList<byte> data;
             uint address;
 
-            var intelHexReder = new IntelHexReader(IntelHexData.I16HexData);
+            var intelHexReder = new IntelHexReader(IntelHexData.ExtendedSegmentAddressRecords);
 
             while (intelHexReder.Read(out address, out data))
             {
@@ -100,13 +101,13 @@ namespace HexIOTests
         }
 
         [Test]
-        public void TestReadI32Hex()
+        public void TestReadExtendedLinearAddressRecords()
         {
             int readCount = 0;
             IList<byte> data;
             uint address;
 
-            var intelHexReder = new IntelHexReader(IntelHexData.I32HexData);
+            var intelHexReder = new IntelHexReader(IntelHexData.ExtendedLinearAddressRecords);
 
             while (intelHexReder.Read(out address, out data))
             {

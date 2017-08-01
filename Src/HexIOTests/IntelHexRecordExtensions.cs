@@ -22,13 +22,47 @@
 * SOFTWARE.
 */
 
+using System.IO;
 using NUnit.Framework;
+using HexIO;
 
 namespace HexIOTests
 {
     [TestFixture]
     public class IntelHexRecordExtensionsTests
     {
-        
+        [Test]
+        public void TestParseHexRecordNull()
+        {
+            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord(null), 
+                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Hex record line can not be null"));
+        }
+
+        [Test]
+        public void TestParseHexRecordInvalidLenght()
+        {
+            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord("".PadRight(7,'X')),
+                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Hex record line length [XXXXXXX] is less than 11"));
+        }
+
+        [Test]
+        public void TestParseHexRecordInvalidStart()
+        {
+            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord("".PadRight(11, 'X')),
+                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Illegal line start character [XXXXXXXXXXX]"));
+        }
+
+        [Test]
+        public void TestParseHexRecordRecordType()
+        {
+            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord(":01ffff06ffe5"),
+                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Invalid record type value: [6]"));
+        }
+        [Test]
+        public void TestParseHexRecordInvalidCrc()
+        {
+            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord(":10010000214601360121470136007EFE09D2190155"),
+                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Checksum for line [:10010000214601360121470136007EFE09D2190155] is incorrect"));
+        }
     }
 }

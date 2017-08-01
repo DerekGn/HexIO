@@ -26,12 +26,30 @@ using System.Collections.Generic;
 
 namespace HexIO
 {
+    /// <summary>
+    /// A representation of a hex record line
+    /// </summary>
     internal class IntelHexRecord
     {
+        /// <summary>
+        /// The record type
+        /// </summary>
         public IntelHexRecordType RecordType { get; set; }
+        /// <summary>
+        /// The number of bytes in the record
+        /// </summary>
         public int ByteCount { get; set; }
+        /// <summary>
+        /// The address of the record
+        /// </summary>
         public uint Address { get; set; }
+        /// <summary>
+        /// The data from the record
+        /// </summary>
         public List<byte> Data { get; set; }
+        /// <summary>
+        /// The record checksum
+        /// </summary>
         public int CheckSum { get; set; }
     }
 }
