@@ -88,8 +88,6 @@ namespace HexIO
                 case IntelHexRecordType.Data:
                     result = _addressBase + hexRecord.Address;
                     break;
-                case IntelHexRecordType.EndOfFile:
-                    break;
                 case IntelHexRecordType.ExtendedSegmentAddress:
                     _addressBase = (uint) (hexRecord.Data[0] << 8 | hexRecord.Data[1]) << 4;
                     result = _addressBase;

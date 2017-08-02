@@ -41,28 +41,43 @@ namespace HexIOTests
         [Test]
         public void TestParseHexRecordInvalidLenght()
         {
-            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord("".PadRight(7,'X')),
+            Assert.That(() => "".PadRight(7,'X').ParseHexRecord(),
                 Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Hex record line length [XXXXXXX] is less than 11"));
         }
 
         [Test]
         public void TestParseHexRecordInvalidStart()
         {
-            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord("".PadRight(11, 'X')),
+            Assert.That(() => "".PadRight(11, 'X').ParseHexRecord(),
                 Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Illegal line start character [XXXXXXXXXXX]"));
         }
 
         [Test]
         public void TestParseHexRecordRecordType()
         {
-            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord(":01ffff06ffe5"),
+            Assert.That(() => ":01ffff06ffe5".ParseHexRecord(),
                 Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Invalid record type value: [6]"));
         }
+
         [Test]
         public void TestParseHexRecordInvalidCrc()
         {
-            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord(":10010000214601360121470136007EFE09D2190155"),
+            Assert.That(() => ":10010000214601360121470136007EFE09D2190155".ParseHexRecord(),
                 Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Checksum for line [:10010000214601360121470136007EFE09D2190155] is incorrect"));
+        }
+
+        [Test]
+        public void TestParseHexRecordInvalidRecordLength()
+        {
+            Assert.That(() => ":0A010000214601360121470136007EFE09D2190140".ParseHexRecord(),
+                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Line [:0A010000214601360121470136007EFE09D2190140] does not have required record length of [15]"));
+        }
+
+        [Test]
+        public void TestParseHexRecordInvalidData()
+        {
+            Assert.That(() => ":0A010000214601360121470136007EFE09D2QQ0140".ParseHexRecord(),
+                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Unable to extract bytes for [0A010000214601360121470136007EFE09D2QQ0140]"));
         }
     }
 }

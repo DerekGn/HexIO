@@ -75,18 +75,6 @@ namespace HexIO
             return checkSumCalculated == checkSum;
         }
 
-        private static int TryParseHexValue(string hexValue)
-        {
-            try
-            {
-                return Convert.ToInt32(hexValue, 16);
-            }
-            catch (Exception ex)
-            {
-                throw new IOException($"Unable to extract byte count for '{hexValue}'.", ex);
-            }
-        }
-
         private static List<byte> TryParseData(string hexData)
         {
             try
