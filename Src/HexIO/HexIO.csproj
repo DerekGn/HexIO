@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>Derek Goslin</Authors>
+    <Company />
+    <NeutralLanguage></NeutralLanguage>
+    <Copyright>Copyright © Derek Goslin 2017</Copyright>
+    <PackageLicenseUrl>https://github.com/DerekGn/HexIO/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/DerekGn/HexIO</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/DerekGn/HexIO</RepositoryUrl>
+    <PackageTags>Intel Hex</PackageTags>
   </PropertyGroup>
 
 </Project>

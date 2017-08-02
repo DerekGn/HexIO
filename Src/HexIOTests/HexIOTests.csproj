@@ -47,6 +47,7 @@
     <Compile Include="IntelHexData.cs" />
     <Compile Include="IntelHexReaderTests.cs" />
     <Compile Include="IntelHexRecordExtensions.cs" />
+    <Compile Include="IntelHexRecordWriterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -31,36 +31,39 @@ namespace HexIO
     /// <summary>
     /// A reader capable of reading intel hex file formatted stream
     /// </summary>
-    public class IntelHexReader
+    public class IntelHexReader : IDisposable
     {
-        private readonly StreamReader _hexFileReader;
+        private readonly StreamReader _streamReader;
         private uint _addressBase = 0;
 
         /// <summary>
         /// Construct instance of an <see cref="IntelHexReader"/>
         /// </summary>
-        /// <param name="stream">The ssource stream of the hex file</param>
+        /// <param name="stream">The source stream of the hex file</param>
         /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="stream"/> is null</exception>
         public IntelHexReader(Stream stream)
         {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
+            if (stream == null)
+                throw new ArgumentNullException(nameof(stream));
 
-            _hexFileReader = new StreamReader(stream);
+            _streamReader = new StreamReader(stream);
         }
         
         /// <summary>
         /// Read data with address information from the stream
         /// </summary>
-        /// <param name="address">The current address for the block</param>
-        /// <param name="data">The data</param>
-        /// <returns></returns>
+        /// <param name="address">The start address for the block of data</param>
+        /// <param name="data">The data byte block</param>
+        /// <returns>true if there are more records available or false of end of file</returns>
+        /// <remarks>An address value may be read without a corresponding list data bytes.
+        /// This occurs for record types 02, 04, 05</remarks>
         public bool Read(out uint address, out IList<byte> data)
         {
             bool result = false;
             data = null;
             address = 0;
 
-            var hexLine = _hexFileReader.ReadLine();
+            var hexLine = _streamReader.ReadLine();
             
             if(!string.IsNullOrWhiteSpace(hexLine))
             {
@@ -108,5 +111,29 @@ namespace HexIO
 
             return result;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _streamReader?.Close();
+                    _streamReader?.Dispose();
+                }
+                
+                disposedValue = true;
+            }
+        }
+        
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
     }
 }
