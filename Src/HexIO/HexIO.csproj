@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Derek Goslin</Authors>
     <Company />
     <NeutralLanguage></NeutralLanguage>
@@ -13,13 +13,16 @@
     <PackageTags>Intel Hex Stream</PackageTags>
     <Description>A .Net library to read and write Intel HEX files.
 
-Supports the following Intel HEX records
+Supports the following Intel HEX records:
 
 00 	Data
 01 	End Of File
 02 	Extended Segment Address
 04 	Extended Linear Address
 05 	Start Linear Address</Description>
+    <PackageReleaseNotes>Initial release of HEXIO
+
+Supports reading Intel Hex files from a System.IO.Stream derived type</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
