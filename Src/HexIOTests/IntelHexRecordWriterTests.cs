@@ -75,7 +75,7 @@ namespace HexIOTests
 
             var intelHexWriter = new IntelHexWriter(ms);
 
-            intelHexWriter.WriteData(0, new byte[16].ToList());
+            intelHexWriter.WriteData(0x55AA, new byte[16].ToList());
 
             intelHexWriter.Close();
 
@@ -83,7 +83,7 @@ namespace HexIOTests
 
             using (var sr = new StreamReader(ms))
             {
-                sr.ReadLine().Should().Be(":1000000000000000000000000000000000000000F0");
+                sr.ReadLine().Should().Be(":1055AA0000000000000000000000000000000000F1");
                 sr.ReadLine().Should().Be(":00000001FF");                
             }
         }

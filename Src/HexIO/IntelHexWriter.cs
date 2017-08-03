@@ -128,10 +128,14 @@ namespace HexIO
 
         private void WriteHexRecord(IntelHexRecordType recordType, ushort address, IList<byte> data)
         {
-            var hexRecordData = new List<byte>();
-            hexRecordData.Add((byte) data.Count);
-            hexRecordData.AddRange(BitConverter.GetBytes(address));
-            hexRecordData.Add((byte) recordType);
+            var addresBytes = BitConverter.GetBytes(address);
+            var hexRecordData = new List<byte>
+            {
+                (byte)data.Count,
+                addresBytes[1],
+                addresBytes[0],
+                (byte)recordType
+            };
             hexRecordData.AddRange(data);
             var checksum = CalculateCrc(hexRecordData);
             hexRecordData.Add(checksum);
