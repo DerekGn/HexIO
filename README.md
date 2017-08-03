@@ -80,3 +80,30 @@ Address: [0x0D06] Count: [0x06] Data: [49444C450000]
 ```
 
 ## Using the IntelHexWriter
+
+The following demonstrates the use of the IntelHexWriter class.
+
+```csharp
+static void Main(string[] args)
+{
+	// This can be any type of System.IO.Stream derived stream
+	using (var fileStream = new FileStream("output.hex", FileMode.OpenOrCreate))
+	{
+		using (IntelHexWriter hexWriter = new IntelHexWriter(fileStream))
+		{
+			hexWriter.WriteAddress(AddressType.ExtendedLinearAddress, 0x1000);
+			hexWriter.WriteData(0, new List<byte>() { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A });
+			hexWriter.WriteData(0x0B, new List<byte>() { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A });
+		}
+	}
+}
+```
+
+The following hex records are written to the file output.hex.
+
+```
+:020000040000FA
+:0A0000000102030405060708090ABF
+:0A000B000102030405060708090AB4
+:00000001FF
+```
