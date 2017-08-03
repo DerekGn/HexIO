@@ -96,6 +96,7 @@ namespace HexIO
                     result = _addressBase;
                     break;
                 case IntelHexRecordType.StartSegmentAddress:
+                    result = _addressBase;
                     break;
                 case IntelHexRecordType.ExtendedLinearAddress:
                     _addressBase = (uint)(hexRecord.Data[0] << 8 | hexRecord.Data[1]) << 16;

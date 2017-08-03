@@ -10,7 +10,16 @@
     <PackageLicenseUrl>https://github.com/DerekGn/HexIO/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/DerekGn/HexIO</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DerekGn/HexIO</RepositoryUrl>
-    <PackageTags>Intel Hex</PackageTags>
+    <PackageTags>Intel Hex Stream</PackageTags>
+    <Description>A .Net library to read and write Intel HEX files.
+
+Supports the following Intel HEX records
+
+00 	Data
+01 	End Of File
+02 	Extended Segment Address
+04 	Extended Linear Address
+05 	Start Linear Address</Description>
   </PropertyGroup>
 
 </Project>
