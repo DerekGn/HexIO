@@ -27,6 +27,7 @@ using System.IO;
 using System.Collections.Generic;
 using NUnit.Framework;
 using HexIO;
+// ReSharper disable AccessToModifiedClosure
 
 namespace HexIOTests
 {
@@ -52,9 +53,9 @@ namespace HexIOTests
             IList<byte> data;
             uint address;
 
-            var intelHexReder = new IntelHexReader(new MemoryStream());
+            var intelHexReader = new IntelHexReader(new MemoryStream());
             
-            Assert.That(() => intelHexReder.Read(out address, out data), Is.False);
+            Assert.That(() => intelHexReader.Read(out address, out data), Is.False);
         }
 
         [Test]
@@ -63,19 +64,20 @@ namespace HexIOTests
             int readCount = 0;
             IList<byte> data;
             uint address;
-            
-            var intelHexReder = new IntelHexReader(IntelHexData.DataRecords);
 
-            while(intelHexReder.Read(out address, out data))
+            using (var intelHexReader = new IntelHexReader(IntelHexData.DataRecords))
             {
-                Assert.Multiple(() =>
+                while (intelHexReader.Read(out address, out data))
                 {
-                    Assert.That(data, Is.Not.Null);
-                    Assert.That(data.Count, Is.EqualTo(16));
-                    Assert.That(address, Is.EqualTo(0x100 + (0x10 * readCount)));
-                });
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(data, Is.Not.Null);
+                        Assert.That(data.Count, Is.EqualTo(16));
+                        Assert.That(address, Is.EqualTo(0x100 + (0x10 * readCount)));
+                    });
 
-                readCount++;
+                    readCount++;
+                }
             }
 
             Assert.AreEqual(4, readCount);
@@ -85,16 +87,18 @@ namespace HexIOTests
         public void TestReadExtendedSegmentAddressRecords()
         {
             int readCount = 0;
-            IList<byte> data;
-            uint address;
 
-            var intelHexReder = new IntelHexReader(IntelHexData.ExtendedSegmentAddressRecords);
-
-            while (intelHexReder.Read(out address, out data))
+            using (var intelHexReader = new IntelHexReader(IntelHexData.ExtendedSegmentAddressRecords))
             {
-                Assert.That(address, Is.EqualTo(0x10000 * readCount));
-                
-                readCount++;
+                uint address;
+                IList<byte> data;
+
+                while (intelHexReader.Read(out address, out data))
+                {
+                    Assert.That(address, Is.EqualTo(0x10000 * readCount));
+
+                    readCount++;
+                }
             }
 
             Assert.AreEqual(4, readCount);
@@ -104,17 +108,19 @@ namespace HexIOTests
         public void TestReadExtendedLinearAddressRecords()
         {
             int readCount = 0;
-            IList<byte> data;
-            uint address;
 
-            var intelHexReder = new IntelHexReader(IntelHexData.ExtendedLinearAddressRecords);
 
-            while (intelHexReder.Read(out address, out data))
+            using (var intelHexReader = new IntelHexReader(IntelHexData.ExtendedLinearAddressRecords))
             {
-                Assert.That(address, Is.EqualTo(0x10000 * readCount));
-                readCount++;
-            }
+                IList<byte> data;
+                uint address;
 
+                while (intelHexReader.Read(out address, out data))
+                {
+                    Assert.That(address, Is.EqualTo(0x10000 * readCount));
+                    readCount++;
+                }
+            }
             Assert.AreEqual(5, readCount);
         }
     }

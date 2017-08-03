@@ -31,8 +31,13 @@ namespace HexIO
 {
     internal static class IntelHexRecordExtensions
     {
-        private static readonly uint[] _lookup32 = CreateLookup32();
-        
+        private static readonly uint[] Lookup32 = CreateLookup32();
+
+        /// <summary>
+        /// Parses a 
+        /// </summary>
+        /// <param name="hexRecord">The </param>
+        /// <returns></returns>
         public static IntelHexRecord ParseHexRecord(this string hexRecord)
         {
             if (hexRecord == null)
@@ -47,7 +52,7 @@ namespace HexIO
             if (hexData.Count != hexData[0] + 5)
                 throw new IOException($"Line [{hexRecord}] does not have required record length of [{hexData[0] + 5}]");
 
-            if (!Enum.IsDefined(typeof(IntelHexRecordType), (int)hexData[3]))
+            if (!Enum.IsDefined(typeof(IntelHexRecordType), (int) hexData[3]))
                 throw new IOException($"Invalid record type value: [{hexData[3]}]");
 
             var checkSum = hexData[hexData[0] + 4];
@@ -57,12 +62,12 @@ namespace HexIO
                 throw new IOException($"Checksum for line [{hexRecord}] is incorrect");
 
             var dataSize = hexData[0];
-            
+
             var newRecord = new IntelHexRecord
             {
                 ByteCount = dataSize,
-                Address = (uint) (hexData[1] << 8 | hexData[2]),
-                RecordType = (IntelHexRecordType)hexData[3],
+                Address = (uint) ((hexData[1] << 8) | hexData[2]),
+                RecordType = (IntelHexRecordType) hexData[3],
                 Data = hexData,
                 CheckSum = checkSum
             };
@@ -72,14 +77,19 @@ namespace HexIO
             return newRecord;
         }
 
+        /// <summary>
+        /// Convert a list of hex bytes to a hex string
+        /// </summary>
+        /// <param name="data">The list of bytes to convert</param>
+        /// <returns>The hext string</returns>
         public static string ToHexString(this IList<byte> data)
         {
             var result = new char[data.Count * 2];
-            for (int i = 0; i < data.Count; i++)
+            for (var i = 0; i < data.Count; i++)
             {
-                var val = _lookup32[data[i]];
-                result[2 * i] = (char)val;
-                result[2 * i + 1] = (char)(val >> 16);
+                var val = Lookup32[data[i]];
+                result[2 * i] = (char) val;
+                result[2 * i + 1] = (char) (val >> 16);
             }
 
             return new string(result);
@@ -88,10 +98,10 @@ namespace HexIO
         private static uint[] CreateLookup32()
         {
             var result = new uint[256];
-            for (int i = 0; i < 256; i++)
+            for (var i = 0; i < 256; i++)
             {
-                string s = i.ToString("X2");
-                result[i] = ((uint)s[0]) + ((uint)s[1] << 16);
+                var s = i.ToString("X2");
+                result[i] = s[0] + ((uint) s[1] << 16);
             }
             return result;
         }
@@ -99,8 +109,8 @@ namespace HexIO
         private static bool VerifyChecksum(IList<byte> checkSumData, int checkSum)
         {
             var maskedSumBytes = checkSumData.Sum(x => x) & 0xff;
-            var calculatedChecksum = (byte)(256 - maskedSumBytes);
-            
+            var calculatedChecksum = (byte) (256 - maskedSumBytes);
+
             return calculatedChecksum == checkSum;
         }
 
@@ -108,9 +118,9 @@ namespace HexIO
         {
             try
             {
-                List<byte> data = new List<byte>();
+                var data = new List<byte>();
 
-                for (int i = 0; i < hexData.Length; i++)
+                for (var i = 0; i < hexData.Length; i++)
                 {
                     data.Add(Convert.ToByte(hexData.Substring(i, 2), 16));
                     i++;

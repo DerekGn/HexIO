@@ -24,9 +24,11 @@
 
 using System;
 using System.IO;
-using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using HexIO;
+
+// ReSharper disable AccessToDisposedClosure
 
 namespace HexIOTests
 {
@@ -38,6 +40,96 @@ namespace HexIOTests
         {
             Assert.That(() => new IntelHexWriter(null),
                 Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("stream"));
+        }
+
+        [Test]
+        public void TestNoExceptionIfStreamNotNull()
+        {
+            Assert.That(() => new IntelHexReader(new MemoryStream()), Throws.Nothing);
+        }
+
+        [Test]
+        public void TestWriteDataTooLong()
+        {
+            var intelHexWriter = new IntelHexWriter(new MemoryStream());
+
+            Assert.That(() => intelHexWriter.WriteData(0, new byte[258].ToList()),
+                Throws.Exception.TypeOf<ArgumentOutOfRangeException>().With.Property("Message")
+                    .EqualTo("Must be less than 255\r\nParameter name: data"));
+        }
+
+        [Test]
+        public void TestWriteDataNull()
+        {
+            var intelHexWriter = new IntelHexWriter(new MemoryStream());
+
+            Assert.That(() => intelHexWriter.WriteData(0, null),
+                Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("data"));
+        }
+
+        [Test]
+        public void TestWriteDataOk()
+        {
+            var ms = new MemoryStream();
+
+            var intelHexWriter = new IntelHexWriter(ms);
+
+            intelHexWriter.WriteData(0, new byte[16].ToList());
+
+            intelHexWriter.Close();
+
+            ms.Position = 0;
+
+            using (var sr = new StreamReader(ms))
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(sr.ReadLine(), Is.EqualTo(":1000000000000000000000000000000000000000F0"));
+                    Assert.That(sr.ReadLine(), Is.EqualTo(":00000001FF"));
+                });
+            }
+        }
+
+        [Test]
+        public void TestWriteAddressExtendedSegmentAddressTooLarge()
+        {
+            var intelHexWriter = new IntelHexWriter(new MemoryStream());
+            intelHexWriter.WriteAddress(AddressType.ExtendedSegmentAddress, 0x10000);
+        }
+
+        [Test]
+        public void TestWriteAddressOkExtendedLinearAddress()
+        {
+            TestAddressWrite(AddressType.ExtendedLinearAddress, 0xBEEFDEAD, ":02000004BEEF4D");
+        }
+
+        [Test]
+        public void TestWriteAddressOkExtendedSegmentAddress()
+        {
+            TestAddressWrite(AddressType.ExtendedSegmentAddress, 0x9000, ":020000020900F3");
+        }
+
+        [Test]
+        public void TestWriteAddressOkStartLinearAddress()
+        {
+            TestAddressWrite(AddressType.StartLinearAddress, 0xDEADBEEF, ":04000005DEADBEEFBF");
+        }
+
+        private static void TestAddressWrite(AddressType addressType, uint address, string expected)
+        {
+            var ms = new MemoryStream();
+
+            var intelHexWriter = new IntelHexWriter(ms);
+            intelHexWriter.WriteAddress(addressType, address);
+            intelHexWriter.Close();
+            
+            ms.Position = 0;
+
+            using (var sr = new StreamReader(ms))
+            {
+                Assert.That(sr.ReadLine(), Is.EqualTo(expected));
+                Assert.That(sr.ReadLine(), Is.EqualTo(":00000001FF"));
+            }
         }
     }
 }
