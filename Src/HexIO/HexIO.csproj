@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6;net45;net46</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Derek Goslin</Authors>
     <Company />
@@ -10,7 +10,7 @@
     <PackageLicenseUrl>https://github.com/DerekGn/HexIO/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/DerekGn/HexIO</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DerekGn/HexIO</RepositoryUrl>
-    <PackageTags>Intel Hex Stream</PackageTags>
+    <PackageTags>intel hex stream</PackageTags>
     <Description>A .Net library to read and write Intel HEX files.
 
 Supports the following Intel HEX records:
@@ -24,5 +24,13 @@ Supports the following Intel HEX records:
 
 Supports reading Intel Hex files from a System.IO.Stream derived type</PackageReleaseNotes>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|x64'" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|x86'" />
+
+  <ItemGroup>
+    <PackageReference Update="NETStandard.Library" Version="1.6.1" />
+  </ItemGroup>
 
 </Project>

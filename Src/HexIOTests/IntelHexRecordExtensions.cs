@@ -22,62 +22,64 @@
 * SOFTWARE.
 */
 
+using System;
 using System.IO;
-using NUnit.Framework;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HexIO;
 
 namespace HexIOTests
 {
-    [TestFixture]
+    [TestClass]
     public class IntelHexRecordExtensionsTests
     {
-        [Test]
+        [TestMethod]
         public void TestParseHexRecordNull()
         {
-            Assert.That(() => IntelHexRecordExtensions.ParseHexRecord(null), 
-                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Hex record line can not be null"));
+            Action act = () => IntelHexRecordExtensions.ParseHexRecord(null);
+            act.ShouldThrow<IOException>().WithMessage("Hex record line can not be null");
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseHexRecordInvalidLenght()
         {
-            Assert.That(() => "".PadRight(7,'X').ParseHexRecord(),
-                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Hex record line length [XXXXXXX] is less than 11"));
+            Action act = () => "".PadRight(7, 'X').ParseHexRecord();
+            act.ShouldThrow<IOException>().WithMessage("Hex record line length [XXXXXXX] is less than 11");
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseHexRecordInvalidStart()
         {
-            Assert.That(() => "".PadRight(11, 'X').ParseHexRecord(),
-                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Illegal line start character [XXXXXXXXXXX]"));
+            Action act = () => "".PadRight(11, 'X').ParseHexRecord();
+            act.ShouldThrow<IOException>().WithMessage("Illegal line start character [XXXXXXXXXXX]");
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseHexRecordRecordType()
         {
-            Assert.That(() => ":01ffff06ffe5".ParseHexRecord(),
-                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Invalid record type value: [6]"));
+            Action act = () => ":01ffff06ffe5".ParseHexRecord();
+            act.ShouldThrow<IOException>().WithMessage("Invalid record type value: [6]");
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseHexRecordInvalidCrc()
         {
-            Assert.That(() => ":10010000214601360121470136007EFE09D2190155".ParseHexRecord(),
-                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Checksum for line [:10010000214601360121470136007EFE09D2190155] is incorrect"));
+            Action act = () => ":10010000214601360121470136007EFE09D2190155".ParseHexRecord();
+            act.ShouldThrow<IOException>().WithMessage("Checksum for line [:10010000214601360121470136007EFE09D2190155] is incorrect");
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseHexRecordInvalidRecordLength()
         {
-            Assert.That(() => ":0A010000214601360121470136007EFE09D2190140".ParseHexRecord(),
-                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Line [:0A010000214601360121470136007EFE09D2190140] does not have required record length of [15]"));
+            Action act = () => ":0A010000214601360121470136007EFE09D2190140".ParseHexRecord();
+            act.ShouldThrow<IOException>().WithMessage("Line [:0A010000214601360121470136007EFE09D2190140] does not have required record length of [15]");
         }
 
-        [Test]
+        [TestMethod]
         public void TestParseHexRecordInvalidData()
         {
-            Assert.That(() => ":0A010000214601360121470136007EFE09D2QQ0140".ParseHexRecord(),
-                Throws.Exception.TypeOf<IOException>().With.Property("Message").EqualTo("Unable to extract bytes for [0A010000214601360121470136007EFE09D2QQ0140]"));
+            Action act = () => ":0A010000214601360121470136007EFE09D2QQ0140".ParseHexRecord();
+            act.ShouldThrow<IOException>().WithMessage("Unable to extract bytes for [0A010000214601360121470136007EFE09D2QQ0140]");
         }
     }
 }

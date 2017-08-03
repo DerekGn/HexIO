@@ -126,7 +126,6 @@ namespace HexIO
             {
                 if (disposing)
                 {
-                    _streamReader?.Close();
                     _streamReader?.Dispose();
                 }
 

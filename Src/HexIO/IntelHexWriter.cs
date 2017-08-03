@@ -142,7 +142,6 @@ namespace HexIO
                 if (disposing)
                 {
                     Close();
-                    _streamWriter?.Close();
                     _streamWriter?.Dispose();
                 }
 

@@ -25,40 +25,44 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using NUnit.Framework;
 using HexIO;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable AccessToModifiedClosure
 
 namespace HexIOTests
 {
-    [TestFixture]
+    [TestClass]
     public class IntelHexReaderTests
     {        
-        [Test]
+        [TestMethod]
         public void TestThrowExceptionIfStreamNull()
         {
-            Assert.That(() => new IntelHexReader(null), 
-                Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("stream"));
+            Action act = () => new IntelHexReader(null);
+            act.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("stream");
         }
 
-        [Test]
+        [TestMethod]
         public void TestNoExceptionIfStreamNotNull()
         {
-            Assert.That(() => new IntelHexReader(new MemoryStream()), Throws.Nothing);
+            Action act = () => new IntelHexReader(new MemoryStream());
+            act.ShouldNotThrow();
         }
 
-        [Test]
+        [TestMethod]
         public void TestReadOnEmptyStream()
         {
             IList<byte> data;
             uint address;
 
             var intelHexReader = new IntelHexReader(new MemoryStream());
-            
-            Assert.That(() => intelHexReader.Read(out address, out data), Is.False);
+
+            var result = intelHexReader.Read(out address, out data);
+
+            result.Should().Be(false);
         }
 
-        [Test]
+        [TestMethod]
         public void TestReadDataRecords()
         {
             int readCount = 0;
@@ -69,21 +73,19 @@ namespace HexIOTests
             {
                 while (intelHexReader.Read(out address, out data))
                 {
-                    Assert.Multiple(() =>
-                    {
-                        Assert.That(data, Is.Not.Null);
-                        Assert.That(data.Count, Is.EqualTo(16));
-                        Assert.That(address, Is.EqualTo(0x100 + (0x10 * readCount)));
-                    });
+                    data.Should().NotBeNull();
+                    data.Count.Should().Be(16);
 
+                    address.Should().Be((uint) (0x100 + (0x10 * readCount)));
+                    
                     readCount++;
                 }
             }
 
-            Assert.AreEqual(4, readCount);
+            readCount.Should().Be(4);
         }
 
-        [Test]
+        [TestMethod]
         public void TestReadExtendedSegmentAddressRecords()
         {
             int readCount = 0;
@@ -95,8 +97,8 @@ namespace HexIOTests
 
                 while (intelHexReader.Read(out address, out data))
                 {
-                    Assert.That(address, Is.EqualTo(0x10000 * readCount));
-
+                    address.Should().Be((uint) (0x10000 * readCount));
+                    
                     readCount++;
                 }
             }
@@ -104,7 +106,7 @@ namespace HexIOTests
             Assert.AreEqual(4, readCount);
         }
 
-        [Test]
+        [TestMethod]
         public void TestReadExtendedLinearAddressRecords()
         {
             int readCount = 0;
@@ -117,7 +119,8 @@ namespace HexIOTests
 
                 while (intelHexReader.Read(out address, out data))
                 {
-                    Assert.That(address, Is.EqualTo(0x10000 * readCount));
+                    address.Should().Be((uint)(0x10000 * readCount));
+
                     readCount++;
                 }
             }

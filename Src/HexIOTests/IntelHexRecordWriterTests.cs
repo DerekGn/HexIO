@@ -25,49 +25,50 @@
 using System;
 using System.IO;
 using System.Linq;
-using NUnit.Framework;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HexIO;
 
 // ReSharper disable AccessToDisposedClosure
 
 namespace HexIOTests
 {
-    [TestFixture]
+    [TestClass]
     public class IntelHexRecordWriterTests
     {
-        [Test]
+        [TestMethod]
         public void TestThrowExceptionIfStreamNull()
         {
-            Assert.That(() => new IntelHexWriter(null),
-                Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("stream"));
+            Action act = () => new IntelHexWriter(null);
+            act.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("stream");
         }
 
-        [Test]
+        [TestMethod]
         public void TestNoExceptionIfStreamNotNull()
         {
-            Assert.That(() => new IntelHexReader(new MemoryStream()), Throws.Nothing);
+            Action act = () => new IntelHexReader(new MemoryStream());
+            act.ShouldNotThrow();
         }
 
-        [Test]
+        [TestMethod]
         public void TestWriteDataTooLong()
         {
             var intelHexWriter = new IntelHexWriter(new MemoryStream());
 
-            Assert.That(() => intelHexWriter.WriteData(0, new byte[258].ToList()),
-                Throws.Exception.TypeOf<ArgumentOutOfRangeException>().With.Property("Message")
-                    .EqualTo("Must be less than 255\r\nParameter name: data"));
+            Action act = () => intelHexWriter.WriteData(0, new byte[258].ToList());
+            act.ShouldThrow<ArgumentOutOfRangeException>().WithMessage("Must be less than 255\r\nParameter name: data");
         }
 
-        [Test]
+        [TestMethod]
         public void TestWriteDataNull()
         {
             var intelHexWriter = new IntelHexWriter(new MemoryStream());
 
-            Assert.That(() => intelHexWriter.WriteData(0, null),
-                Throws.Exception.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("data"));
+            Action act = () => intelHexWriter.WriteData(0, new byte[258].ToList());
+            act.ShouldThrow<ArgumentOutOfRangeException>().And.ParamName.Should().Be("data");
         }
 
-        [Test]
+        [TestMethod]
         public void TestWriteDataOk()
         {
             var ms = new MemoryStream();
@@ -82,34 +83,31 @@ namespace HexIOTests
 
             using (var sr = new StreamReader(ms))
             {
-                Assert.Multiple(() =>
-                {
-                    Assert.That(sr.ReadLine(), Is.EqualTo(":1000000000000000000000000000000000000000F0"));
-                    Assert.That(sr.ReadLine(), Is.EqualTo(":00000001FF"));
-                });
+                sr.ReadLine().Should().Be(":1000000000000000000000000000000000000000F0");
+                sr.ReadLine().Should().Be(":00000001FF");                
             }
         }
 
-        [Test]
+        [TestMethod]
         public void TestWriteAddressExtendedSegmentAddressTooLarge()
         {
             var intelHexWriter = new IntelHexWriter(new MemoryStream());
             intelHexWriter.WriteAddress(AddressType.ExtendedSegmentAddress, 0x10000);
         }
 
-        [Test]
+        [TestMethod]
         public void TestWriteAddressOkExtendedLinearAddress()
         {
             TestAddressWrite(AddressType.ExtendedLinearAddress, 0xBEEFDEAD, ":02000004BEEF4D");
         }
 
-        [Test]
+        [TestMethod]
         public void TestWriteAddressOkExtendedSegmentAddress()
         {
             TestAddressWrite(AddressType.ExtendedSegmentAddress, 0x9000, ":020000020900F3");
         }
 
-        [Test]
+        [TestMethod]
         public void TestWriteAddressOkStartLinearAddress()
         {
             TestAddressWrite(AddressType.StartLinearAddress, 0xDEADBEEF, ":04000005DEADBEEFBF");
@@ -122,13 +120,13 @@ namespace HexIOTests
             var intelHexWriter = new IntelHexWriter(ms);
             intelHexWriter.WriteAddress(addressType, address);
             intelHexWriter.Close();
-            
+
             ms.Position = 0;
 
             using (var sr = new StreamReader(ms))
             {
-                Assert.That(sr.ReadLine(), Is.EqualTo(expected));
-                Assert.That(sr.ReadLine(), Is.EqualTo(":00000001FF"));
+                sr.ReadLine().Should().Be(expected);
+                sr.ReadLine().Should().Be(":00000001FF");
             }
         }
     }
