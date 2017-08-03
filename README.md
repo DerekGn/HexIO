@@ -44,22 +44,22 @@ Using the following snippet of code, note ToHexString extension method not shown
 
 ```csharp
 static void Main(string[] args)
-        {
-            uint address;
-            IList<byte> data;
+{
+	uint address;
+	IList<byte> data;
 
-            // This can be any type of System.IO.Stream derived stream
-            using (var fileStream = new FileStream("sample.hex", FileMode.Open))
-            {
-                using (IntelHexReader hexReader = new IntelHexReader(fileStream))
-                {
-                    while (hexReader.Read(out address, out data))
-                    {
-                        Console.WriteLine($"Address: [0x{address:X4}] Count: [0x{data.Count:X2}] Data: [{data.ToHexString()}]");
-                    }
-                }
-            }
-        }
+	// This can be any type of System.IO.Stream derived stream
+	using (var fileStream = new FileStream("sample.hex", FileMode.Open))
+	{
+		using (IntelHexReader hexReader = new IntelHexReader(fileStream))
+		{
+			while (hexReader.Read(out address, out data))
+			{
+				Console.WriteLine($"Address: [0x{address:X4}] Count: [0x{data.Count:X2}] Data: [{data.ToHexString()}]");
+			}
+		}
+	}
+}
 ```
 
 Will produce the following output:
