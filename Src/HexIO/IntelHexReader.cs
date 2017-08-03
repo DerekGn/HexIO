@@ -1,7 +1,7 @@
-﻿/**
+﻿/*
 * MIT License
 *
-* Copyright (c) 2017 Derek Goslin < http://corememorydump.blogspot.ie/ >
+* Copyright (c) 2017 Derek Goslin http://corememorydump.blogspot.ie/
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -120,6 +120,10 @@ namespace HexIO
 
         private bool _disposedValue; // To detect redundant calls
 
+        /// <summary>
+        /// Dispose the <see cref="IntelHexReader"/>
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -133,6 +137,9 @@ namespace HexIO
             }
         }
 
+        /// <summary>
+        /// Dispose the <see cref="IntelHexReader"/>
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

@@ -29,6 +29,10 @@ Supports reading Intel Hex files from a System.IO.Stream derived type</PackageRe
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|x86'" />
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.6\.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" Version="1.6.1" />
   </ItemGroup>

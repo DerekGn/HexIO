@@ -1,7 +1,7 @@
-﻿/**
+﻿/*
 * MIT License
 *
-* Copyright (c) 2017 Derek Goslin < http://corememorydump.blogspot.ie/ >
+* Copyright (c) 2017 Derek Goslin http://corememorydump.blogspot.ie/
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,9 @@
 
 namespace HexIO
 {
+    /// <summary>
+    /// The Address type for address values written to an intel hex file stream
+    /// </summary>
     public enum AddressType
     {
         /// <summary>

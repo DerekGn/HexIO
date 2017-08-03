@@ -1,7 +1,7 @@
-﻿/**
+﻿/*
 * MIT License
 *
-* Copyright (c) 2017 Derek Goslin < http://corememorydump.blogspot.ie/ >
+* Copyright (c) 2017 Derek Goslin http://corememorydump.blogspot.ie/
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +53,8 @@ namespace HexIO
         /// </summary>
         /// <param name="addressType">The <see cref="AddressType" /> to write to the stream</param>
         /// <param name="address">The address value to write data</param>
-        /// <remarks>The </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is not a member of <see cref="AddressType"/></exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="addressType"/> is an <see cref="AddressType.ExtendedSegmentAddress"/> and <paramref name="address"/> is > 0x100000</exception>
         public void WriteAddress(AddressType addressType, uint address)
         {
             if (!Enum.IsDefined(typeof(AddressType), addressType))
@@ -68,6 +69,12 @@ namespace HexIO
             WriteHexRecord((IntelHexRecordType) addressType, 0, addressData);
         }
 
+        /// <summary>
+        /// Write a block of <paramref name="data"/> at <paramref name="address"/>
+        /// </summary>
+        /// <param name="address">The address to write the data</param>
+        /// <param name="data">The block data to write</param>
+        /// <remarks><paramref name="data"/> can be max of 255 bytes</remarks>
         public void WriteData(ushort address, IList<byte> data)
         {
             if (data == null)
@@ -79,6 +86,9 @@ namespace HexIO
             WriteHexRecord(IntelHexRecordType.Data, address, data);
         }
 
+        /// <summary>
+        /// Close the file flushing pending changes to the underlying stream and writing EOF record
+        /// </summary>
         public void Close()
         {
             if (!_disposedValue)
@@ -135,6 +145,10 @@ namespace HexIO
 
         private bool _disposedValue; // To detect redundant calls
 
+        /// <summary>
+        /// Dispose the <see cref="IntelHexWriter"/>
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -149,7 +163,9 @@ namespace HexIO
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
+        /// <summary>
+        /// Dispose the <see cref="IntelHexWriter"/>
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
