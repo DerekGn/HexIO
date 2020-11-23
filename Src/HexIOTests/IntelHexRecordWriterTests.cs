@@ -40,14 +40,14 @@ namespace HexIOTests
         public void TestThrowExceptionIfStreamNull()
         {
             Action act = () => new IntelHexWriter(null);
-            act.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("stream");
+            act.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("stream");
         }
 
         [TestMethod]
         public void TestNoExceptionIfStreamNotNull()
         {
             Action act = () => new IntelHexReader(new MemoryStream());
-            act.ShouldNotThrow();
+            act.Should().NotThrow();
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace HexIOTests
             var intelHexWriter = new IntelHexWriter(new MemoryStream());
 
             Action act = () => intelHexWriter.WriteData(0, new byte[258].ToList());
-            act.ShouldThrow<ArgumentOutOfRangeException>().WithMessage("Must be less than 255\r\nParameter name: data");
+            act.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Must be less than 255\r\nParameter name: data");
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace HexIOTests
             var intelHexWriter = new IntelHexWriter(new MemoryStream());
 
             Action act = () => intelHexWriter.WriteData(0, new byte[258].ToList());
-            act.ShouldThrow<ArgumentOutOfRangeException>().And.ParamName.Should().Be("data");
+            act.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("data");
         }
 
         [TestMethod]
