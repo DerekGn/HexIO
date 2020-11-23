@@ -14,6 +14,7 @@ Install-Package HexIO
 
 The HexIO package is compatible with the following runtimes:
 
+* .NET Standard 2.0
 * .NET Standard 1.6
 * .NET Framework 4.5
 * .NET Framework 4.6

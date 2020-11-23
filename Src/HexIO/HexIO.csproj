@@ -24,7 +24,7 @@ Supports the following Intel HEX records:
 
 Supports reading Intel Hex files from a System.IO.Stream derived type
 
-v1.0.2 Updated to .net standard 2.0</PackageReleaseNotes>
+v1.0.2 Updated to support .netstandard2.0</PackageReleaseNotes>
     <Version>1.0.2</Version>
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
     <FileVersion>1.0.2.0</FileVersion>
@@ -52,7 +52,7 @@ v1.0.2 Updated to .net standard 2.0</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Update="NETStandard.Library" Version="2.0" />
+    <PackageReference Update="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
 
 </Project>
