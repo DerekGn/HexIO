@@ -39,25 +39,21 @@ namespace HexIOTests
         public void TestThrowExceptionIfStreamNull()
         {
             Action act = () => new IntelHexReader(null);
-            act.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("stream");
+            act.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("stream");
         }
 
         [TestMethod]
         public void TestNoExceptionIfStreamNotNull()
         {
             Action act = () => new IntelHexReader(new MemoryStream());
-            act.ShouldNotThrow();
+            act.Should().NotThrow();
         }
 
         [TestMethod]
         public void TestReadOnEmptyStream()
         {
-            IList<byte> data;
-            uint address;
-
             var intelHexReader = new IntelHexReader(new MemoryStream());
-
-            var result = intelHexReader.Read(out address, out data);
+            var result = intelHexReader.Read(out _, out _);
 
             result.Should().Be(false);
         }
@@ -66,12 +62,10 @@ namespace HexIOTests
         public void TestReadDataRecords()
         {
             int readCount = 0;
-            IList<byte> data;
-            uint address;
-
+            
             using (var intelHexReader = new IntelHexReader(IntelHexData.DataRecords))
             {
-                while (intelHexReader.Read(out address, out data))
+                while (intelHexReader.Read(out uint address, out IList<byte> data))
                 {
                     data.Should().NotBeNull();
                     data.Count.Should().Be(16);
@@ -92,10 +86,7 @@ namespace HexIOTests
 
             using (var intelHexReader = new IntelHexReader(IntelHexData.ExtendedSegmentAddressRecords))
             {
-                uint address;
-                IList<byte> data;
-
-                while (intelHexReader.Read(out address, out data))
+                while (intelHexReader.Read(out uint address, out IList<byte> data))
                 {
                     address.Should().Be((uint) (0x10000 * readCount));
                     
@@ -111,13 +102,9 @@ namespace HexIOTests
         {
             int readCount = 0;
 
-
             using (var intelHexReader = new IntelHexReader(IntelHexData.ExtendedLinearAddressRecords))
             {
-                IList<byte> data;
-                uint address;
-
-                while (intelHexReader.Read(out address, out data))
+                while (intelHexReader.Read(out uint address, out IList<byte> data))
                 {
                     address.Should().Be((uint)(0x10000 * readCount));
 

@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.6;net45;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard1.6;net45;net46</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Derek Goslin</Authors>
     <Company />
     <NeutralLanguage></NeutralLanguage>
     <Copyright>Copyright © Derek Goslin 2017</Copyright>
-    <PackageLicenseUrl>https://github.com/DerekGn/HexIO/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/DerekGn/HexIO</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DerekGn/HexIO</RepositoryUrl>
     <PackageTags>intel hex stream</PackageTags>
@@ -20,22 +20,39 @@ Supports the following Intel HEX records:
 02 	Extended Segment Address
 04 	Extended Linear Address
 05 	Start Linear Address</Description>
-    <PackageReleaseNotes>Initial release of HEXIO
+    <PackageReleaseNotes>v1.0.1 Initial release of HEXIO
 
-Supports reading Intel Hex files from a System.IO.Stream derived type</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+Supports reading Intel Hex files from a System.IO.Stream derived type
+
+v1.0.2 Updated to support .netstandard2.0</PackageReleaseNotes>
+    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+	<DocumentationFile>bin\Release\net45\HexIO.xml</DocumentationFile>
+  </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|x86'" />
-
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+	<DocumentationFile>bin\Release\net46\HexIO.xml</DocumentationFile>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.6\.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.6\HexIO.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
     <PackageReference Update="NETStandard.Library" Version="1.6.1" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\HexIO.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Update="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
 
 </Project>

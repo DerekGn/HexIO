@@ -37,49 +37,49 @@ namespace HexIOTests
         public void TestParseHexRecordNull()
         {
             Action act = () => IntelHexRecordExtensions.ParseHexRecord(null);
-            act.ShouldThrow<IOException>().WithMessage("Hex record line can not be null");
+            act.Should().Throw<IOException>().WithMessage("Hex record line can not be null");
         }
 
         [TestMethod]
         public void TestParseHexRecordInvalidLenght()
         {
             Action act = () => "".PadRight(7, 'X').ParseHexRecord();
-            act.ShouldThrow<IOException>().WithMessage("Hex record line length [XXXXXXX] is less than 11");
+            act.Should().Throw<IOException>().WithMessage("Hex record line length [XXXXXXX] is less than 11");
         }
 
         [TestMethod]
         public void TestParseHexRecordInvalidStart()
         {
             Action act = () => "".PadRight(11, 'X').ParseHexRecord();
-            act.ShouldThrow<IOException>().WithMessage("Illegal line start character [XXXXXXXXXXX]");
+            act.Should().Throw<IOException>().WithMessage("Illegal line start character [XXXXXXXXXXX]");
         }
 
         [TestMethod]
         public void TestParseHexRecordRecordType()
         {
             Action act = () => ":01ffff06ffe5".ParseHexRecord();
-            act.ShouldThrow<IOException>().WithMessage("Invalid record type value: [6]");
+            act.Should().Throw<IOException>().WithMessage("Invalid record type value: [6]");
         }
 
         [TestMethod]
         public void TestParseHexRecordInvalidCrc()
         {
             Action act = () => ":10010000214601360121470136007EFE09D2190155".ParseHexRecord();
-            act.ShouldThrow<IOException>().WithMessage("Checksum for line [:10010000214601360121470136007EFE09D2190155] is incorrect");
+            act.Should().Throw<IOException>().WithMessage("Checksum for line [:10010000214601360121470136007EFE09D2190155] is incorrect");
         }
 
         [TestMethod]
         public void TestParseHexRecordInvalidRecordLength()
         {
             Action act = () => ":0A010000214601360121470136007EFE09D2190140".ParseHexRecord();
-            act.ShouldThrow<IOException>().WithMessage("Line [:0A010000214601360121470136007EFE09D2190140] does not have required record length of [15]");
+            act.Should().Throw<IOException>().WithMessage("Line [:0A010000214601360121470136007EFE09D2190140] does not have required record length of [15]");
         }
 
         [TestMethod]
         public void TestParseHexRecordInvalidData()
         {
             Action act = () => ":0A010000214601360121470136007EFE09D2QQ0140".ParseHexRecord();
-            act.ShouldThrow<IOException>().WithMessage("Unable to extract bytes for [0A010000214601360121470136007EFE09D2QQ0140]");
+            act.Should().Throw<IOException>().WithMessage("Unable to extract bytes for [0A010000214601360121470136007EFE09D2QQ0140]");
         }
     }
 }
