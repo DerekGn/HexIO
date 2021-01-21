@@ -56,7 +56,7 @@ namespace HexIOTests
             var intelHexWriter = new IntelHexWriter(new MemoryStream());
 
             Action act = () => intelHexWriter.WriteData(0, new byte[258].ToList());
-            act.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Must be less than 255\r\nParameter name: data");
+            act.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]

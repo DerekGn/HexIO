@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using HexIO;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 // ReSharper disable AccessToModifiedClosure
 
 namespace HexIOTests
@@ -107,6 +108,23 @@ namespace HexIOTests
                 while (intelHexReader.Read(out uint address, out IList<byte> data))
                 {
                     address.Should().Be((uint)(0x10000 * readCount));
+
+                    readCount++;
+                }
+            }
+            Assert.AreEqual(5, readCount);
+        }
+
+        [TestMethod]
+        public void TestReadHexRecords()
+        {
+            int readCount = 0;
+
+            using (var intelHexReader = new IntelHexReader(IntelHexData.DataRecords))
+            {
+                while (intelHexReader.Read(out IntelHexRecord hexRecord))
+                {
+                    hexRecord.Should().NotBeNull();
 
                     readCount++;
                 }

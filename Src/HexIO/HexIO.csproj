@@ -6,7 +6,7 @@
     <Authors>Derek Goslin</Authors>
     <Company />
     <NeutralLanguage></NeutralLanguage>
-    <Copyright>Copyright © Derek Goslin 2017</Copyright>
+    <Copyright>Copyright © Derek Goslin 2021</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/DerekGn/HexIO</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DerekGn/HexIO</RepositoryUrl>
@@ -24,10 +24,15 @@ Supports the following Intel HEX records:
 
 Supports reading Intel Hex files from a System.IO.Stream derived type
 
-v1.0.2 Updated to support .netstandard2.0</PackageReleaseNotes>
-    <Version>1.0.2</Version>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+v1.0.2 Updated to support .netstandard2.0
+
+v1.0.3
+Update to handle non data record read
+Added additional read of hex record method
+</PackageReleaseNotes>
+    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 

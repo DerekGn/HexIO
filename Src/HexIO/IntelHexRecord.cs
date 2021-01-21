@@ -29,7 +29,7 @@ namespace HexIO
     /// <summary>
     ///     A representation of a hex record line
     /// </summary>
-    internal class IntelHexRecord
+    public class IntelHexRecord
     {
         /// <summary>
         ///     The record type

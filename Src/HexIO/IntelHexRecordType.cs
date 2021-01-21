@@ -24,7 +24,7 @@
 
 namespace HexIO
 {
-    internal enum IntelHexRecordType
+    public enum IntelHexRecordType
     {
         /// <summary>
         /// Indicates the record contains data and a 16-bit starting address for the data

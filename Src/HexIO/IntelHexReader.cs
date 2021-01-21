@@ -62,7 +62,7 @@ namespace HexIO
         public bool Read(out uint address, out IList<byte> data)
         {
             var result = false;
-            data = null;
+            data = new List<byte>();
             address = 0;
 
             var hexLine = _streamReader.ReadLine();
@@ -80,6 +80,27 @@ namespace HexIO
 
                     result = true;
                 }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Read a <see cref="IntelHexRecord"/> from the stream
+        /// </summary>
+        /// <returns>true if there are more records available or false of end of file</returns>
+        public bool Read(out IntelHexRecord hexRecord)
+        {
+            var result = false;
+            hexRecord = null;
+
+            var hexLine = _streamReader.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(hexLine))
+            {
+                hexRecord = hexLine.ParseHexRecord();
+
+                result = true;
             }
 
             return result;
