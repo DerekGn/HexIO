@@ -1,19 +1,51 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+variables:
+- name: BuildParameters.solution
+  value: '**\*.sln'
+- name: TestProject
+  value: '**/*UnitTests.csproj'
+
+name: v$(Major).$(Minor).$(Patch)
 
 trigger:
-- master
+- main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - task: DotNetCoreCLI@2
+    displayName: "Build Solution"
+    inputs:
+      command: 'build'
+      projects: $(BuildParameters.solution)
+      configuration: $(BuildConfiguration)
+  - task: DotNetCoreCLI@2
+    displayName: "Run Unit Tests"
+    inputs:
+      command: 'test'
+      projects: $(TestProject)
+      arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+  - task: PublishTestResults@2
+    displayName: "Publish Test Results"
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**\*.trx'
+  - task: DotNetCoreCLI@2
+    displayName: "Pack Project"
+    inputs:
+      command: 'pack'
+      packagesToPack: '**/*.csproj'
+      versioningScheme: byEnvVar
+      versionEnvVar: PackageVersion
+  - task: GitHubRelease@1
+    displayName: "Publish Relase To GitHub"
+    inputs:
+      gitHubConnection: 'GitHub PAT'
+      repositoryName: '$(Build.Repository.Name)'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'userSpecifiedTag'
+      tag: '$(Build.BuildNumber)'
+      title: '$(Build.BuildNumber) - $(BuildConfiguration) - $(Build.SourceBranchName)'
+      changeLogCompareToRelease: 'lastFullRelease'
+      changeLogType: 'commitBased'
