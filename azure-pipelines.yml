@@ -18,7 +18,7 @@ steps:
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
-      version: '2.x'
+      version: '3.x'
   - task: DotNetCoreCLI@2
     displayName: "Restore Solution"
     inputs:
