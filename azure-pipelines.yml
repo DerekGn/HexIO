@@ -3,8 +3,8 @@ variables:
   value: '**\*.sln'
 - name: TestProject
   value: '**/*UnitTests.csproj'
-- name: Project
-  value: '**/HexIo.csproj'
+- name: BuildParameters.Project
+  value: '**/HexIO.csproj'
 
 name: v$(Major).$(Minor).$(Patch)
 
@@ -42,7 +42,7 @@ steps:
     displayName: "Pack Project"
     inputs:
       command: 'pack'
-      packagesToPack: $(Project)
+      packagesToPack: $(BuildParameters.Project)
       versioningScheme: byEnvVar
       versionEnvVar: PackageVersion
   - task: GitHubRelease@1
