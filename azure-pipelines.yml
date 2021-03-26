@@ -15,10 +15,6 @@ pool:
   vmImage: windows-latest
 
 steps:
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'sdk'
-      version: '3.x'
   - task: DotNetCoreCLI@2
     displayName: "Restore Solution"
     inputs:
@@ -42,14 +38,6 @@ steps:
     inputs:
       testRunner: VSTest
       testResultsFiles: '**\*.trx'
-  - task: DotNetCoreCLI@2
-    displayName: "Pack Project"
-    inputs:
-      command: 'pack'
-      packagesToPack: $(BuildParameters.Project)
-      versioningScheme: byEnvVar
-      versionEnvVar: PackageVersion
-      nobuild: true
   - task: GitHubRelease@1
     displayName: "Publish Relase To GitHub"
     inputs:
