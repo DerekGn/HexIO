@@ -14,6 +14,12 @@ pool:
 
 steps:
   - task: DotNetCoreCLI@2
+    displayName: "Restore Solution"
+    inputs:
+      command: 'restore'
+      feedsToUse: 'select'
+      projects: $(BuildParameters.solution)
+  - task: DotNetCoreCLI@2
     displayName: "Build Solution"
     inputs:
       command: 'build'
