@@ -2,7 +2,7 @@ variables:
 - name: BuildParameters.solution
   value: '**\*.sln'
 - name: TestProject
-  value: '**/*UnitTests.csproj'
+  value: '**/*Tests.csproj'
 - name: BuildParameters.Project
   value: '**/HexIO.csproj'
 
