@@ -45,6 +45,7 @@ steps:
       packagesToPack: $(BuildParameters.Project)
       versioningScheme: byEnvVar
       versionEnvVar: PackageVersion
+      nobuild: true
   - task: GitHubRelease@1
     displayName: "Publish Relase To GitHub"
     inputs:
