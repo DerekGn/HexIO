@@ -2,7 +2,9 @@ variables:
 - name: BuildParameters.solution
   value: '**\*.sln'
 - name: TestProject
-  value: '**/*UnitTests.csproj'
+  value: '**/*Tests.csproj'
+- name: BuildParameters.Project
+  value: '**/HexIO.csproj'
 
 name: v$(Major).$(Minor).$(Patch)
 
@@ -13,6 +15,12 @@ pool:
   vmImage: windows-latest
 
 steps:
+  - task: DotNetCoreCLI@2
+    displayName: "Restore Solution"
+    inputs:
+      command: 'restore'
+      feedsToUse: 'select'
+      projects: $(BuildParameters.solution)
   - task: DotNetCoreCLI@2
     displayName: "Build Solution"
     inputs:
@@ -30,13 +38,6 @@ steps:
     inputs:
       testRunner: VSTest
       testResultsFiles: '**\*.trx'
-  - task: DotNetCoreCLI@2
-    displayName: "Pack Project"
-    inputs:
-      command: 'pack'
-      packagesToPack: '**/*.csproj'
-      versioningScheme: byEnvVar
-      versionEnvVar: PackageVersion
   - task: GitHubRelease@1
     displayName: "Publish Relase To GitHub"
     inputs:
