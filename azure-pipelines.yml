@@ -6,10 +6,10 @@ variables:
 - name: BuildParameters.Project
   value: '**/HexIO.csproj'
 
-name: v$(Major).$(Minor).$(Patch)
+name: v$(Major).$(Minor).4
 
 trigger:
-- main
+- master
 
 pool:
   vmImage: windows-latest
