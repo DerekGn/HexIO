@@ -6,7 +6,7 @@ variables:
 - name: BuildParameters.Project
   value: '**/HexIO.csproj'
 
-name: v$(Major).$(Minor).4
+name: v$(Major).$(Minor).$(patch)
 
 trigger:
 - master
