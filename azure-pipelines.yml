@@ -2,11 +2,9 @@ variables:
 - name: BuildParameters.solution
   value: '**\*.sln'
 - name: TestProject
-  value: '**/*Tests.csproj'
-- name: BuildParameters.Project
-  value: '**/HexIO.csproj'
+  value: '**/*UnitTests.csproj'
 
-name: v$(Major).$(Minor).$(patch)
+name: v$(Major).$(Minor).$(Patch)
 
 trigger:
 - master
@@ -16,28 +14,29 @@ pool:
 
 steps:
   - task: DotNetCoreCLI@2
-    displayName: "Restore Solution"
-    inputs:
-      command: 'restore'
-      feedsToUse: 'select'
-      projects: $(BuildParameters.solution)
-  - task: DotNetCoreCLI@2
     displayName: "Build Solution"
     inputs:
       command: 'build'
       projects: $(BuildParameters.solution)
-      arguments: /p:Configuration=$(BuildConfiguration)
+      configuration: $(BuildConfiguration)
   - task: DotNetCoreCLI@2
     displayName: "Run Unit Tests"
     inputs:
       command: 'test'
       projects: $(TestProject)
-      arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+      arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
   - task: PublishTestResults@2
     displayName: "Publish Test Results"
     inputs:
       testRunner: VSTest
       testResultsFiles: '**\*.trx'
+  - task: DotNetCoreCLI@2
+    displayName: "Pack Project"
+    inputs:
+      command: 'pack'
+      packagesToPack: '**/*.csproj'
+      versioningScheme: byEnvVar
+      versionEnvVar: PackageVersion
   - task: GitHubRelease@1
     displayName: "Publish Relase To GitHub"
     inputs:
