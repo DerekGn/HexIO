@@ -24,6 +24,9 @@
 
 namespace HexIO
 {
+    /// <summary>
+    /// The Intel hex record type
+    /// </summary>
     public enum IntelHexRecordType
     {
         /// <summary>
