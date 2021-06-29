@@ -2,6 +2,8 @@
 
 [![Build Status](https://dev.azure.com/DerekGn/GitHub/_apis/build/status/DerekGn.HexIO?branchName=master)](https://dev.azure.com/DerekGn/GitHub/_build/latest?definitionId=5&branchName=master)
 
+[![NuGet Badge](https://buildstats.info/nuget/HexIO)](https://www.nuget.org/packages/HexIO/)
+
 A library for reading and writing hex format streams. Initial release supports intel hex formatted streams.
 
 ## Installing HexIO
