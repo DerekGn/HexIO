@@ -31,10 +31,13 @@ Update to handle non data record read
 Added additional read of hex record method
 
 v2.0.0
-Added stong name to assembly</PackageReleaseNotes>
-    <Version>2.0.0</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+Added stong name to assembly
+
+v2.0.1
+Added byte list extension method for ToString</PackageReleaseNotes>
+    <Version>2.0.1</Version>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>HexIO.snk</AssemblyOriginatorKeyFile>

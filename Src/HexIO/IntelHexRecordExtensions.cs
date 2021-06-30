@@ -34,7 +34,7 @@ namespace HexIO
         private static readonly uint[] Lookup32 = CreateLookup32();
 
         /// <summary>
-        /// Parses a 
+        /// Parses a hex record string 
         /// </summary>
         /// <param name="hexRecord">The </param>
         /// <returns></returns>
@@ -75,24 +75,6 @@ namespace HexIO
             hexData.RemoveRange(0, 4);
 
             return newRecord;
-        }
-
-        /// <summary>
-        /// Convert a list of hex bytes to a hex string
-        /// </summary>
-        /// <param name="data">The list of bytes to convert</param>
-        /// <returns>The hext string</returns>
-        public static string ToHexString(this IList<byte> data)
-        {
-            var result = new char[data.Count * 2];
-            for (var i = 0; i < data.Count; i++)
-            {
-                var val = Lookup32[data[i]];
-                result[2 * i] = (char) val;
-                result[2 * i + 1] = (char) (val >> 16);
-            }
-
-            return new string(result);
         }
 
         private static uint[] CreateLookup32()
