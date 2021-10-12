@@ -108,7 +108,7 @@ namespace HexIO
 
         private uint HandleAddress(IntelHexRecord hexRecord)
         {
-            uint result = 0;
+            uint result;
             switch (hexRecord.RecordType)
             {
                 case IntelHexRecordType.Data:
@@ -165,6 +165,7 @@ namespace HexIO
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

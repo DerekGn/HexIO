@@ -108,9 +108,11 @@ namespace HexIOTests
         }
 
         [TestMethod]
-        public void TestWriteAddressOkStartLinearAddress()
+        [DataRow(0xDEADBEEF, ":04000005DEADBEEFBF")]
+        [DataRow((uint)0x8005000, ":04000005080050009F")]
+        public void TestWriteAddressOkStartLinearAddress(uint address, string expected)
         {
-            TestAddressWrite(AddressType.StartLinearAddress, 0xDEADBEEF, ":04000005DEADBEEFBF");
+            TestAddressWrite(AddressType.StartLinearAddress, address, expected);
         }
 
         private static void TestAddressWrite(AddressType addressType, uint address, string expected)

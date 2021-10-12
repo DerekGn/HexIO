@@ -31,8 +31,6 @@ namespace HexIO
 {
     internal static class IntelHexRecordExtensions
     {
-        private static readonly uint[] Lookup32 = CreateLookup32();
-
         /// <summary>
         /// Parses a hex record string 
         /// </summary>
@@ -75,17 +73,6 @@ namespace HexIO
             hexData.RemoveRange(0, 4);
 
             return newRecord;
-        }
-
-        private static uint[] CreateLookup32()
-        {
-            var result = new uint[256];
-            for (var i = 0; i < 256; i++)
-            {
-                var s = i.ToString("X2");
-                result[i] = s[0] + ((uint) s[1] << 16);
-            }
-            return result;
         }
 
         private static bool VerifyChecksum(IList<byte> checkSumData, int checkSum)
