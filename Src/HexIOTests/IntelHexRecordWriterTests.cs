@@ -115,6 +115,43 @@ namespace HexIOTests
             TestAddressWrite(AddressType.StartLinearAddress, address, expected);
         }
 
+        private void MergeHexStreams()
+        {
+            using (var mergedStream = new FileStream("merged.hex", FileMode.Open))
+            {
+                using (IntelHexWriter hexWriter = new IntelHexWriter(mergedStream))
+                {
+                    WriteHexFile(hexWriter, "HexA.hex");
+                    WriteHexFile(hexWriter, "HexB.hex");
+                }
+            }
+        }
+
+        private void WriteHexFile(IntelHexWriter intelHexWriter, string inputfile)
+        {
+            IntelHexRecord intelHexRecord;
+
+            using (var fileStream = new FileStream(inputfile, FileMode.Open))
+            {
+                using (IntelHexReader hexReader = new IntelHexReader(fileStream))
+                {
+                    while (hexReader.Read(out intelHexRecord))
+                    {
+#warning filter out records that you dont want to copy for example EOF
+
+                        if (intelHexRecord.RecordType == IntelHexRecordType.ExtendedLinearAddress)
+                        {
+                            intelHexWriter.WriteAddress(AddressType.ExtendedLinearAddress, intelHexRecord.Address);
+                        }
+                        else if(intelHexRecord.RecordType == IntelHexRecordType.Data)
+                        {
+                            intelHexWriter.WriteData((ushort)intelHexRecord.Address, intelHexRecord.Data);
+                        }
+                    }
+                }
+            }
+        }
+
         private static void TestAddressWrite(AddressType addressType, uint address, string expected)
         {
             var ms = new MemoryStream();
