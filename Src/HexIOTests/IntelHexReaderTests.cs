@@ -54,7 +54,7 @@ namespace HexIOTests
         public void TestReadOnEmptyStream()
         {
             var intelHexReader = new IntelHexReader(new MemoryStream());
-            var result = intelHexReader.Read(out _, out _);
+            var result = intelHexReader.Read(out uint _, out _);
 
             result.Should().Be(false);
         }

@@ -91,8 +91,20 @@ namespace HexIO
         /// <returns>true if there are more records available or false of end of file</returns>
         public bool Read(out IntelHexRecord hexRecord)
         {
+            return Read(out hexRecord, out _);
+        }
+
+        /// <summary>
+        ///     Read a <see cref="IntelHexRecord"/> from the stream
+        /// </summary>
+        /// <param name="hexRecord">The hex record.</param>
+        /// <param name="address">The start address for the record.</param>
+        /// <returns>true if there are more records available or false of end of file</returns>
+        public bool Read(out IntelHexRecord hexRecord, out uint address)
+        {
             var result = false;
             hexRecord = null;
+            address = 0;
 
             var hexLine = _streamReader.ReadLine();
 
@@ -100,6 +112,11 @@ namespace HexIO
             {
                 hexRecord = hexLine.ParseHexRecord();
 
+                if(hexRecord.RecordType != IntelHexRecordType.EndOfFile) 
+                { 
+                    address = HandleAddress(hexRecord); 
+                }
+                
                 result = true;
             }
 
