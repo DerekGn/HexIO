@@ -22,36 +22,30 @@
 * SOFTWARE.
 */
 
+using System.Text;
+
 namespace HexIO
 {
-    /// <summary>
-    /// The Intel hex record type
-    /// </summary>
-    public enum IntelHexRecordType
+    public struct SegmentAddress
     {
-        /// <summary>
-        /// Indicates the record contains data and a 16-bit starting address for the data
-        /// </summary>
-        Data,
-        /// <summary>
-        /// Indicates the record contains no data
-        /// </summary>
-        EndOfFile,
-        /// <summary>
-        /// Indicates the record data field contains a 16-bit segment base address
-        /// </summary>
-        ExtendedSegmentAddress,
-        /// <summary>
-        /// Indicates the record specifies the initial content of the CS:IP registers
-        /// </summary>
-        StartSegmentAddress,
-        /// <summary>
-        /// Indicates the record contains a the upper 16 bit address
-        /// </summary>
-        ExtendedLinearAddress,
-        /// <summary>
-        /// Indicates the record contains a 32 bit address
-        /// </summary>
-        StartLinearAddress
+        public SegmentAddress(ushort cs, ushort ip)
+        {
+            CodeSegment = cs;
+            InstructionPointer = ip;
+        }
+
+        public ushort CodeSegment { get; }
+
+        public ushort InstructionPointer { get; }
+
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.Append($"{nameof(CodeSegment)}: 0x{CodeSegment:X4} ");
+            stringBuilder.Append($"{nameof(InstructionPointer)}: 0x{InstructionPointer:X4}");
+
+            return stringBuilder.ToString();
+        }
     }
 }

@@ -22,36 +22,19 @@
 * SOFTWARE.
 */
 
-namespace HexIO
+using System;
+
+namespace HexIO.Exceptions
 {
-    /// <summary>
-    /// The Intel hex record type
-    /// </summary>
-    public enum IntelHexRecordType
+
+    [Serializable]
+    public class IntelHexStreamException : Exception
     {
-        /// <summary>
-        /// Indicates the record contains data and a 16-bit starting address for the data
-        /// </summary>
-        Data,
-        /// <summary>
-        /// Indicates the record contains no data
-        /// </summary>
-        EndOfFile,
-        /// <summary>
-        /// Indicates the record data field contains a 16-bit segment base address
-        /// </summary>
-        ExtendedSegmentAddress,
-        /// <summary>
-        /// Indicates the record specifies the initial content of the CS:IP registers
-        /// </summary>
-        StartSegmentAddress,
-        /// <summary>
-        /// Indicates the record contains a the upper 16 bit address
-        /// </summary>
-        ExtendedLinearAddress,
-        /// <summary>
-        /// Indicates the record contains a 32 bit address
-        /// </summary>
-        StartLinearAddress
+        public IntelHexStreamException() { }
+        public IntelHexStreamException(string message) : base(message) { }
+        public IntelHexStreamException(string message, Exception inner) : base(message, inner) { }
+        protected IntelHexStreamException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }

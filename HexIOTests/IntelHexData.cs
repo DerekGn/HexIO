@@ -1,7 +1,7 @@
 ﻿/**
 * MIT License
 *
-* Copyright (c) 2017 Derek Goslin < http://corememorydump.blogspot.ie/ >
+* Copyright (c) 2022 Derek Goslin https://github.com/DerekGn
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,40 @@ using System.IO;
 
 namespace HexIOTests
 {
-    internal static class IntelHexData
+    internal static class IntelHexTestData
     {
+        public static MemoryStream InvalidRecords
+        {
+            get
+            {
+                var ms = new MemoryStream();
+                var sw = new StreamWriter(ms);
+
+                sw.WriteLine(" \t");
+
+                sw.Flush();
+                ms.Position = 0;
+
+                return ms;
+            }
+        }
+
+        public static MemoryStream InvalidLengthRecords
+        {
+            get
+            {
+                var ms = new MemoryStream();
+                var sw = new StreamWriter(ms);
+
+                sw.WriteLine("AAA");
+
+                sw.Flush();
+                ms.Position = 0;
+
+                return ms;
+            }
+        }
+
         public static MemoryStream DataRecords
         {
             get
@@ -48,16 +80,13 @@ namespace HexIOTests
             }
         }
 
-        public static MemoryStream ExtendedSegmentAddressRecords 
+        public static MemoryStream ExtendedSegmentAddressRecords
         {
             get
             {
                 var ms = new MemoryStream();
                 var sw = new StreamWriter(ms);
 
-                sw.WriteLine(":020000020000FC");
-                sw.WriteLine(":020000021000EC");
-                sw.WriteLine(":020000022000DC");
                 sw.WriteLine(":020000023000CC");
                 sw.WriteLine(":00000001FF");
 
@@ -68,20 +97,16 @@ namespace HexIOTests
             }
         }
 
-        public static MemoryStream ExtendedLinearAddressRecords 
+        public static MemoryStream StartSegmentAddressRecords
         {
             get
             {
                 var ms = new MemoryStream();
                 var sw = new StreamWriter(ms);
-               
-                sw.WriteLine(":020000040000FA");
-                sw.WriteLine(":020000040001F9");
-                sw.WriteLine(":020000040002F8");
-                sw.WriteLine(":020000040003F7");
-                sw.WriteLine(":020000040004F6");
+
+                sw.WriteLine(":04000003BEEFFEED61");
                 sw.WriteLine(":00000001FF");
-                
+
                 sw.Flush();
                 ms.Position = 0;
 
@@ -89,17 +114,49 @@ namespace HexIOTests
             }
         }
 
-        public static MemoryStream LinearAddressData 
+        public static MemoryStream ExtendedLinearAddressRecords
         {
             get
             {
                 var ms = new MemoryStream();
                 var sw = new StreamWriter(ms);
 
-                sw.WriteLine(":04000005000000102A");
-                sw.WriteLine(":04000005000001002A");
-                sw.WriteLine(":04000005000010002A");
-                sw.WriteLine(":04000005000100002A");
+                sw.WriteLine(":020000045000AA");
+                sw.WriteLine(":00000001FF");
+
+                sw.Flush();
+                ms.Position = 0;
+
+                return ms;
+            }
+        }
+
+        public static MemoryStream StartLinearAddressRecords
+        {
+            get
+            {
+                var ms = new MemoryStream();
+                var sw = new StreamWriter(ms);
+
+                sw.WriteLine(":04000005BEEFFEED5F");
+                sw.WriteLine(":00000001FF");
+
+                sw.Flush();
+                ms.Position = 0;
+
+                return ms;
+            }
+        }
+
+        public static MemoryStream DeleteTestRecords
+        {
+            get
+            {
+                var ms = new MemoryStream();
+                var sw = new StreamWriter(ms);
+
+                sw.WriteLine(":020000045000AA");
+                sw.WriteLine(":020000045000AA");
                 sw.WriteLine(":00000001FF");
 
                 sw.Flush();

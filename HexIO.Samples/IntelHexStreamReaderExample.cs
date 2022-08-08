@@ -1,7 +1,7 @@
 ﻿/*
 * MIT License
 *
-* Copyright (c) 2022 Derek Goslin https://github.com/DerekGn
+* Copyright (c) 2022 Derek Goslin http://corememorydump.blogspot.ie/
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,26 @@
 * SOFTWARE.
 */
 
-namespace HexIO
+using System;
+
+namespace HexIO.Samples
 {
-    /// <summary>
-    /// The Intel hex record type
-    /// </summary>
-    public enum IntelHexRecordType
+    internal class IntelHexStreamReaderExample
     {
-        /// <summary>
-        /// Indicates the record contains data and a 16-bit starting address for the data
-        /// </summary>
-        Data,
-        /// <summary>
-        /// Indicates the record contains no data
-        /// </summary>
-        EndOfFile,
-        /// <summary>
-        /// Indicates the record data field contains a 16-bit segment base address
-        /// </summary>
-        ExtendedSegmentAddress,
-        /// <summary>
-        /// Indicates the record specifies the initial content of the CS:IP registers
-        /// </summary>
-        StartSegmentAddress,
-        /// <summary>
-        /// Indicates the record contains a the upper 16 bit address
-        /// </summary>
-        ExtendedLinearAddress,
-        /// <summary>
-        /// Indicates the record contains a 32 bit address
-        /// </summary>
-        StartLinearAddress
+        public void Execute(IIntelHexStreamReader hexStreamReader)
+        {
+            do
+            {
+                IntelHexRecord intelHexRecord = hexStreamReader.ReadHexRecord();
+
+                Console.WriteLine(intelHexRecord);
+
+                if (intelHexRecord.RecordType != IntelHexRecordType.Data && intelHexRecord.RecordType != IntelHexRecordType.EndOfFile)
+                {
+                    Console.WriteLine(hexStreamReader.State);
+                }
+
+            } while (!hexStreamReader.State.Eof);
+        }
     }
 }

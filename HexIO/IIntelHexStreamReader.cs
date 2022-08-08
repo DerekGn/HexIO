@@ -22,36 +22,30 @@
 * SOFTWARE.
 */
 
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
 namespace HexIO
 {
     /// <summary>
-    /// The Intel hex record type
+    /// Provides a mechanism to read Intel hex records from an underlying <see cref="Stream"/>
     /// </summary>
-    public enum IntelHexRecordType
+    public interface IIntelHexStreamReader : IDisposable
     {
         /// <summary>
-        /// Indicates the record contains data and a 16-bit starting address for the data
+        /// Get the current <see cref="IntelHexStreamState"/> for the underlying <see cref="Stream"/>
         /// </summary>
-        Data,
+        IntelHexStreamState State { get; }
+
         /// <summary>
-        /// Indicates the record contains no data
+        /// Read the next <see cref="IntelHexRecord"/> from the underlying <see cref="Stream"/>
         /// </summary>
-        EndOfFile,
-        /// <summary>
-        /// Indicates the record data field contains a 16-bit segment base address
-        /// </summary>
-        ExtendedSegmentAddress,
-        /// <summary>
-        /// Indicates the record specifies the initial content of the CS:IP registers
-        /// </summary>
-        StartSegmentAddress,
-        /// <summary>
-        /// Indicates the record contains a the upper 16 bit address
-        /// </summary>
-        ExtendedLinearAddress,
-        /// <summary>
-        /// Indicates the record contains a 32 bit address
-        /// </summary>
-        StartLinearAddress
+        /// <returns>An instance of a <see cref="IntelHexRecord"/></returns>
+        /// <exception cref="IntelHexStreamException">
+        /// Thrown when an error occurs reading from the stream or if the stream is empty or the
+        /// <see cref="State"/> EOF is set
+        /// </exception>
+        IntelHexRecord ReadHexRecord();
     }
 }

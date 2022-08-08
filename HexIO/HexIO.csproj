@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard1.6;net45;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Derek Goslin</Authors>
     <Company />
     <NeutralLanguage></NeutralLanguage>
-    <Copyright>Copyright © Derek Goslin 2021</Copyright>
+    <Copyright>Copyright © Derek Goslin 2022</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/DerekGn/HexIO</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DerekGn/HexIO</RepositoryUrl>
@@ -50,14 +50,6 @@ Added byte list extension method for ToString</PackageReleaseNotes>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
 	<DocumentationFile>bin\Release\net46\HexIO.xml</DocumentationFile>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.6\HexIO.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <PackageReference Update="NETStandard.Library" Version="1.6.1" />
-  </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\HexIO.xml</DocumentationFile>

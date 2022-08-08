@@ -1,7 +1,7 @@
 ﻿/*
 * MIT License
 *
-* Copyright (c) 2017 Derek Goslin http://corememorydump.blogspot.ie/
+* Copyright (c) 2022 Derek Goslin https://github.com/DerekGn
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,173 @@
 * SOFTWARE.
 */
 
+using HexIO.Exceptions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace HexIO
 {
     /// <summary>
-    ///     A representation of a hex record line
+    /// A representation of a hex record line
     /// </summary>
     public class IntelHexRecord
     {
-        /// <summary>
-        ///     The record type
-        /// </summary>
-        public IntelHexRecordType RecordType { get; set; }
+        private const int HeaderSize = 6;
+        private const int MaximumDataSize = 0xFF;
+        private const int MaximumRecordSize = MaximumDataSize + HeaderSize;
+        private const int MinimumRecordSize = HeaderSize;
+        private const int OffsetIndex = 2;
+        private const int RecordLengthIndex = 1;
+        private const int RecordMarkIndex = 0;
+        private const int RecordTypeIndex = 4;
 
         /// <summary>
-        ///     The number of bytes in the record
+        /// Create an instance of a <see cref="IntelHexRecord"/> from a <see cref="IList{T}"/> of bytes
         /// </summary>
-        public int ByteCount { get; set; }
+        /// <param name="hexRecordBytes"></param>
+        public IntelHexRecord(IList<byte> hexRecordBytes)
+        {
+            if (hexRecordBytes == null)
+            {
+                throw new ArgumentNullException(nameof(hexRecordBytes));
+            }
+
+            if (hexRecordBytes.Count > MaximumRecordSize)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be maximum of [{MaximumRecordSize}] bytes");
+            }
+
+            if (hexRecordBytes.Count < MinimumRecordSize)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be minimum of [{MinimumRecordSize}] bytes");
+            }
+
+            if (hexRecordBytes[RecordMarkIndex] != ':')
+            {
+                throw new IntelHexStreamException($"Illegal line start character");
+            }
+
+            if (hexRecordBytes.Count != hexRecordBytes[RecordLengthIndex] + HeaderSize)
+            {
+                throw new IntelHexStreamException($"Hex record bytes does not have required length of [0x{hexRecordBytes[RecordLengthIndex] + HeaderSize:X4}]");
+            }
+
+            if (!Enum.IsDefined(typeof(IntelHexRecordType), (int)hexRecordBytes[RecordTypeIndex]))
+            {
+                throw new IntelHexStreamException($"Invalid record type value: [0x{hexRecordBytes[RecordTypeIndex]:X2}]");
+            }
+
+            RecordType = (IntelHexRecordType)hexRecordBytes[RecordTypeIndex];
+
+            CheckSum = hexRecordBytes.Last();
+
+            byte calculatedChecksum = CalculateChecksum(hexRecordBytes.Skip(1).Take(hexRecordBytes.Count - 2).ToList());
+
+            if (calculatedChecksum != CheckSum)
+            {
+                throw new IntelHexStreamException($"Checksum incorrect. Expected [0x{CheckSum:X}] Actual: [0x{calculatedChecksum:X}]");
+            }
+
+            RecordLength = hexRecordBytes[RecordLengthIndex];
+
+            Offset = (ushort)((hexRecordBytes[OffsetIndex] << 8) + hexRecordBytes[OffsetIndex + 1]);
+
+            Data = hexRecordBytes.Skip(HeaderSize - 1).Take(RecordLength).ToList();
+
+            Bytes = hexRecordBytes.ToList();
+        }
+
+        public IntelHexRecord(ushort offset, IntelHexRecordType recordType, IList<byte> data)
+        {
+            if (data is null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            if (data.Count > MaximumDataSize)
+            {
+                throw new ArgumentOutOfRangeException(nameof(data), $"Must be maximum of [{MaximumDataSize}] bytes");
+            }
+
+            Bytes = new List<byte>
+            {
+                (byte)':',
+                (byte)data.Count,
+                BitConverter.GetBytes(offset).Last(),
+                BitConverter.GetBytes(offset).First(),
+                (byte)recordType
+            };
+
+            Bytes.AddRange(data);
+
+            Bytes.Add(CalculateChecksum(Bytes.Skip(1).ToList()));
+
+            Offset = offset;
+            RecordType = recordType;
+            Data = data.ToList();
+            RecordLength = Data.Count;
+        }
 
         /// <summary>
-        ///     The address of the record
+        /// The record bytes for the <see cref="IntelHexRecord"/> read from the stream
         /// </summary>
-        public uint Address { get; set; }
+        public List<Byte> Bytes { get; }
 
         /// <summary>
-        ///     The data from the record
+        /// The record checksum
         /// </summary>
-        public List<byte> Data { get; set; }
+        public int CheckSum { get; }
 
         /// <summary>
-        ///     The record checksum
+        /// The data from the record
         /// </summary>
-        public int CheckSum { get; set; }
+        public List<byte> Data { get; }
+
+        /// <summary>
+        /// The load offset of the record
+        /// </summary>
+        public ushort Offset { get; }
+
+        /// <summary>
+        /// The number of bytes in the record
+        /// </summary>
+        public int RecordLength { get; }
+
+        /// <summary>
+        /// The record type
+        /// </summary>
+        public IntelHexRecordType RecordType { get; }
+
+        /// <summary>
+        /// Convert the <see cref="IntelHexRecord"/> to a hex record string representation
+        /// </summary>
+        /// <returns></returns>
+        public string ToHexRecordString()
+        {
+            return $":{BitConverter.ToString(Bytes.Skip(1).ToArray()).Replace("-", "")}";
+        }
+
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.Append($"{nameof(RecordType)}: {RecordType} ");
+            stringBuilder.Append($"{nameof(RecordLength)}: 0x{RecordLength:X2} ");
+            stringBuilder.Append($"{nameof(Offset)}: 0x{Offset:X4} ");
+            stringBuilder.Append($"{nameof(Data)}: {BitConverter.ToString(Data.ToArray())} ");
+            stringBuilder.Append($"{nameof(CheckSum)}: 0x{CheckSum:X2} ");
+
+            return stringBuilder.ToString();
+        }
+
+        private static byte CalculateChecksum(IList<byte> checkSumData)
+        {
+            var maskedSumBytes = checkSumData.Sum(x => x) & 0xff;
+            var calculatedChecksum = (byte)(256 - maskedSumBytes);
+
+            return calculatedChecksum;
+        }
     }
 }

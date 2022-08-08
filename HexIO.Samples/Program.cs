@@ -1,7 +1,7 @@
 ﻿/*
 * MIT License
 *
-* Copyright (c) 2022 Derek Goslin https://github.com/DerekGn
+* Copyright (c) 2022 Derek Goslin http://corememorydump.blogspot.ie/
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,33 @@
 * SOFTWARE.
 */
 
-namespace HexIO
+using System;
+using System.IO;
+using System.Text;
+
+namespace HexIO.Samples
 {
-    /// <summary>
-    /// The Intel hex record type
-    /// </summary>
-    public enum IntelHexRecordType
+    public static class Program
     {
-        /// <summary>
-        /// Indicates the record contains data and a 16-bit starting address for the data
-        /// </summary>
-        Data,
-        /// <summary>
-        /// Indicates the record contains no data
-        /// </summary>
-        EndOfFile,
-        /// <summary>
-        /// Indicates the record data field contains a 16-bit segment base address
-        /// </summary>
-        ExtendedSegmentAddress,
-        /// <summary>
-        /// Indicates the record specifies the initial content of the CS:IP registers
-        /// </summary>
-        StartSegmentAddress,
-        /// <summary>
-        /// Indicates the record contains a the upper 16 bit address
-        /// </summary>
-        ExtendedLinearAddress,
-        /// <summary>
-        /// Indicates the record contains a 32 bit address
-        /// </summary>
-        StartLinearAddress
+        public static void Main()
+        {
+            try
+            {
+                Console.WriteLine("Executing Reader example\r\n");
+                var readExample = new IntelHexStreamReaderExample();
+                readExample.Execute(new IntelHexStreamReader(new FileStream("sample.hex", FileMode.Open)));
+
+                Console.WriteLine("\r\n".PadLeft(80, '='));
+
+                Console.WriteLine("Executing Writer example\r\n");
+                var writeExample = new IntelHexStreamWriterExample();
+                var memoryStream = new MemoryStream();
+                writeExample.Execute(new IntelHexStreamWriter(memoryStream, Encoding.UTF8, 1024, true), memoryStream);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"An exception occurred {ex}");
+            }
+        }
     }
 }

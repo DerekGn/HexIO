@@ -1,7 +1,7 @@
 ﻿/*
 * MIT License
 *
-* Copyright (c) 2017 Derek Goslin http://corememorydump.blogspot.ie/
+* Copyright (c) 2022 Derek Goslin https://github.com/DerekGn
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -30,17 +30,17 @@ namespace HexIO
     public enum AddressType
     {
         /// <summary>
-        ///     Indicates the record data field contains a 16-bit segment base address
+        /// Indicates the record data field contains a 16-bit segment base address
         /// </summary>
         ExtendedSegmentAddress = 2,
 
         /// <summary>
-        ///     Indicates the record contains a the upper 16 bit address
+        /// Indicates the record contains a the upper 16 bit address
         /// </summary>
         ExtendedLinearAddress = 4,
 
         /// <summary>
-        ///     Indicates the record contains a 32 bit address
+        /// Indicates the record contains a 32 bit address
         /// </summary>
         StartLinearAddress = 5
     }
