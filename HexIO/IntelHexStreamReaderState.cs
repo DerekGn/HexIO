@@ -26,6 +26,9 @@ using System.Text;
 
 namespace HexIO
 {
+    /// <summary>
+    /// The <see cref="IntelHexStreamReader"/> state
+    /// </summary>
     public sealed class IntelHexStreamState
     {
         public IntelHexStreamState()

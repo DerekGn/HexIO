@@ -22,34 +22,24 @@
 * SOFTWARE.
 */
 
-using System;
-using System.IO;
-
-namespace HexIO
+namespace HexIO.Transforms
 {
     /// <summary>
-    /// Provides a mechanism to read Intel hex records from an underlying <see cref="Stream"/>
+    /// Indicates the insert position for new <see cref="IntelHexRecord"/> instances
     /// </summary>
-    public interface IIntelHexStreamReader : IDisposable
+    public enum InsertPosition
     {
         /// <summary>
-        /// Indicates end of stream has been reached
+        /// Insert before the matched <see cref="IntelHexRecord"/>
         /// </summary>
-        bool EndOfStream { get; }
-
+        Before,
         /// <summary>
-        /// Get the current <see cref="IntelHexStreamState"/> for the underlying <see cref="Stream"/>
+        /// Insert after the matched <see cref="IntelHexRecord"/>
         /// </summary>
-        IntelHexStreamState State { get; }
-
+        After,
         /// <summary>
-        /// Read the next <see cref="IntelHexRecord"/> from the underlying <see cref="Stream"/>
+        /// Insert before and after the matched <see cref="IntelHexRecord"/>
         /// </summary>
-        /// <returns>An instance of a <see cref="IntelHexRecord"/></returns>
-        /// <exception cref="IntelHexStreamException">
-        /// Thrown when an error occurs reading from the stream or if the stream is empty or the
-        /// <see cref="State"/> EOF is set
-        /// </exception>
-        IntelHexRecord ReadHexRecord();
+        BeforeAndAfter
     }
 }

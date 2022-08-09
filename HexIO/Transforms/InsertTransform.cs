@@ -22,34 +22,33 @@
 * SOFTWARE.
 */
 
+using HexIO.Matching;
 using System;
-using System.IO;
 
-namespace HexIO
+namespace HexIO.Transforms
 {
     /// <summary>
-    /// Provides a mechanism to read Intel hex records from an underlying <see cref="Stream"/>
+    /// Perform an insert of an <see cref="IntelHexRecord"/>
     /// </summary>
-    public interface IIntelHexStreamReader : IDisposable
+    public class InsertTransform : Transform 
     {
-        /// <summary>
-        /// Indicates end of stream has been reached
-        /// </summary>
-        bool EndOfStream { get; }
+        public InsertTransform(
+            IntelHexRecordMatch match,
+            InsertPosition position,
+            IntelHexRecord record) : base(match)
+        {
+            Position = position;
+            Record = record ?? throw new ArgumentNullException(nameof(record));
+        }
 
         /// <summary>
-        /// Get the current <see cref="IntelHexStreamState"/> for the underlying <see cref="Stream"/>
+        /// The insert position of the <see cref="IntelHexRecord"/>
         /// </summary>
-        IntelHexStreamState State { get; }
+        public InsertPosition Position { get; }
 
         /// <summary>
-        /// Read the next <see cref="IntelHexRecord"/> from the underlying <see cref="Stream"/>
+        /// The <see cref="IntelHexRecord"/> to insert
         /// </summary>
-        /// <returns>An instance of a <see cref="IntelHexRecord"/></returns>
-        /// <exception cref="IntelHexStreamException">
-        /// Thrown when an error occurs reading from the stream or if the stream is empty or the
-        /// <see cref="State"/> EOF is set
-        /// </exception>
-        IntelHexRecord ReadHexRecord();
+        public IntelHexRecord Record { get; }
     }
 }

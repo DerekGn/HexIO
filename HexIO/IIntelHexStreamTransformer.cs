@@ -1,7 +1,7 @@
 ﻿/*
 * MIT License
 *
-* Copyright (c) 2022 Derek Goslin https://github.com/DerekGn
+* Copyright (c) 2022 Derek Goslin http://corememorydump.blogspot.ie/
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +22,24 @@
 * SOFTWARE.
 */
 
-using System;
-using System.IO;
+using HexIO.Transforms;
+using System.Collections.Generic;
 
 namespace HexIO
 {
     /// <summary>
-    /// Provides a mechanism to read Intel hex records from an underlying <see cref="Stream"/>
+    /// Provides a mechanism to modify Intel hex records
     /// </summary>
-    public interface IIntelHexStreamReader : IDisposable
+    public interface IIntelHexStreamTransformer
     {
         /// <summary>
-        /// Indicates end of stream has been reached
+        /// Apply a set of <see cref="Transform"/> to an Intel hex record file
         /// </summary>
-        bool EndOfStream { get; }
-
-        /// <summary>
-        /// Get the current <see cref="IntelHexStreamState"/> for the underlying <see cref="Stream"/>
-        /// </summary>
-        IntelHexStreamState State { get; }
-
-        /// <summary>
-        /// Read the next <see cref="IntelHexRecord"/> from the underlying <see cref="Stream"/>
-        /// </summary>
-        /// <returns>An instance of a <see cref="IntelHexRecord"/></returns>
-        /// <exception cref="IntelHexStreamException">
-        /// Thrown when an error occurs reading from the stream or if the stream is empty or the
-        /// <see cref="State"/> EOF is set
-        /// </exception>
-        IntelHexRecord ReadHexRecord();
+        /// <param name="inputFile">The input Intel Hex record file</param>
+        /// <param name="transforms">The set of <see cref="IList{T}"/> of <see cref="Transform"/></param>
+        /// <returns></returns>
+        string ApplyTransforms(
+            string inputFile,
+            IList<Transform> transforms);
     }
 }

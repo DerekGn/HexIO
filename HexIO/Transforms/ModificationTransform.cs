@@ -22,34 +22,52 @@
 * SOFTWARE.
 */
 
-using System;
-using System.IO;
+using HexIO.Matching;
+using System.Collections.Generic;
 
-namespace HexIO
+namespace HexIO.Transforms
 {
     /// <summary>
-    /// Provides a mechanism to read Intel hex records from an underlying <see cref="Stream"/>
+    /// Perform a modification of an <see cref="IntelHexRecord"/>
     /// </summary>
-    public interface IIntelHexStreamReader : IDisposable
+    public class ModificationTransform : Transform
     {
-        /// <summary>
-        /// Indicates end of stream has been reached
-        /// </summary>
-        bool EndOfStream { get; }
+        public ModificationTransform(
+            IntelHexRecordMatch match,
+            ushort? offset,
+            IntelHexRecordType? recordType,
+            List<byte> data) : base(match)
+        {
+            Offset = offset;
+            RecordType = recordType;
+            Data = data;
+        }
 
         /// <summary>
-        /// Get the current <see cref="IntelHexStreamState"/> for the underlying <see cref="Stream"/>
+        /// The data from the record
         /// </summary>
-        IntelHexStreamState State { get; }
+        public List<byte> Data { get; set; }
 
         /// <summary>
-        /// Read the next <see cref="IntelHexRecord"/> from the underlying <see cref="Stream"/>
+        /// The load offset of the record
         /// </summary>
-        /// <returns>An instance of a <see cref="IntelHexRecord"/></returns>
-        /// <exception cref="IntelHexStreamException">
-        /// Thrown when an error occurs reading from the stream or if the stream is empty or the
-        /// <see cref="State"/> EOF is set
-        /// </exception>
-        IntelHexRecord ReadHexRecord();
+        public ushort? Offset { get; set; }
+
+        /// <summary>
+        /// The record type
+        /// </summary>
+        public IntelHexRecordType? RecordType { get; set; }
+
+        internal IntelHexRecord Apply(IntelHexRecord intelHexRecord)
+        {
+            var modifiedRecord = new IntelHexRecord
+                (
+                    Offset ?? intelHexRecord.Offset,
+                    RecordType ?? intelHexRecord.RecordType,
+                    Data ?? intelHexRecord.Data
+                );
+
+            return modifiedRecord;
+        }
     }
 }

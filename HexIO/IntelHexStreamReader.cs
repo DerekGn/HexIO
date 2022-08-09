@@ -30,6 +30,9 @@ using System.Text;
 
 namespace HexIO
 {
+    /// <summary>
+    /// A reader for Intel Hex stream
+    /// </summary>
     public class IntelHexStreamReader : StreamReader, IIntelHexStreamReader
     {
         private readonly IntelHexStreamState state = new IntelHexStreamState();
@@ -88,8 +91,10 @@ namespace HexIO
         {
         }
 
+        /// <inheritdoc/>
         public IntelHexStreamState State { get => state; }
 
+        /// <inheritdoc/>
         public IntelHexRecord ReadHexRecord()
         {
             if (EndOfStream)
@@ -102,7 +107,7 @@ namespace HexIO
                 throw new IntelHexStreamException("The EOF record has been reached");
             }
 
-            var hexLine = this.ReadLine();
+            var hexLine = ReadLine();
 
             AssertValidHexLine(hexLine);
 

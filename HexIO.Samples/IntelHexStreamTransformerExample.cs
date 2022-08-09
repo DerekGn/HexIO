@@ -1,7 +1,7 @@
 ﻿/*
 * MIT License
 *
-* Copyright (c) 2022 Derek Goslin https://github.com/DerekGn
+* Copyright (c) 2022 Derek Goslin http://corememorydump.blogspot.ie/
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,12 @@
 * SOFTWARE.
 */
 
-using System.Text;
-
-namespace HexIO
+namespace HexIO.Samples
 {
-    /// <summary>
-    /// A segment address
-    /// </summary>
-    public struct SegmentAddress
+    internal class IntelHexStreamTransformerExample
     {
-        public SegmentAddress(ushort cs, ushort ip)
+        public void Execute()
         {
-            CodeSegment = cs;
-            InstructionPointer = ip;
-        }
-
-        public ushort CodeSegment { get; }
-
-        public ushort InstructionPointer { get; }
-
-        public override string ToString()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            stringBuilder.Append($"{nameof(CodeSegment)}: 0x{CodeSegment:X4} ");
-            stringBuilder.Append($"{nameof(InstructionPointer)}: 0x{InstructionPointer:X4}");
-
-            return stringBuilder.ToString();
         }
     }
 }

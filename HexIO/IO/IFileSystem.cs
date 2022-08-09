@@ -22,34 +22,21 @@
 * SOFTWARE.
 */
 
-using System;
-using System.IO;
-
-namespace HexIO
+namespace HexIO.IO
 {
-    /// <summary>
-    /// Provides a mechanism to read Intel hex records from an underlying <see cref="Stream"/>
-    /// </summary>
-    public interface IIntelHexStreamReader : IDisposable
+    public interface IFileSystem
     {
         /// <summary>
-        /// Indicates end of stream has been reached
+        /// 
         /// </summary>
-        bool EndOfStream { get; }
-
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        bool Exists(string filename);
         /// <summary>
-        /// Get the current <see cref="IntelHexStreamState"/> for the underlying <see cref="Stream"/>
+        /// 
         /// </summary>
-        IntelHexStreamState State { get; }
-
-        /// <summary>
-        /// Read the next <see cref="IntelHexRecord"/> from the underlying <see cref="Stream"/>
-        /// </summary>
-        /// <returns>An instance of a <see cref="IntelHexRecord"/></returns>
-        /// <exception cref="IntelHexStreamException">
-        /// Thrown when an error occurs reading from the stream or if the stream is empty or the
-        /// <see cref="State"/> EOF is set
-        /// </exception>
-        IntelHexRecord ReadHexRecord();
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        void Rename(string origin, string target);
     }
 }

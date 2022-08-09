@@ -25,7 +25,7 @@
 namespace HexIO
 {
     /// <summary>
-    /// The Address type for address values written to an intel hex file stream
+    /// The Address type for address values written to an Intel hex file stream
     /// </summary>
     public enum AddressType
     {

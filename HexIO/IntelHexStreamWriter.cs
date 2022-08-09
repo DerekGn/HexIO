@@ -30,6 +30,9 @@ using System.Text;
 
 namespace HexIO
 {
+    /// <summary>
+    /// An Intel Hex stream writer
+    /// </summary>
     public class IntelHexStreamWriter : StreamWriter, IIntelHexStreamWriter
     {
         private const int MaxDataLength = 0xFF;
@@ -66,6 +69,7 @@ namespace HexIO
         {
         }
 
+        /// <inheritdoc/>
         public override void Close()
         {
             WriteLine(":00000001FF");

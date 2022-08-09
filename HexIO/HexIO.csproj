@@ -31,7 +31,7 @@ Update to handle non data record read
 Added additional read of hex record method
 
 v2.0.0
-Added stong name to assembly
+Added strong name to assembly
 
 v2.0.1
 Added byte list extension method for ToString</PackageReleaseNotes>
