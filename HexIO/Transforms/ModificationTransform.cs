@@ -32,6 +32,13 @@ namespace HexIO.Transforms
     /// </summary>
     public class ModificationTransform : Transform
     {
+        /// <summary>
+        /// Create an instance of a <see cref="ModificationTransform"/>
+        /// </summary>
+        /// <param name="match">The <see cref="IntelHexRecordMatch"/> instance to match <see cref="IntelHexRecord"/> instances against</param>
+        /// <param name="offset">The offset value to apply, set to null to leave unmodified</param>
+        /// <param name="recordType"></param>
+        /// <param name="data"></param>
         public ModificationTransform(
             IntelHexRecordMatch match,
             ushort? offset,

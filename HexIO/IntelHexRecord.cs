@@ -25,6 +25,7 @@
 using HexIO.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -57,12 +58,12 @@ namespace HexIO
 
             if (hexRecordBytes.Count > MaximumRecordSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be maximum of [{MaximumRecordSize}] bytes");
+                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be maximum of [0x{MaximumRecordSize:X}] bytes");
             }
 
             if (hexRecordBytes.Count < MinimumRecordSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be minimum of [{MinimumRecordSize}] bytes");
+                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be minimum of [0x{MinimumRecordSize:X}] bytes");
             }
 
             if (hexRecordBytes[RecordMarkIndex] != ':')
@@ -109,7 +110,7 @@ namespace HexIO
 
             if (data.Count > MaximumDataSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(data), $"Must be maximum of [{MaximumDataSize}] bytes");
+                throw new ArgumentOutOfRangeException(nameof(data), $"Must be maximum of [0x{MaximumDataSize:X}] bytes");
             }
 
             Bytes = new List<byte>
@@ -170,6 +171,7 @@ namespace HexIO
             return $":{BitConverter.ToString(Bytes.Skip(1).ToArray()).Replace("-", "")}";
         }
 
+        [ExcludeFromCodeCoverage]
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();

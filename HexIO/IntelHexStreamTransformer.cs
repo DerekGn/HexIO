@@ -28,6 +28,7 @@ using HexIO.Matching;
 using HexIO.Transforms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -40,17 +41,21 @@ namespace HexIO
     {
         private readonly IIntelHexStreamReaderFactory _intelHexStreamReaderFactory;
         private readonly IIntelHexRecordMatcher _intelHexRecordMatcher;
-        private readonly IStreamWriterFactory _streamWriterFactory;
         private readonly IFileSystem _fileSystem;
 
+        /// <summary>
+        /// Cerate an instance of a <see cref="IntelHexStreamTransformer"/>
+        /// </summary>
+        /// <param name="fileSystem">An <see cref="IFileSystem"/> instance for file IO</param>
+        /// <param name="intelHexRecordMatcher"></param>
+        /// <param name="intelHexStreamReaderFactory"></param>
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamTransformer(
             IFileSystem fileSystem,
-            IStreamWriterFactory streamWriterFactory,
             IIntelHexRecordMatcher intelHexRecordMatcher,
             IIntelHexStreamReaderFactory intelHexStreamReaderFactory)
         {
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
-            _streamWriterFactory = streamWriterFactory ?? throw new ArgumentNullException(nameof(streamWriterFactory));
             _intelHexRecordMatcher = intelHexRecordMatcher ?? throw new ArgumentNullException(nameof(intelHexRecordMatcher));
             _intelHexStreamReaderFactory = intelHexStreamReaderFactory ?? throw new ArgumentNullException(nameof(intelHexStreamReaderFactory));
         }
@@ -81,7 +86,7 @@ namespace HexIO
             {
                 tempFileName = Path.Combine(path, Guid.NewGuid().ToString());
 
-                using (StreamWriter streamWriter = _streamWriterFactory.Create(tempFileName))
+                using (StreamWriter streamWriter = _fileSystem.CreateText(tempFileName))
                 {
                     using (IIntelHexStreamReader intelHexStreamReader = _intelHexStreamReaderFactory.Create(sourceFileName))
                     {
@@ -130,9 +135,9 @@ namespace HexIO
                 }
                 else if (insert.Position == InsertPosition.BeforeAndAfter)
                 {
-                    streamWriter.WriteLine(insert.Record);
-                    streamWriter.WriteLine(intelHexRecord);
-                    streamWriter.WriteLine(insert.Record);
+                    streamWriter.WriteLine(insert.Record.ToHexRecordString());
+                    streamWriter.WriteLine(intelHexRecord.ToHexRecordString());
+                    streamWriter.WriteLine(insert.Record.ToHexRecordString());
                 }
             }
             else if (transform is ModificationTransform modification)

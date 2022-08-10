@@ -25,6 +25,7 @@
 using HexIO.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -37,55 +38,66 @@ namespace HexIO
     {
         private readonly IntelHexStreamState state = new IntelHexStreamState();
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream)
             : base(stream)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path)
             : base(path)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, bool detectEncodingFromByteOrderMarks)
             : base(stream, detectEncodingFromByteOrderMarks)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding)
             : base(stream, encoding)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, bool detectEncodingFromByteOrderMarks)
             : base(path, detectEncodingFromByteOrderMarks)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, Encoding encoding) : base(path, encoding)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks)
             : base(stream, encoding, detectEncodingFromByteOrderMarks)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks)
             : base(path, encoding, detectEncodingFromByteOrderMarks)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
             : base(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
             : base(path, encoding, detectEncodingFromByteOrderMarks, bufferSize)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize, bool leaveOpen)
             : base(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen)
         {

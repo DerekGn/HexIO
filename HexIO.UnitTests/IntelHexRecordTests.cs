@@ -23,13 +23,13 @@
 */
 
 using FluentAssertions;
-using HexIO;
 using HexIO.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
-namespace HexIOTests
+namespace HexIO.UnitTests
 {
     public class IntelHexRecordTests
     {
@@ -46,6 +46,18 @@ namespace HexIOTests
 
             // Assert
             act.Should().Throw<IntelHexStreamException>().WithMessage("Hex record bytes does not have required length of [0x0105]");
+        }
+
+        [Fact]
+        public void TestParseHexRecordInvalidByteMaxCount()
+        {
+            // Arrange
+
+            // Act
+            Action act = () => new IntelHexRecord(new byte[0x200].ToList());
+
+            // Assert
+            act.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("hexRecordBytes");
         }
 
         [Fact]
@@ -103,6 +115,30 @@ namespace HexIOTests
 
             // Assert
             action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("hexRecordBytes");
+        }
+
+        [Fact]
+        public void TestParseHexRecordNullData()
+        {
+            // Arrange
+
+            // Act
+            Action act = () => new IntelHexRecord(0, IntelHexRecordType.Data, null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("data");
+        }
+
+        [Fact]
+        public void TestParseHexRecordMaxData()
+        {
+            // Arrange
+
+            // Act
+            Action act = () => new IntelHexRecord(0, IntelHexRecordType.Data, new byte[0x200].ToList());
+
+            // Assert
+            act.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("data");
         }
 
         [Fact]

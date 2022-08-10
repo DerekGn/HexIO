@@ -24,7 +24,7 @@
 
 using System.IO;
 
-namespace HexIOTests
+namespace HexIO.UnitTests
 {
     internal static class IntelHexTestData
     {

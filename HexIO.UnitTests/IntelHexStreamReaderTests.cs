@@ -23,7 +23,6 @@
 */
 
 using FluentAssertions;
-using HexIO;
 using HexIO.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -31,7 +30,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace HexIOTests
+namespace HexIO.UnitTests
 {
     public class IntelHexStreamReaderTests
     {

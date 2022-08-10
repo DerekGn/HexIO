@@ -23,7 +23,6 @@
 */
 
 using FluentAssertions;
-using HexIO;
 using HexIO.Factories;
 using HexIO.IO;
 using HexIO.Matching;
@@ -35,71 +34,28 @@ using System.IO;
 using System.Text;
 using Xunit;
 
-namespace HexIOTests
+namespace HexIO.UnitTests
 {
     public class IntelHexStreamTransformerTests
     {
-        private readonly Mock<IIntelHexStreamReaderFactory> _mockStreamReaderFactory;
-        private readonly Mock<IStreamWriterFactory> _mockStreamWriterFactory;
+        private const string EofRecord = ":00000001FF";
+        private readonly Mock<IFileSystem> _mockFileStream;
         private readonly Mock<IIntelHexRecordMatcher> _mockRecordMatcher;
         private readonly Mock<IIntelHexStreamReader> _mockStreamReader;
+        private readonly Mock<IIntelHexStreamReaderFactory> _mockStreamReaderFactory;
         private readonly IntelHexStreamTransformer _transformer;
-        private readonly Mock<IFileSystem> _mockFileStream;
-
-        private const string EofRecord = ":00000001FF";
 
         public IntelHexStreamTransformerTests()
         {
             _mockStreamReaderFactory = new Mock<IIntelHexStreamReaderFactory>();
-            _mockStreamWriterFactory = new Mock<IStreamWriterFactory>();
             _mockRecordMatcher = new Mock<IIntelHexRecordMatcher>();
             _mockStreamReader = new Mock<IIntelHexStreamReader>();
             _mockFileStream = new Mock<IFileSystem>();
 
             _transformer = new IntelHexStreamTransformer(
                 _mockFileStream.Object,
-                _mockStreamWriterFactory.Object,
                 _mockRecordMatcher.Object,
                 _mockStreamReaderFactory.Object);
-        }
-
-        [Fact]
-        public void TestInvalidInputFileName()
-        {
-            // Arrange
-
-            // Act
-            Action action = () => _transformer.ApplyTransforms(null, null);
-
-            // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("inputFile");
-        }
-
-        [Fact]
-        public void TestInvalidTransforms()
-        {
-            // Arrange
-
-            // Act
-            Action action = () => _transformer.ApplyTransforms("filename", null);
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("transforms");
-        }
-
-        [Fact]
-        public void TestFileNotFound()
-        {
-            // Arrange
-            _mockFileStream
-                .Setup(_ => _.Exists(It.IsAny<string>()))
-                .Returns(false);
-
-            // Act
-            Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>());
-
-            // Assert
-            action.Should().Throw<FileNotFoundException>();
         }
 
         [Fact]
@@ -114,7 +70,7 @@ namespace HexIOTests
 
             var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
 
-            _mockStreamWriterFactory.Setup(_ => _.Create(It.IsAny<string>()))
+            _mockFileStream.Setup(_ => _.CreateText(It.IsAny<string>()))
                 .Returns(streamWriter);
 
             _mockStreamReaderFactory.Setup(_ => _.Create(It.IsAny<string>()))
@@ -156,6 +112,59 @@ namespace HexIOTests
         }
 
         [Fact]
+        public void TestApplyInsertTransformAfter()
+        {
+            // Arrange
+            _mockFileStream
+                .Setup(_ => _.Exists(It.IsAny<string>()))
+                .Returns(true);
+
+            var memoryStream = new MemoryStream();
+
+            var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
+
+            _mockFileStream.Setup(_ => _.CreateText(It.IsAny<string>()))
+                .Returns(streamWriter);
+
+            _mockStreamReaderFactory.Setup(_ => _.Create(It.IsAny<string>()))
+                .Returns(_mockStreamReader.Object);
+
+            _mockStreamReader
+                .SetupSequence(_ => _.ReadHexRecord())
+                .Returns(new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>()))
+                .Returns(new IntelHexRecord(0, IntelHexRecordType.EndOfFile, new List<byte>()));
+
+            _mockRecordMatcher
+                .SetupSequence(_ => _.IsMatch(It.IsAny<IntelHexRecordMatch>(), It.IsAny<IntelHexRecord>()))
+                .Returns(true);
+
+            _mockStreamReader
+                .SetupSequence(_ => _.EndOfStream)
+                .Returns(false)
+                .Returns(true);
+
+            // Act
+            _transformer
+                .ApplyTransforms("c:\\temp\\filename.hex", new List<Transform>()
+                {
+                    new InsertTransform(
+                        new IntelHexRecordMatch(),
+                        InsertPosition.After,
+                        new IntelHexRecord(0x1000, IntelHexRecordType.StartLinearAddress, new List<byte>() { 0xDE, 0xAD}))
+                });
+
+            // Assert
+            memoryStream.Position = 0;
+
+            using (var sr = new StreamReader(memoryStream))
+            {
+                sr.ReadLine().Should().Be(":00000004FC");
+                sr.ReadLine().Should().Be(":02100005DEAD5E");
+                sr.ReadLine().Should().Be(EofRecord);
+            }
+        }
+
+        [Fact]
         public void TestApplyInsertTransformBefore()
         {
             // Arrange
@@ -167,7 +176,7 @@ namespace HexIOTests
 
             var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
 
-            _mockStreamWriterFactory.Setup(_ => _.Create(It.IsAny<string>()))
+            _mockFileStream.Setup(_ => _.CreateText(It.IsAny<string>()))
                 .Returns(streamWriter);
 
             _mockStreamReaderFactory.Setup(_ => _.Create(It.IsAny<string>()))
@@ -190,10 +199,7 @@ namespace HexIOTests
                 .ApplyTransforms("c:\\temp\\filename.hex", new List<Transform>()
                 {
                     new InsertTransform(
-                        new IntelHexRecordMatch()
-                        {
-                            RecordType = IntelHexRecordType.ExtendedLinearAddress
-                        },
+                        new IntelHexRecordMatch(),
                         InsertPosition.Before,
                         new IntelHexRecord(0x1000, IntelHexRecordType.StartLinearAddress, new List<byte>()))
                 });
@@ -204,6 +210,60 @@ namespace HexIOTests
             using (var sr = new StreamReader(memoryStream))
             {
                 sr.ReadLine().Should().Be(":00100005EB");
+                sr.ReadLine().Should().Be(EofRecord);
+            }
+        }
+
+        [Fact]
+        public void TestApplyInsertTransformBeforeAndAfter()
+        {
+            // Arrange
+            _mockFileStream
+                .Setup(_ => _.Exists(It.IsAny<string>()))
+                .Returns(true);
+
+            var memoryStream = new MemoryStream();
+
+            var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
+
+            _mockFileStream.Setup(_ => _.CreateText(It.IsAny<string>()))
+                .Returns(streamWriter);
+
+            _mockStreamReaderFactory.Setup(_ => _.Create(It.IsAny<string>()))
+                .Returns(_mockStreamReader.Object);
+
+            _mockStreamReader
+                .SetupSequence(_ => _.ReadHexRecord())
+                .Returns(new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>() { 0xBE, 0xEF}))
+                .Returns(new IntelHexRecord(0, IntelHexRecordType.EndOfFile, new List<byte>()));
+
+            _mockRecordMatcher
+                .SetupSequence(_ => _.IsMatch(It.IsAny<IntelHexRecordMatch>(), It.IsAny<IntelHexRecord>()))
+                .Returns(true);
+
+            _mockStreamReader
+                .SetupSequence(_ => _.EndOfStream)
+                .Returns(false)
+                .Returns(true);
+
+            // Act
+            _transformer
+                .ApplyTransforms("c:\\temp\\filename.hex", new List<Transform>()
+                {
+                    new InsertTransform(
+                        new IntelHexRecordMatch(),
+                        InsertPosition.BeforeAndAfter,
+                        new IntelHexRecord(0x1000, IntelHexRecordType.StartLinearAddress, new List<byte>() { 0xDE, 0xAD}))
+                });
+
+            // Assert
+            memoryStream.Position = 0;
+
+            using (var sr = new StreamReader(memoryStream))
+            {
+                sr.ReadLine().Should().Be(":02100005DEAD5E");
+                sr.ReadLine().Should().Be(":02000004BEEF4D");
+                sr.ReadLine().Should().Be(":02100005DEAD5E");
                 sr.ReadLine().Should().Be(EofRecord);
             }
         }
@@ -220,7 +280,7 @@ namespace HexIOTests
 
             var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
 
-            _mockStreamWriterFactory.Setup(_ => _.Create(It.IsAny<string>()))
+            _mockFileStream.Setup(_ => _.CreateText(It.IsAny<string>()))
                 .Returns(streamWriter);
 
             _mockStreamReaderFactory.Setup(_ => _.Create(It.IsAny<string>()))
@@ -263,6 +323,45 @@ namespace HexIOTests
                 sr.ReadLine().Should().Be(":02AA5505FEED0F");
                 sr.ReadLine().Should().Be(EofRecord);
             }
+        }
+
+        [Fact]
+        public void TestFileNotFound()
+        {
+            // Arrange
+            _mockFileStream
+                .Setup(_ => _.Exists(It.IsAny<string>()))
+                .Returns(false);
+
+            // Act
+            Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>());
+
+            // Assert
+            action.Should().Throw<FileNotFoundException>();
+        }
+
+        [Fact]
+        public void TestInvalidInputFileName()
+        {
+            // Arrange
+
+            // Act
+            Action action = () => _transformer.ApplyTransforms(null, null);
+
+            // Assert
+            action.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("inputFile");
+        }
+
+        [Fact]
+        public void TestInvalidTransforms()
+        {
+            // Arrange
+
+            // Act
+            Action action = () => _transformer.ApplyTransforms("filename", null);
+
+            // Assert
+            action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("transforms");
         }
     }
 }

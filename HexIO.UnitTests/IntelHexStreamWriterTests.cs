@@ -23,14 +23,13 @@
 */
 
 using FluentAssertions;
-using HexIO;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace HexIOTests
+namespace HexIO.UnitTests
 {
     public class IntelHexStreamWriterTests
     {

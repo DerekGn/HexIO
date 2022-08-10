@@ -27,12 +27,11 @@ using System.Linq;
 
 namespace HexIO.Matching
 {
+    /// <summary>
+    /// An Intel hex record matcher 
+    /// </summary>
     public class IntelHexRecordMatcher : IIntelHexRecordMatcher
     {
-        public IntelHexRecordMatcher()
-        {
-        }
-
         /// <inheritdoc/>
         public bool IsMatch(IntelHexRecordMatch match, IntelHexRecord record)
         {

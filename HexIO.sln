@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexIO", "HexIO\HexIO.csproj", "{40FCCED0-B6B2-4CC8-B5BB-358875BFC0FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexIOTests", "HexIOTests\HexIOTests.csproj", "{1AB3D35F-324D-47DF-95DD-E09F5682C222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexIO.UnitTests", "HexIO.UnitTests\HexIO.UnitTests.csproj", "{1AB3D35F-324D-47DF-95DD-E09F5682C222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexIO.Samples", "HexIO.Samples\HexIO.Samples.csproj", "{712A868D-43DF-4575-B13F-59E98D533485}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexIO.Samples", "HexIO.Samples\HexIO.Samples.csproj", "{712A868D-43DF-4575-B13F-59E98D533485}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79A16ADB-BC85-40AC-8ED4-AA7F79E8CE6C}"
 	ProjectSection(SolutionItems) = preProject

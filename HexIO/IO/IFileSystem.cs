@@ -22,6 +22,8 @@
 * SOFTWARE.
 */
 
+using System.IO;
+
 namespace HexIO.IO
 {
     public interface IFileSystem
@@ -38,5 +40,7 @@ namespace HexIO.IO
         /// <param name="origin"></param>
         /// <param name="target"></param>
         void Rename(string origin, string target);
+
+        StreamWriter CreateText(string path);
     }
 }

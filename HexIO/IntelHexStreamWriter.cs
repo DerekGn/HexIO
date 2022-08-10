@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,34 +38,42 @@ namespace HexIO
     {
         private const int MaxDataLength = 0xFF;
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream) : base(stream)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path) : base(path)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream, Encoding encoding) : base(stream, encoding)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path, bool append) : base(path, append)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize) : base(stream, encoding, bufferSize)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path, bool append, Encoding encoding) : base(path, append, encoding)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen) : base(stream, encoding, bufferSize, leaveOpen)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path, bool append, Encoding encoding, int bufferSize) : base(path, append, encoding, bufferSize)
         {
         }

@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace HexIO
@@ -61,6 +62,7 @@ namespace HexIO
         /// </summary>
         public bool Eof { get; internal set; }
 
+        [ExcludeFromCodeCoverage]
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();

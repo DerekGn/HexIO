@@ -32,6 +32,10 @@ namespace HexIO.Transforms
     /// </summary>
     public abstract class Transform
     {
+        /// <summary>
+        /// Create an instance of a <see cref="Transform"/>
+        /// </summary>
+        /// <param name="match">The <see cref="IntelHexRecordMatch"/> instance to match <see cref="IntelHexRecord"/> instances against</param>
         protected Transform(IntelHexRecordMatch match)
         {
             Match = match ?? throw new ArgumentNullException(nameof(match));

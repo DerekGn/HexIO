@@ -24,13 +24,23 @@
 
 using System.IO;
 
-namespace HexIO.Factories
+namespace HexIO.IO
 {
-    public class StreamWriterFactory : IStreamWriterFactory
+    public class FileSystem : IFileSystem
     {
-        public StreamWriter Create(string fileName)
+        public StreamWriter CreateText(string path)
         {
-            return new StreamWriter(fileName);
+            throw new System.NotImplementedException();
+        }
+
+        public bool Exists(string path)
+        {
+            return File.Exists(path);
+        }
+
+        public void Rename(string origin, string target)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

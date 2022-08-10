@@ -22,10 +22,14 @@
 * SOFTWARE.
 */
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace HexIO.Factories
 {
+    [ExcludeFromCodeCoverage]
     public class IntelHexStreamReaderFactory : IIntelHexStreamReaderFactory
     {
+        /// <inheritdoc/>
         public IIntelHexStreamReader Create(string fileName)
         {
             return new IntelHexStreamReader(fileName);

@@ -24,8 +24,16 @@
 
 namespace HexIO.Factories
 {
+    /// <summary>
+    /// Provides a mechanism to create instances of <see cref="IIntelHexStreamReader"/>
+    /// </summary>
     public interface IIntelHexStreamReaderFactory
     {
+        /// <summary>
+        /// Create an instance of a <see cref="IIntelHexStreamReader"/>
+        /// </summary>
+        /// <param name="fileName">The file name</param>
+        /// <returns>A <see cref="IIntelHexStreamReader"/></returns>
         IIntelHexStreamReader Create(string fileName);
     }
 }

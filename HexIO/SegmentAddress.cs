@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace HexIO
@@ -31,16 +32,29 @@ namespace HexIO
     /// </summary>
     public struct SegmentAddress
     {
+        /// <summary>
+        /// Create an instance of a <see cref="SegmentAddress"/>
+        /// </summary>
+        /// <param name="cs">The code segment value</param>
+        /// <param name="ip">The instruction pointer value</param>
         public SegmentAddress(ushort cs, ushort ip)
         {
             CodeSegment = cs;
             InstructionPointer = ip;
         }
 
+        /// <summary>
+        /// The code segment value
+        /// </summary>
         public ushort CodeSegment { get; }
 
+        /// <summary>
+        /// The instruction pointer value
+        /// </summary>
         public ushort InstructionPointer { get; }
 
+        /// <inheritdoc/>
+        [ExcludeFromCodeCoverage]
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
