@@ -101,6 +101,14 @@ namespace HexIO
             Bytes = hexRecordBytes.ToList();
         }
 
+        /// <summary>
+        /// Construct an instance of a <see cref="IntelHexRecord"/>
+        /// </summary>
+        /// <param name="offset">The offset of the record</param>
+        /// <param name="recordType">The <see cref="IntelHexRecordType"/></param>
+        /// <param name="data">The <see cref="IList{T}"/> of <see cref="Byte"/></param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="data"/> is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="data"/> length is greater than <see cref="MaximumDataSize"/></exception>
         public IntelHexRecord(ushort offset, IntelHexRecordType recordType, IList<byte> data)
         {
             if (data is null)

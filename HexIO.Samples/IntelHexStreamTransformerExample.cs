@@ -26,7 +26,7 @@ namespace HexIO.Samples
 {
     internal class IntelHexStreamTransformerExample
     {
-        public void Execute()
+        public void Execute(IIntelHexStreamTransformer transformer)
         {
         }
     }

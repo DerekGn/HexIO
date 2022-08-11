@@ -26,6 +26,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace HexIO.Factories
 {
+    /// <summary>
+    /// A factory class for creation of <see cref="IntelHexStreamReader"/> instances
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public class IntelHexStreamReaderFactory : IIntelHexStreamReaderFactory
     {

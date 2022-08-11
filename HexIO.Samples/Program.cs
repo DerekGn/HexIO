@@ -44,6 +44,9 @@ namespace HexIO.Samples
                 var writeExample = new IntelHexStreamWriterExample();
                 var memoryStream = new MemoryStream();
                 writeExample.Execute(new IntelHexStreamWriter(memoryStream, Encoding.UTF8, 1024, true), memoryStream);
+
+                Console.WriteLine("Execute Transformer Example");
+            
             }
             catch (Exception ex)
             {
