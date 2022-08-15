@@ -25,6 +25,7 @@
 using HexIO.Transforms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace HexIO.Samples
 {
@@ -37,11 +38,29 @@ namespace HexIO.Samples
                 throw new ArgumentNullException(nameof(transformer));
             }
 
-            transformer.ApplyTransforms(
+            var transformedFile = transformer.ApplyTransforms(
                 "transform.hex",
                 new List<Transform>()
                 {
+                    new InsertTransform(
+                        new Matching.IntelHexRecordMatch()
+                        {
+                            RecordType = IntelHexRecordType.EndOfFile
+                        },
+                        InsertPosition.Before,
+                        new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>() { 0xFE, 0xED })),
+                    new InsertTransform(
+                        new Matching.IntelHexRecordMatch()
+                        {
+                            RecordType = IntelHexRecordType.EndOfFile
+                        },
+                        InsertPosition.Before,
+                        new IntelHexRecord(0, IntelHexRecordType.Data, new List<byte>() { 0xBE, 0xEF }))
                 });
+
+            using var reader = new StreamReader(transformedFile);
+
+            Console.WriteLine(reader.ReadToEnd());
         }
     }
 }

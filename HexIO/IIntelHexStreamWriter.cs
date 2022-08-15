@@ -25,6 +25,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using HexIO.Exceptions;
 
 namespace HexIO
 {
@@ -50,7 +51,7 @@ namespace HexIO
         /// <summary>
         /// Write an Extended Linear Address Record to the underlying <see cref="Stream"/>
         /// </summary>
-        /// <param name="upperLinearBaseAddress">The 16 bit Upper Linear Base Address (LBA)</param>
+        /// <param name="address">The 16 bit Upper Linear Base Address (LBA)</param>
         /// <exception cref="IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
         void WriteExtendedLinearAddressRecord(ushort address);
 

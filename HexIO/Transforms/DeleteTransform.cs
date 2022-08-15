@@ -31,6 +31,10 @@ namespace HexIO.Transforms
     /// </summary>
     public class DeleteTransform : Transform
     {
+        /// <summary>
+        /// Create an instance of a <see cref="DeleteTransform"/>
+        /// </summary>
+        /// <param name="match">The <see cref="IntelHexRecordMatch"/> to match the transform</param>
         public DeleteTransform(IntelHexRecordMatch match) : base(match)
         {
         }

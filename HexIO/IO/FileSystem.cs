@@ -26,18 +26,30 @@ using System.IO;
 
 namespace HexIO.IO
 {
+    /// <summary>
+    /// An abstraction of the underlying file system
+    /// </summary>
     public class FileSystem : IFileSystem
     {
+        /// <inheritdoc/>
         public StreamWriter CreateText(string path)
         {
             return File.CreateText(path);
         }
 
+        /// <inheritdoc/>
+        public void Delete(string path)
+        {
+            File.Delete(path);
+        }
+
+        /// <inheritdoc/>
         public bool Exists(string path)
         {
             return File.Exists(path);
         }
 
+        /// <inheritdoc/>
         public void Move(string sourceFileName, string destFileName)
         {
             File.Move(sourceFileName, destFileName);

@@ -23,6 +23,7 @@
 */
 
 using HexIO.Transforms;
+using System;
 using System.Collections.Generic;
 
 namespace HexIO
@@ -37,7 +38,8 @@ namespace HexIO
         /// </summary>
         /// <param name="inputFile">The input Intel Hex record file</param>
         /// <param name="transforms">The set of <see cref="IList{T}"/> of <see cref="Transform"/></param>
-        /// <returns></returns>
+        /// <returns>The updated transformed file name</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the </exception>
         string ApplyTransforms(
             string inputFile,
             IList<Transform> transforms);

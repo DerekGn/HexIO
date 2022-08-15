@@ -33,9 +33,12 @@ namespace HexIO.Matching
     {
         private int? _recordLength;
         private IntelHexRecordType? _recordType;
-        private List<byte> _data;
+        private IList<byte> _data;
         private ushort? _offset;
 
+        /// <summary>
+        /// Create an instance of a <see cref="IntelHexRecordMatch"/>
+        /// </summary>
         public IntelHexRecordMatch()
         {
             ExpectedMatchResult = IntelHexRecordMatchResult.None;
@@ -44,7 +47,7 @@ namespace HexIO.Matching
         /// <summary>
         /// The data to match
         /// </summary>
-        public List<byte> Data
+        public IList<byte> Data
         {
             get => _data;
             set

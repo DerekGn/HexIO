@@ -32,6 +32,12 @@ namespace HexIO.Transforms
     /// </summary>
     public class InsertTransform : Transform 
     {
+        /// <summary>
+        /// Create an instance of a <see cref="InsertTransform"/>
+        /// </summary>
+        /// <param name="match">The <see cref="IntelHexRecordMatch"/> to match the transform</param>
+        /// <param name="position">The <see cref="InsertPosition"/> to insert the <paramref name="record"/></param>
+        /// <param name="record">The <see cref="IntelHexRecord"/> to insert</param>
         public InsertTransform(
             IntelHexRecordMatch match,
             InsertPosition position,

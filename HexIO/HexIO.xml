@@ -36,6 +36,11 @@
             <param name="fileName">The file name</param>
             <returns>A <see cref="T:HexIO.IIntelHexStreamReader"/></returns>
         </member>
+        <member name="T:HexIO.Factories.IntelHexStreamReaderFactory">
+            <summary>
+            A factory class for creation of <see cref="T:HexIO.IntelHexStreamReader"/> instances
+            </summary>
+        </member>
         <member name="M:HexIO.Factories.IntelHexStreamReaderFactory.Create(System.String)">
             <inheritdoc/>
         </member>
@@ -59,7 +64,7 @@
             Read the next <see cref="T:HexIO.IntelHexRecord"/> from the underlying <see cref="T:System.IO.Stream"/>
             </summary>
             <returns>An instance of a <see cref="T:HexIO.IntelHexRecord"/></returns>
-            <exception cref="!:IntelHexStreamException">
+            <exception cref="T:HexIO.Exceptions.IntelHexStreamException">
             Thrown when an error occurs reading from the stream or if the stream is empty or the
             <see cref="P:HexIO.IIntelHexStreamReader.State"/> EOF is set
             </exception>
@@ -75,16 +80,17 @@
             </summary>
             <param name="inputFile">The input Intel Hex record file</param>
             <param name="transforms">The set of <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:HexIO.Transforms.Transform"/></param>
-            <returns></returns>
+            <returns>The updated transformed file name</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the </exception>
         </member>
         <member name="T:HexIO.IIntelHexStreamWriter">
             <summary>
-            Provides a mechanism to write Intel hex records to an underlying <see cref="!:Stream"/>
+            Provides a mechanism to write Intel hex records to an underlying <see cref="T:System.IO.Stream"/>
             </summary>
         </member>
         <member name="M:HexIO.IIntelHexStreamWriter.Close">
             <summary>
-            Close the underlying <see cref="!:Stream"/> flushing pending changes to the underlying stream and writing EOF record
+            Close the underlying <see cref="T:System.IO.Stream"/> flushing pending changes to the underlying stream and writing EOF record
             </summary>
         </member>
         <member name="M:HexIO.IIntelHexStreamWriter.WriteDataRecord(System.UInt16,System.Collections.Generic.IList{System.Byte})">
@@ -94,36 +100,36 @@
             <param name="offset">The offset to write the data</param>
             <param name="data">The block data to write</param>
             <remarks><paramref name="data"/> can be max of 255 bytes</remarks>
-            <exception cref="!:IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
+            <exception cref="T:HexIO.Exceptions.IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
         </member>
         <member name="M:HexIO.IIntelHexStreamWriter.WriteExtendedLinearAddressRecord(System.UInt16)">
             <summary>
-            Write an Extended Linear Address Record to the underlying <see cref="!:Stream"/>
+            Write an Extended Linear Address Record to the underlying <see cref="T:System.IO.Stream"/>
             </summary>
-            <param name="upperLinearBaseAddress">The 16 bit Upper Linear Base Address (LBA)</param>
-            <exception cref="!:IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
+            <param name="address">The 16 bit Upper Linear Base Address (LBA)</param>
+            <exception cref="T:HexIO.Exceptions.IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
         </member>
         <member name="M:HexIO.IIntelHexStreamWriter.WriteExtendedSegmentAddressRecord(System.UInt16)">
             <summary>
-            Write an Extended Segment Address Record to the underlying <see cref="!:Stream"/>
+            Write an Extended Segment Address Record to the underlying <see cref="T:System.IO.Stream"/>
             </summary>
             <param name="address">The Upper Segment Base Address(USBA)</param>
-            <exception cref="!:IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
+            <exception cref="T:HexIO.Exceptions.IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
         </member>
         <member name="M:HexIO.IIntelHexStreamWriter.WriteStartLinearAddressRecord(System.UInt32)">
             <summary>
             Write a Start Linear Address Record
             </summary>
             <param name="address">The 32 bit EIP register value</param>
-            <exception cref="!:IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
+            <exception cref="T:HexIO.Exceptions.IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
         </member>
         <member name="M:HexIO.IIntelHexStreamWriter.WriteStartSegmentAddressRecord(System.UInt16,System.UInt16)">
             <summary>
-            Write an Start Segment Address Record to the underlying <see cref="!:Stream"/>
+            Write an Start Segment Address Record to the underlying <see cref="T:System.IO.Stream"/>
             </summary>
             <param name="cs">The CS register value</param>
             <param name="ip">The IP register value</param>
-            <exception cref="!:IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
+            <exception cref="T:HexIO.Exceptions.IntelHexStreamException">Thrown when an error occurs writing to the stream</exception>
         </member>
         <member name="T:HexIO.IntelHexRecord">
             <summary>
@@ -135,6 +141,16 @@
             Create an instance of a <see cref="T:HexIO.IntelHexRecord"/> from a <see cref="T:System.Collections.Generic.IList`1"/> of bytes
             </summary>
             <param name="hexRecordBytes"></param>
+        </member>
+        <member name="M:HexIO.IntelHexRecord.#ctor(System.UInt16,HexIO.IntelHexRecordType,System.Collections.Generic.IList{System.Byte})">
+            <summary>
+            Construct an instance of a <see cref="T:HexIO.IntelHexRecord"/>
+            </summary>
+            <param name="offset">The offset of the record</param>
+            <param name="recordType">The <see cref="T:HexIO.IntelHexRecordType"/></param>
+            <param name="data">The <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:System.Byte"/></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="data"/> is null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when <paramref name="data"/> length is greater than <see cref="F:HexIO.IntelHexRecord.MaximumDataSize"/></exception>
         </member>
         <member name="P:HexIO.IntelHexRecord.Bytes">
             <summary>
@@ -171,6 +187,9 @@
             Convert the <see cref="T:HexIO.IntelHexRecord"/> to a hex record string representation
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:HexIO.IntelHexRecord.ToString">
+            <inheritdoc/>
         </member>
         <member name="T:HexIO.IntelHexRecordType">
             <summary>
@@ -212,6 +231,107 @@
             A reader for Intel Hex stream
             </summary>
         </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class 
+            for the specified stream.
+            </summary>
+            <param name="stream">The stream to be read.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class 
+            for the specified file name.
+            </summary>
+            <param name="path">The complete file path to be read.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class 
+            for the specified stream, 
+            with the specified byte order mark detection option.
+            </summary>
+            <param name="stream">The stream to be read.</param>
+            <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified stream, 
+            with the specified character encoding.
+            </summary>
+            <param name="stream">The stream to be read.</param>
+            <param name="encoding">The character encoding to use.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified 
+            file name, with the specified byte order mark detection option.
+            </summary>
+            <param name="path"></param>
+            <param name="detectEncodingFromByteOrderMarks"></param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.String,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified
+            file name, with the specified character encoding.
+            </summary>
+            <param name="path">The complete file path to be read.</param>
+            <param name="encoding">The character encoding to use.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.IO.Stream,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified
+            stream, with the specified character encoding and byte order mark detection option.
+            </summary>
+            <param name="stream">The stream to be read.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified
+            file name, with the specified character encoding and byte order mark detection
+            option.
+            </summary>
+            <param name="path">The complete file path to be read.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Int32)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified
+            stream, with the specified character encoding, byte order mark detection option,
+            and buffer size.
+            </summary>
+            <param name="stream">The stream to be read.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
+            <param name="bufferSize">The minimum buffer size.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.String,System.Text.Encoding,System.Boolean,System.Int32)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified
+            file name, with the specified character encoding, byte order mark detection option,
+            and buffer size.
+            </summary>
+            <param name="path">The complete file path to be read.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
+            <param name="bufferSize">The minimum buffer size, in number of 16-bit characters.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamReader.#ctor(System.IO.Stream,System.Text.Encoding,System.Boolean,System.Int32,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamReader class for the specified
+            stream based on the specified character encoding, byte order mark detection option,
+            and buffer size, and optionally leaves the stream open.
+            </summary>
+            <param name="stream">The stream to read.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="detectEncodingFromByteOrderMarks">true to look for byte order marks at the beginning of the file; otherwise, false.</param>
+            <param name="bufferSize">The minimum buffer size.</param>
+            <param name="leaveOpen">true to leave the stream open after the System.IO.StreamReader object is disposed;
+            otherwise, false.</param>
+        </member>
         <member name="P:HexIO.IntelHexStreamReader.State">
             <inheritdoc/>
         </member>
@@ -221,6 +341,11 @@
         <member name="T:HexIO.IntelHexStreamState">
             <summary>
             The <see cref="T:HexIO.IntelHexStreamReader"/> state
+            </summary>
+        </member>
+        <member name="M:HexIO.IntelHexStreamState.#ctor">
+            <summary>
+            Create an instance of a <see cref="T:HexIO.IntelHexStreamState"/>
             </summary>
         </member>
         <member name="P:HexIO.IntelHexStreamState.ExtendedInstructionPointer">
@@ -248,6 +373,9 @@
             Indicates if the End Of File record has been read
             </summary>
         </member>
+        <member name="M:HexIO.IntelHexStreamState.ToString">
+            <inheritdoc/>
+        </member>
         <member name="T:HexIO.IntelHexStreamTransformer">
             <summary>
             An Intel Hex stream transformer
@@ -269,6 +397,88 @@
             An Intel Hex stream writer
             </summary>
         </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            stream by using UTF-8 encoding and the default buffer size.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            file by using the default encoding and buffer size.
+            </summary>
+            <param name="path">The complete file path to write to. path can be a file name.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            stream by using the specified encoding and the default buffer size.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+            <param name="encoding">The character encoding to use.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            file by using the default encoding and buffer size. If the file exists, it can
+            be either overwritten or appended to. If the file does not exist, this constructor
+            creates a new file.
+            </summary>
+            <param name="path">The complete file path to write to.</param>
+            <param name="append">true to append data to the file; false to overwrite the file. If the specified
+            file does not exist, this parameter has no effect, and the constructor creates
+            a new file.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.IO.Stream,System.Text.Encoding,System.Int32)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            stream by using the specified encoding and buffer size.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="bufferSize">The buffer size, in bytes.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.String,System.Boolean,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            file by using the specified encoding and default buffer size. If the file exists,
+            it can be either overwritten or appended to. If the file does not exist, this
+            constructor creates a new file.
+            </summary>
+            <param name="path">The complete file path to write to.</param>
+            <param name="append">true to append data to the file; false to overwrite the file. If the specified
+            file does not exist, this parameter has no effect, and the constructor creates
+            a new file.</param>
+            <param name="encoding">The character encoding to use.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.IO.Stream,System.Text.Encoding,System.Int32,System.Boolean)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            stream by using the specified encoding and buffer size, and optionally leaves
+            the stream open.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="bufferSize">The buffer size, in bytes.</param>
+            <param name="leaveOpen">true to leave the stream open after the System.IO.StreamWriter object is disposed;
+            otherwise, false.</param>
+        </member>
+        <member name="M:HexIO.IntelHexStreamWriter.#ctor(System.String,System.Boolean,System.Text.Encoding,System.Int32)">
+            <summary>
+            Initializes a new instance of the System.IO.StreamWriter class for the specified
+            file on the specified path, using the specified encoding and buffer size. If
+            the file exists, it can be either overwritten or appended to. If the file does
+            not exist, this constructor creates a new file.
+            </summary>
+            <param name="path">The complete file path to write to.</param>
+            <param name="append">true to append data to the file; false to overwrite the file. If the specified
+            file does not exist, this parameter has no effect, and the constructor creates
+            a new file.</param>
+            <param name="encoding">The character encoding to use.</param>
+            <param name="bufferSize">The buffer size, in bytes.</param>
+        </member>
         <member name="M:HexIO.IntelHexStreamWriter.Close">
             <inheritdoc/>
         </member>
@@ -287,19 +497,59 @@
         <member name="M:HexIO.IntelHexStreamWriter.WriteStartSegmentAddressRecord(System.UInt16,System.UInt16)">
             <inheritdoc/>
         </member>
+        <member name="T:HexIO.IO.FileSystem">
+            <summary>
+            An abstraction of the underlying file system
+            </summary>
+        </member>
+        <member name="M:HexIO.IO.FileSystem.CreateText(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HexIO.IO.FileSystem.Delete(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HexIO.IO.FileSystem.Exists(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HexIO.IO.FileSystem.Move(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:HexIO.IO.IFileSystem">
+            <summary>
+            Provides a mechanism to interact with the file system
+            </summary>
+        </member>
+        <member name="M:HexIO.IO.IFileSystem.Delete(System.String)">
+            <summary>
+            Deletes the specified file.
+            </summary>
+            <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
+        </member>
+        <member name="M:HexIO.IO.IFileSystem.CreateText(System.String)">
+            <summary>
+            Creates or opens a file for writing UTF-8 encoded text. If the file already exists,
+            its contents are overwritten.
+            </summary>
+            <param name="path">The file to be opened for writing.</param>
+            <returns>A <see cref="T:System.IO.StreamWriter"/> that writes to the specified file using UTF-8 encoding.</returns>
+        </member>
         <member name="M:HexIO.IO.IFileSystem.Exists(System.String)">
             <summary>
-            
+            Determines whether the specified file exists.
             </summary>
-            <param name="filename"></param>
-            <returns></returns>
+            <param name="path">The file to check.</param>
+            <returns>true if the caller has the required permissions and path contains the name of
+            an existing file; otherwise, false. This method also returns false if path is
+            null, an invalid path, or a zero-length string. If the caller does not have sufficient
+            permissions to read the specified file, no exception is thrown and the method
+            returns false regardless of the existence of path.</returns>
         </member>
-        <member name="M:HexIO.IO.IFileSystem.Rename(System.String,System.String)">
+        <member name="M:HexIO.IO.IFileSystem.Move(System.String,System.String)">
             <summary>
-            
+            Moves a specified file to a new location, providing the option to specify a new file name.
             </summary>
-            <param name="origin"></param>
-            <param name="target"></param>
+            <param name="sourceFileName">The name of the file to move. Can include a relative or absolute path.</param>
+            <param name="destFileName">The new path and name for the file.</param>
         </member>
         <member name="T:HexIO.Matching.IIntelHexRecordMatcher">
             <summary>
@@ -317,6 +567,11 @@
         <member name="T:HexIO.Matching.IntelHexRecordMatch">
             <summary>
             A match specifier
+            </summary>
+        </member>
+        <member name="M:HexIO.Matching.IntelHexRecordMatch.#ctor">
+            <summary>
+            Create an instance of a <see cref="T:HexIO.Matching.IntelHexRecordMatch"/>
             </summary>
         </member>
         <member name="P:HexIO.Matching.IntelHexRecordMatch.Data">
@@ -382,6 +637,12 @@
             Perform a delete of an <see cref="T:HexIO.IntelHexRecord"/>
             </summary>
         </member>
+        <member name="M:HexIO.Transforms.DeleteTransform.#ctor(HexIO.Matching.IntelHexRecordMatch)">
+            <summary>
+            Create an instance of a <see cref="T:HexIO.Transforms.DeleteTransform"/>
+            </summary>
+            <param name="match">The <see cref="T:HexIO.Matching.IntelHexRecordMatch"/> to match the transform</param>
+        </member>
         <member name="T:HexIO.Transforms.InsertPosition">
             <summary>
             Indicates the insert position for new <see cref="T:HexIO.IntelHexRecord"/> instances
@@ -407,6 +668,14 @@
             Perform an insert of an <see cref="T:HexIO.IntelHexRecord"/>
             </summary>
         </member>
+        <member name="M:HexIO.Transforms.InsertTransform.#ctor(HexIO.Matching.IntelHexRecordMatch,HexIO.Transforms.InsertPosition,HexIO.IntelHexRecord)">
+            <summary>
+            Create an instance of a <see cref="T:HexIO.Transforms.InsertTransform"/>
+            </summary>
+            <param name="match">The <see cref="T:HexIO.Matching.IntelHexRecordMatch"/> to match the transform</param>
+            <param name="position">The <see cref="T:HexIO.Transforms.InsertPosition"/> to insert the <paramref name="record"/></param>
+            <param name="record">The <see cref="T:HexIO.IntelHexRecord"/> to insert</param>
+        </member>
         <member name="P:HexIO.Transforms.InsertTransform.Position">
             <summary>
             The insert position of the <see cref="T:HexIO.IntelHexRecord"/>
@@ -422,14 +691,14 @@
             Perform a modification of an <see cref="T:HexIO.IntelHexRecord"/>
             </summary>
         </member>
-        <member name="M:HexIO.Transforms.ModificationTransform.#ctor(HexIO.Matching.IntelHexRecordMatch,System.Nullable{System.UInt16},System.Nullable{HexIO.IntelHexRecordType},System.Collections.Generic.List{System.Byte})">
+        <member name="M:HexIO.Transforms.ModificationTransform.#ctor(HexIO.Matching.IntelHexRecordMatch,System.Nullable{System.UInt16},System.Nullable{HexIO.IntelHexRecordType},System.Collections.Generic.IList{System.Byte})">
             <summary>
             Create an instance of a <see cref="T:HexIO.Transforms.ModificationTransform"/>
             </summary>
-            <param name="match">The <see cref="T:HexIO.Matching.IntelHexRecordMatch"/> instance to match <see cref="T:HexIO.IntelHexRecord"/> instances against</param>
+            <param name="match">The <see cref="T:HexIO.Matching.IntelHexRecordMatch"/> to match the transform</param>
             <param name="offset">The offset value to apply, set to null to leave unmodified</param>
-            <param name="recordType"></param>
-            <param name="data"></param>
+            <param name="recordType">The <see cref="P:HexIO.Transforms.ModificationTransform.RecordType"/> to match the transform</param>
+            <param name="data">The <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:System.Byte"/> to match the transform</param>
         </member>
         <member name="P:HexIO.Transforms.ModificationTransform.Data">
             <summary>

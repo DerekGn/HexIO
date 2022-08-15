@@ -38,41 +38,107 @@ namespace HexIO
     {
         private const int MaxDataLength = 0xFF;
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// stream by using UTF-8 encoding and the default buffer size.
+        /// </summary>
+        /// <param name="stream">The stream to write to.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream) : base(stream)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// file by using the default encoding and buffer size.
+        /// </summary>
+        /// <param name="path">The complete file path to write to. path can be a file name.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path) : base(path)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// stream by using the specified encoding and the default buffer size.
+        /// </summary>
+        /// <param name="stream">The stream to write to.</param>
+        /// <param name="encoding">The character encoding to use.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream, Encoding encoding) : base(stream, encoding)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// file by using the default encoding and buffer size. If the file exists, it can
+        /// be either overwritten or appended to. If the file does not exist, this constructor
+        /// creates a new file.
+        /// </summary>
+        /// <param name="path">The complete file path to write to.</param>
+        /// <param name="append">true to append data to the file; false to overwrite the file. If the specified
+        /// file does not exist, this parameter has no effect, and the constructor creates
+        /// a new file.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path, bool append) : base(path, append)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// stream by using the specified encoding and buffer size.
+        /// </summary>
+        /// <param name="stream">The stream to write to.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="bufferSize">The buffer size, in bytes.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize) : base(stream, encoding, bufferSize)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// file by using the specified encoding and default buffer size. If the file exists,
+        /// it can be either overwritten or appended to. If the file does not exist, this
+        /// constructor creates a new file.
+        /// </summary>
+        /// <param name="path">The complete file path to write to.</param>
+        /// <param name="append">true to append data to the file; false to overwrite the file. If the specified
+        /// file does not exist, this parameter has no effect, and the constructor creates
+        /// a new file.</param>
+        /// <param name="encoding">The character encoding to use.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path, bool append, Encoding encoding) : base(path, append, encoding)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// stream by using the specified encoding and buffer size, and optionally leaves
+        /// the stream open.
+        /// </summary>
+        /// <param name="stream">The stream to write to.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="bufferSize">The buffer size, in bytes.</param>
+        /// <param name="leaveOpen">true to leave the stream open after the System.IO.StreamWriter object is disposed;
+        /// otherwise, false.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen) : base(stream, encoding, bufferSize, leaveOpen)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamWriter class for the specified
+        /// file on the specified path, using the specified encoding and buffer size. If
+        /// the file exists, it can be either overwritten or appended to. If the file does
+        /// not exist, this constructor creates a new file.
+        /// </summary>
+        /// <param name="path">The complete file path to write to.</param>
+        /// <param name="append">true to append data to the file; false to overwrite the file. If the specified
+        /// file does not exist, this parameter has no effect, and the constructor creates
+        /// a new file.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="bufferSize">The buffer size, in bytes.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamWriter(string path, bool append, Encoding encoding, int bufferSize) : base(path, append, encoding, bufferSize)
         {

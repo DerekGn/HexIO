@@ -179,6 +179,7 @@ namespace HexIO
             return $":{BitConverter.ToString(Bytes.Skip(1).ToArray()).Replace("-", "")}";
         }
 
+        /// <inheritdoc/>
         [ExcludeFromCodeCoverage]
         public override string ToString()
         {

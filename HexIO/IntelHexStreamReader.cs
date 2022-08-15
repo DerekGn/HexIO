@@ -38,65 +38,144 @@ namespace HexIO
     {
         private readonly IntelHexStreamState state = new IntelHexStreamState();
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class 
+        /// for the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream to be read.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream)
             : base(stream)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class 
+        /// for the specified file name.
+        /// </summary>
+        /// <param name="path">The complete file path to be read.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path)
             : base(path)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class 
+        /// for the specified stream, 
+        /// with the specified byte order mark detection option.
+        /// </summary>
+        /// <param name="stream">The stream to be read.</param>
+        /// <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, bool detectEncodingFromByteOrderMarks)
             : base(stream, detectEncodingFromByteOrderMarks)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified stream, 
+        /// with the specified character encoding.
+        /// </summary>
+        /// <param name="stream">The stream to be read.</param>
+        /// <param name="encoding">The character encoding to use.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding)
             : base(stream, encoding)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified 
+        /// file name, with the specified byte order mark detection option.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="detectEncodingFromByteOrderMarks"></param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, bool detectEncodingFromByteOrderMarks)
             : base(path, detectEncodingFromByteOrderMarks)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified
+        /// file name, with the specified character encoding.
+        /// </summary>
+        /// <param name="path">The complete file path to be read.</param>
+        /// <param name="encoding">The character encoding to use.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, Encoding encoding) : base(path, encoding)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified
+        /// stream, with the specified character encoding and byte order mark detection option.
+        /// </summary>
+        /// <param name="stream">The stream to be read.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks)
             : base(stream, encoding, detectEncodingFromByteOrderMarks)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified
+        /// file name, with the specified character encoding and byte order mark detection
+        /// option.
+        /// </summary>
+        /// <param name="path">The complete file path to be read.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks)
             : base(path, encoding, detectEncodingFromByteOrderMarks)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified
+        /// stream, with the specified character encoding, byte order mark detection option,
+        /// and buffer size.
+        /// </summary>
+        /// <param name="stream">The stream to be read.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
+        /// <param name="bufferSize">The minimum buffer size.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
             : base(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified
+        /// file name, with the specified character encoding, byte order mark detection option,
+        /// and buffer size.
+        /// </summary>
+        /// <param name="path">The complete file path to be read.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
+        /// <param name="bufferSize">The minimum buffer size, in number of 16-bit characters.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize)
             : base(path, encoding, detectEncodingFromByteOrderMarks, bufferSize)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the System.IO.StreamReader class for the specified
+        /// stream based on the specified character encoding, byte order mark detection option,
+        /// and buffer size, and optionally leaves the stream open.
+        /// </summary>
+        /// <param name="stream">The stream to read.</param>
+        /// <param name="encoding">The character encoding to use.</param>
+        /// <param name="detectEncodingFromByteOrderMarks">true to look for byte order marks at the beginning of the file; otherwise, false.</param>
+        /// <param name="bufferSize">The minimum buffer size.</param>
+        /// <param name="leaveOpen">true to leave the stream open after the System.IO.StreamReader object is disposed;
+        /// otherwise, false.</param>
         [ExcludeFromCodeCoverage]
         public IntelHexStreamReader(Stream stream, Encoding encoding, bool detectEncodingFromByteOrderMarks, int bufferSize, bool leaveOpen)
             : base(stream, encoding, detectEncodingFromByteOrderMarks, bufferSize, leaveOpen)

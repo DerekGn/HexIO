@@ -26,8 +26,24 @@ using System.IO;
 
 namespace HexIO.IO
 {
+    /// <summary>
+    /// Provides a mechanism to interact with the file system
+    /// </summary>
     public interface IFileSystem
     {
+        /// <summary>
+        /// Deletes the specified file.
+        /// </summary>
+        /// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
+        void Delete(string path);
+        /// <summary>
+        /// Creates or opens a file for writing UTF-8 encoded text. If the file already exists,
+        /// its contents are overwritten.
+        /// </summary>
+        /// <param name="path">The file to be opened for writing.</param>
+        /// <returns>A <see cref="StreamWriter"/> that writes to the specified file using UTF-8 encoding.</returns>
+        StreamWriter CreateText(string path);
+
         /// <summary>
         /// Determines whether the specified file exists.
         /// </summary>
@@ -38,18 +54,12 @@ namespace HexIO.IO
         /// permissions to read the specified file, no exception is thrown and the method
         /// returns false regardless of the existence of path.</returns>
         bool Exists(string path);
+
         /// <summary>
         /// Moves a specified file to a new location, providing the option to specify a new file name.
         /// </summary>
         /// <param name="sourceFileName">The name of the file to move. Can include a relative or absolute path.</param>
         /// <param name="destFileName">The new path and name for the file.</param>
         void Move(string sourceFileName, string destFileName);
-        /// <summary>
-        /// Creates or opens a file for writing UTF-8 encoded text. If the file already exists,
-        /// its contents are overwritten.
-        /// </summary>
-        /// <param name="path">The file to be opened for writing.</param>
-        /// <returns>A <see cref="StreamWriter"/> that writes to the specified file using UTF-8 encoding.</returns>
-        StreamWriter CreateText(string path);
     }
 }

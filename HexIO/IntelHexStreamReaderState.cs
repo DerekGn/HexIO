@@ -32,6 +32,9 @@ namespace HexIO
     /// </summary>
     public sealed class IntelHexStreamState
     {
+        /// <summary>
+        /// Create an instance of a <see cref="IntelHexStreamState"/>
+        /// </summary>
         public IntelHexStreamState()
         {
             SegmentAddress = new SegmentAddress(0, 0);
@@ -62,6 +65,7 @@ namespace HexIO
         /// </summary>
         public bool Eof { get; internal set; }
 
+        /// <inheritdoc/>
         [ExcludeFromCodeCoverage]
         public override string ToString()
         {

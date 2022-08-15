@@ -72,6 +72,11 @@ namespace HexIO
             {
                 throw new ArgumentNullException(nameof(transforms));
             }
+            
+            if(transforms.Count == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(transforms), "Must contain 1 or more transform");
+            }
 
             if (!_fileSystem.Exists(inputFile))
             {
@@ -110,6 +115,11 @@ namespace HexIO
             });
 
             var transformedFileName = Path.Combine(path, $"{inputFile}.transformed");
+
+            if(_fileSystem.Exists(transformedFileName))
+            {
+                _fileSystem.Delete(transformedFileName);
+            }
 
             _fileSystem.Move(tempFileName, transformedFileName);
 

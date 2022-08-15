@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 
+using HexIO.Exceptions;
 using System;
 using System.IO;
 

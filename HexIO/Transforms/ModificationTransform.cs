@@ -35,15 +35,15 @@ namespace HexIO.Transforms
         /// <summary>
         /// Create an instance of a <see cref="ModificationTransform"/>
         /// </summary>
-        /// <param name="match">The <see cref="IntelHexRecordMatch"/> instance to match <see cref="IntelHexRecord"/> instances against</param>
+        /// <param name="match">The <see cref="IntelHexRecordMatch"/> to match the transform</param>
         /// <param name="offset">The offset value to apply, set to null to leave unmodified</param>
-        /// <param name="recordType"></param>
-        /// <param name="data"></param>
+        /// <param name="recordType">The <see cref="RecordType"/> to match the transform</param>
+        /// <param name="data">The <see cref="IList{T}"/> of <see cref="byte"/> to match the transform</param>
         public ModificationTransform(
             IntelHexRecordMatch match,
             ushort? offset,
             IntelHexRecordType? recordType,
-            List<byte> data) : base(match)
+            IList<byte> data) : base(match)
         {
             Offset = offset;
             RecordType = recordType;
@@ -53,7 +53,7 @@ namespace HexIO.Transforms
         /// <summary>
         /// The data from the record
         /// </summary>
-        public List<byte> Data { get; set; }
+        public IList<byte> Data { get; set; }
 
         /// <summary>
         /// The load offset of the record
