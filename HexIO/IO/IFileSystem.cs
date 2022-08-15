@@ -29,18 +29,27 @@ namespace HexIO.IO
     public interface IFileSystem
     {
         /// <summary>
-        /// 
+        /// Determines whether the specified file exists.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        bool Exists(string filename);
+        /// <param name="path">The file to check.</param>
+        /// <returns>true if the caller has the required permissions and path contains the name of
+        /// an existing file; otherwise, false. This method also returns false if path is
+        /// null, an invalid path, or a zero-length string. If the caller does not have sufficient
+        /// permissions to read the specified file, no exception is thrown and the method
+        /// returns false regardless of the existence of path.</returns>
+        bool Exists(string path);
         /// <summary>
-        /// 
+        /// Moves a specified file to a new location, providing the option to specify a new file name.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="target"></param>
-        void Rename(string origin, string target);
-
+        /// <param name="sourceFileName">The name of the file to move. Can include a relative or absolute path.</param>
+        /// <param name="destFileName">The new path and name for the file.</param>
+        void Move(string sourceFileName, string destFileName);
+        /// <summary>
+        /// Creates or opens a file for writing UTF-8 encoded text. If the file already exists,
+        /// its contents are overwritten.
+        /// </summary>
+        /// <param name="path">The file to be opened for writing.</param>
+        /// <returns>A <see cref="StreamWriter"/> that writes to the specified file using UTF-8 encoding.</returns>
         StreamWriter CreateText(string path);
     }
 }

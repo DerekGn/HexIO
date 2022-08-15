@@ -30,22 +30,32 @@ namespace HexIO.Samples
 {
     internal class IntelHexStreamWriterExample
     {
-        public void Execute(IIntelHexStreamWriter hexStreamWriter, MemoryStream memoryStream)
+        public void Execute(IIntelHexStreamWriter writer, MemoryStream stream)
         {
-            hexStreamWriter.WriteDataRecord(0, new List<byte>() { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A });
-            hexStreamWriter.WriteDataRecord(0x0B, new List<byte>() { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A });
+            if (writer == null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
 
-            hexStreamWriter.WriteExtendedLinearAddressRecord(0x1000);
-            hexStreamWriter.WriteExtendedSegmentAddressRecord(0x2000);
-            hexStreamWriter.WriteStartLinearAddressRecord(0x3000);
-            hexStreamWriter.WriteStartSegmentAddressRecord(0x4000, 0x5000);
+            if (stream is null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
 
-            hexStreamWriter.Close();
+            writer.WriteDataRecord(0, new List<byte>() { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A });
+            writer.WriteDataRecord(0x0B, new List<byte>() { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A });
 
-            memoryStream.Flush();
-            memoryStream.Position = 0;
+            writer.WriteExtendedLinearAddressRecord(0x1000);
+            writer.WriteExtendedSegmentAddressRecord(0x2000);
+            writer.WriteStartLinearAddressRecord(0x3000);
+            writer.WriteStartSegmentAddressRecord(0x4000, 0x5000);
 
-            var readStream = new MemoryStream(memoryStream.ToArray());
+            writer.Close();
+
+            stream.Flush();
+            stream.Position = 0;
+
+            var readStream = new MemoryStream(stream.ToArray());
 
             using StreamReader reader = new StreamReader(readStream);
             Console.WriteLine(reader.ReadToEnd());

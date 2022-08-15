@@ -30,7 +30,7 @@ namespace HexIO.IO
     {
         public StreamWriter CreateText(string path)
         {
-            throw new System.NotImplementedException();
+            return File.CreateText(path);
         }
 
         public bool Exists(string path)
@@ -38,9 +38,9 @@ namespace HexIO.IO
             return File.Exists(path);
         }
 
-        public void Rename(string origin, string target)
+        public void Move(string sourceFileName, string destFileName)
         {
-            throw new System.NotImplementedException();
+            File.Move(sourceFileName, destFileName);
         }
     }
 }

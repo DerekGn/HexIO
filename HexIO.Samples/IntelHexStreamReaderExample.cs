@@ -30,6 +30,11 @@ namespace HexIO.Samples
     {
         public void Execute(IIntelHexStreamReader hexStreamReader)
         {
+            if(hexStreamReader == null)
+            {
+                throw new ArgumentNullException(nameof(hexStreamReader));
+            }
+            
             do
             {
                 IntelHexRecord intelHexRecord = hexStreamReader.ReadHexRecord();

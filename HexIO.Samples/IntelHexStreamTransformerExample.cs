@@ -22,12 +22,26 @@
 * SOFTWARE.
 */
 
+using HexIO.Transforms;
+using System;
+using System.Collections.Generic;
+
 namespace HexIO.Samples
 {
     internal class IntelHexStreamTransformerExample
     {
         public void Execute(IIntelHexStreamTransformer transformer)
         {
+            if (transformer is null)
+            {
+                throw new ArgumentNullException(nameof(transformer));
+            }
+
+            transformer.ApplyTransforms(
+                "transform.hex",
+                new List<Transform>()
+                {
+                });
         }
     }
 }

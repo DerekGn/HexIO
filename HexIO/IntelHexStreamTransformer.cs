@@ -111,7 +111,7 @@ namespace HexIO
 
             var transformedFileName = Path.Combine(path, $"{inputFile}.transformed");
 
-            _fileSystem.Rename(tempFileName, transformedFileName);
+            _fileSystem.Move(tempFileName, transformedFileName);
 
             return transformedFileName;
         }

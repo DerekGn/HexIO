@@ -22,6 +22,10 @@
 * SOFTWARE.
 */
 
+using HexIO.Factories;
+using HexIO.IO;
+using HexIO.Matching;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Text;
@@ -34,6 +38,14 @@ namespace HexIO.Samples
         {
             try
             {
+                //setup our DI
+                var serviceProvider = new ServiceCollection()
+                    .AddSingleton<IIntelHexStreamReaderFactory, IntelHexStreamReaderFactory>()
+                    .AddSingleton<IIntelHexStreamTransformer, IntelHexStreamTransformer>()
+                    .AddSingleton<IIntelHexRecordMatcher, IntelHexRecordMatcher>()
+                    .AddSingleton<IFileSystem, FileSystem>()
+                    .BuildServiceProvider();
+
                 Console.WriteLine("Executing Reader example\r\n");
                 var readExample = new IntelHexStreamReaderExample();
                 readExample.Execute(new IntelHexStreamReader(new FileStream("sample.hex", FileMode.Open)));
@@ -46,7 +58,9 @@ namespace HexIO.Samples
                 writeExample.Execute(new IntelHexStreamWriter(memoryStream, Encoding.UTF8, 1024, true), memoryStream);
 
                 Console.WriteLine("Execute Transformer Example");
-            
+                var transformExample = new IntelHexStreamTransformerExample();
+                var transformer = serviceProvider.GetService<IIntelHexStreamTransformer>();
+                transformExample.Execute(transformer);
             }
             catch (Exception ex)
             {
