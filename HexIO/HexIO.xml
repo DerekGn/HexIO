@@ -693,6 +693,11 @@
               Looks up a localized string similar to The stream is empty.
             </summary>
         </member>
+        <member name="P:HexIO.Properties.Resources.TransformsExpected">
+            <summary>
+              Looks up a localized string similar to Must contain one or more transforms.
+            </summary>
+        </member>
         <member name="P:HexIO.Properties.Resources.UnableToExtract">
             <summary>
               Looks up a localized string similar to Unable to extract bytes for [{0}].
