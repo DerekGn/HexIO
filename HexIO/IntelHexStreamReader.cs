@@ -23,6 +23,7 @@
 */
 
 using HexIO.Exceptions;
+using HexIO.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -190,12 +191,12 @@ namespace HexIO
         {
             if (EndOfStream)
             {
-                throw new IntelHexStreamException("The stream is empty");
+                throw new IntelHexStreamException(Resources.StreamEmpty);
             }
 
             if (State.Eof)
             {
-                throw new IntelHexStreamException("The EOF record has been reached");
+                throw new IntelHexStreamException(Resources.Eof);
             }
 
             var hexLine = ReadLine();
@@ -242,17 +243,17 @@ namespace HexIO
         {
             if (String.IsNullOrWhiteSpace(hexLine))
             {
-                throw new IntelHexStreamException($"An invalid Hex record has been read from the stream. Value: [{hexLine}]");
+                throw new IntelHexStreamException(string.Format(Resources.InvalidHexRecord, hexLine));
             }
 
             if (hexLine.Length < 11)
             {
-                throw new IntelHexStreamException($"Hex record line length [{hexLine}] is less than 11");
+                throw new IntelHexStreamException(string.Format(Resources.InvalidHexRecordLength, hexLine, 11));
             }
 
             if (!hexLine.StartsWith(":"))
             {
-                throw new IntelHexStreamException($"Illegal line start character [{hexLine}]");
+                throw new IntelHexStreamException(string.Format(Resources.InvalidStartCharacter, hexLine));
             }
         }
 
@@ -275,7 +276,7 @@ namespace HexIO
             }
             catch (Exception ex)
             {
-                throw new IntelHexStreamException($"Unable to extract bytes for [{hexData}]", ex);
+                throw new IntelHexStreamException(string.Format(Resources.UnableToExtract, hexData), ex);
             }
         }
     }

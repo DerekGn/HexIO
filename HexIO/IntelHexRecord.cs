@@ -23,6 +23,7 @@
 */
 
 using HexIO.Exceptions;
+using HexIO.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -44,7 +45,7 @@ namespace HexIO
         private const int RecordLengthIndex = 1;
         private const int RecordMarkIndex = 0;
         private const int RecordTypeIndex = 4;
-
+        
         /// <summary>
         /// Create an instance of a <see cref="IntelHexRecord"/> from a <see cref="IList{T}"/> of bytes
         /// </summary>
@@ -58,27 +59,29 @@ namespace HexIO
 
             if (hexRecordBytes.Count > MaximumRecordSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be maximum of [0x{MaximumRecordSize:X}] bytes");
+                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), 
+                    string.Format(Resources.MaximumRecordSize, MaximumRecordSize));
             }
 
             if (hexRecordBytes.Count < MinimumRecordSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes), $"Must be minimum of [0x{MinimumRecordSize:X}] bytes");
+                throw new ArgumentOutOfRangeException(nameof(hexRecordBytes),
+                    string.Format(Resources.MinimumRecordSize, MinimumRecordSize));
             }
 
             if (hexRecordBytes[RecordMarkIndex] != ':')
             {
-                throw new IntelHexStreamException($"Illegal line start character");
+                throw new IntelHexStreamException(Resources.IllegalStartCharacter);
             }
 
             if (hexRecordBytes.Count != hexRecordBytes[RecordLengthIndex] + HeaderSize)
             {
-                throw new IntelHexStreamException($"Hex record bytes does not have required length of [0x{hexRecordBytes[RecordLengthIndex] + HeaderSize:X4}]");
+                throw new IntelHexStreamException(string.Format(Resources.InvalidLength, hexRecordBytes[RecordLengthIndex] + HeaderSize));
             }
 
             if (!Enum.IsDefined(typeof(IntelHexRecordType), (int)hexRecordBytes[RecordTypeIndex]))
             {
-                throw new IntelHexStreamException($"Invalid record type value: [0x{hexRecordBytes[RecordTypeIndex]:X2}]");
+                throw new IntelHexStreamException(string.Format(Resources.InvalidRecordType, hexRecordBytes[RecordTypeIndex]));
             }
 
             RecordType = (IntelHexRecordType)hexRecordBytes[RecordTypeIndex];
@@ -89,7 +92,7 @@ namespace HexIO
 
             if (calculatedChecksum != CheckSum)
             {
-                throw new IntelHexStreamException($"Checksum incorrect. Expected [0x{CheckSum:X}] Actual: [0x{calculatedChecksum:X}]");
+                throw new IntelHexStreamException(string.Format(Resources.InvalidChecksum, CheckSum, calculatedChecksum));
             }
 
             RecordLength = hexRecordBytes[RecordLengthIndex];
@@ -118,7 +121,7 @@ namespace HexIO
 
             if (data.Count > MaximumDataSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(data), $"Must be maximum of [0x{MaximumDataSize:X}] bytes");
+                throw new ArgumentOutOfRangeException(nameof(data), string.Format(Resources.MaximumDataSize, MaximumDataSize));
             }
 
             Bytes = new List<byte>

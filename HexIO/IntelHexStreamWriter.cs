@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 
+using HexIO.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -44,7 +45,8 @@ namespace HexIO
         /// </summary>
         /// <param name="stream">The stream to write to.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(Stream stream) : base(stream)
+        public IntelHexStreamWriter(Stream stream) 
+            : base(stream)
         {
         }
 
@@ -54,7 +56,8 @@ namespace HexIO
         /// </summary>
         /// <param name="path">The complete file path to write to. path can be a file name.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(string path) : base(path)
+        public IntelHexStreamWriter(string path) 
+            : base(path)
         {
         }
 
@@ -65,7 +68,8 @@ namespace HexIO
         /// <param name="stream">The stream to write to.</param>
         /// <param name="encoding">The character encoding to use.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(Stream stream, Encoding encoding) : base(stream, encoding)
+        public IntelHexStreamWriter(Stream stream, Encoding encoding) 
+            : base(stream, encoding)
         {
         }
 
@@ -80,7 +84,8 @@ namespace HexIO
         /// file does not exist, this parameter has no effect, and the constructor creates
         /// a new file.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(string path, bool append) : base(path, append)
+        public IntelHexStreamWriter(string path, bool append) 
+            : base(path, append)
         {
         }
 
@@ -92,7 +97,8 @@ namespace HexIO
         /// <param name="encoding">The character encoding to use.</param>
         /// <param name="bufferSize">The buffer size, in bytes.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize) : base(stream, encoding, bufferSize)
+        public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize) 
+            : base(stream, encoding, bufferSize)
         {
         }
 
@@ -108,7 +114,8 @@ namespace HexIO
         /// a new file.</param>
         /// <param name="encoding">The character encoding to use.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(string path, bool append, Encoding encoding) : base(path, append, encoding)
+        public IntelHexStreamWriter(string path, bool append, Encoding encoding) 
+            : base(path, append, encoding)
         {
         }
 
@@ -123,7 +130,8 @@ namespace HexIO
         /// <param name="leaveOpen">true to leave the stream open after the System.IO.StreamWriter object is disposed;
         /// otherwise, false.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen) : base(stream, encoding, bufferSize, leaveOpen)
+        public IntelHexStreamWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen) 
+            : base(stream, encoding, bufferSize, leaveOpen)
         {
         }
 
@@ -140,7 +148,8 @@ namespace HexIO
         /// <param name="encoding">The character encoding to use.</param>
         /// <param name="bufferSize">The buffer size, in bytes.</param>
         [ExcludeFromCodeCoverage]
-        public IntelHexStreamWriter(string path, bool append, Encoding encoding, int bufferSize) : base(path, append, encoding, bufferSize)
+        public IntelHexStreamWriter(string path, bool append, Encoding encoding, int bufferSize) 
+            : base(path, append, encoding, bufferSize)
         {
         }
 
@@ -162,7 +171,8 @@ namespace HexIO
 
             if (data.Count > MaxDataLength)
             {
-                throw new ArgumentOutOfRangeException(nameof(data), $"Must be less than [{MaxDataLength:X}]");
+                throw new ArgumentOutOfRangeException(nameof(data), 
+                    string.Format(Resources.DataMustBeLessThan, MaxDataLength));
             }
 
             WriteHexRecord(IntelHexRecordType.Data, offset, data);

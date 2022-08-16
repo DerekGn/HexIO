@@ -25,6 +25,7 @@
 using HexIO.Factories;
 using HexIO.IO;
 using HexIO.Matching;
+using HexIO.Properties;
 using HexIO.Transforms;
 using System;
 using System.Collections.Generic;
@@ -75,12 +76,12 @@ namespace HexIO
             
             if(transforms.Count == 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(transforms), "Must contain 1 or more transform");
+                throw new ArgumentOutOfRangeException(nameof(transforms), Resources.TransformsExpected);
             }
 
             if (!_fileSystem.Exists(inputFile))
             {
-                throw new FileNotFoundException("File not found", inputFile);
+                throw new FileNotFoundException(Resources.FileNotFound, inputFile);
             }
 
             string tempFileName = null;

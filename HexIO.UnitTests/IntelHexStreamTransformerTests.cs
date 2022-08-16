@@ -334,7 +334,7 @@ namespace HexIO.UnitTests
                 .Returns(false);
 
             // Act
-            Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>());
+            Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>() { new DeleteTransform(new IntelHexRecordMatch())});
 
             // Assert
             action.Should().Throw<FileNotFoundException>();

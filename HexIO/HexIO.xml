@@ -607,6 +607,97 @@
         <member name="M:HexIO.Matching.IntelHexRecordMatcher.IsMatch(HexIO.Matching.IntelHexRecordMatch,HexIO.IntelHexRecord)">
             <inheritdoc/>
         </member>
+        <member name="T:HexIO.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.DataMustBeLessThan">
+            <summary>
+              Looks up a localized string similar to Must be less than [{0:X}].
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.Eof">
+            <summary>
+              Looks up a localized string similar to The EOF record has been reached.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.FileNotFound">
+            <summary>
+              Looks up a localized string similar to File Not Found.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.IllegalStartCharacter">
+            <summary>
+              Looks up a localized string similar to Illegal line start character.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.InvalidChecksum">
+            <summary>
+              Looks up a localized string similar to Checksum incorrect. Expected [0x{0:X}] Actual: [0x{1:X}].
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.InvalidHexRecord">
+            <summary>
+              Looks up a localized string similar to An invalid Hex record has been read from the stream. Value: [{0}].
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.InvalidHexRecordLength">
+            <summary>
+              Looks up a localized string similar to Hex record line length [{0}] is less than {1}.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.InvalidLength">
+            <summary>
+              Looks up a localized string similar to Hex record bytes does not have required length of [0x{0:X4}].
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.InvalidRecordType">
+            <summary>
+              Looks up a localized string similar to Invalid record type value: [0x{0:X2}].
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.InvalidStartCharacter">
+            <summary>
+              Looks up a localized string similar to Illegal line start character [{0}].
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.MaximumDataSize">
+            <summary>
+              Looks up a localized string similar to Must be maximum of [0x{0:X}] bytes.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.MaximumRecordSize">
+            <summary>
+              Looks up a localized string similar to Must be maximum of [0x{0:X}] bytes.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.MinimumRecordSize">
+            <summary>
+              Looks up a localized string similar to Must be minimum of [0x{0:X}] bytes.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.StreamEmpty">
+            <summary>
+              Looks up a localized string similar to The stream is empty.
+            </summary>
+        </member>
+        <member name="P:HexIO.Properties.Resources.UnableToExtract">
+            <summary>
+              Looks up a localized string similar to Unable to extract bytes for [{0}].
+            </summary>
+        </member>
         <member name="T:HexIO.SegmentAddress">
             <summary>
             A segment address
