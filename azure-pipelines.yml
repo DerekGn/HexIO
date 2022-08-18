@@ -24,12 +24,12 @@ steps:
     inputs:
       command: 'test'
       projects: $(TestProject)
-      arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-  - task: PublishTestResults@2
-    displayName: "Publish Test Results"
-    inputs:
-      testRunner: VSTest
-      testResultsFiles: '**\*.trx'
+      arguments: '--configuration $(buildConfiguration) --CollectCoverage=true --CoverletOutputFormat=opencover'
+  # - task: PublishTestResults@2
+  #   displayName: "Publish Test Results"
+  #   inputs:
+  #     testRunner: VSTest
+  #     testResultsFiles: '**\*.trx'
   - task: DotNetCoreCLI@2
     displayName: "Pack Project"
     inputs:
