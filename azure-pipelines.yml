@@ -24,12 +24,11 @@ steps:
     inputs:
       command: 'test'
       projects: $(TestProject)
-      arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
-  # - task: PublishTestResults@2
-  #   displayName: "Publish Test Results"
-  #   inputs:
-  #     testRunner: VSTest
-  #     testResultsFiles: '**\*.trx'
+      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
   - task: DotNetCoreCLI@2
     displayName: "Pack Project"
     inputs:
