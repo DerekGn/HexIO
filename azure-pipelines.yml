@@ -24,7 +24,7 @@ steps:
     inputs:
       command: 'test'
       projects: $(TestProject)
-      arguments: '--configuration $(buildConfiguration) --CollectCoverage=true --CoverletOutputFormat=opencover'
+      arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
   # - task: PublishTestResults@2
   #   displayName: "Publish Test Results"
   #   inputs:
