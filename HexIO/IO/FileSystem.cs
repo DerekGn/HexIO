@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace HexIO.IO
@@ -29,6 +30,7 @@ namespace HexIO.IO
     /// <summary>
     /// An abstraction of the underlying file system
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class FileSystem : IFileSystem
     {
         /// <inheritdoc/>
