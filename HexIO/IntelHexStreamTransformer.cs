@@ -116,7 +116,7 @@ namespace HexIO
             });
 
             var transformedFileName = Path.Combine(path,
-                $"{Path.GetFileNameWithoutExtension(inputFile)}.transformed.{Path.GetExtension(inputFile)}");
+                $"{Path.GetFileNameWithoutExtension(inputFile)}.transformed{Path.GetExtension(inputFile)}");
 
             if(_fileSystem.Exists(transformedFileName))
             {
