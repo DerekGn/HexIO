@@ -84,7 +84,7 @@ namespace HexIO
                 throw new FileNotFoundException(Resources.FileNotFound, inputFile);
             }
 
-            string tempFileNameOld = null
+            string tempFileNameOld = null;
             string tempFileName = null;
             string sourceFileName = inputFile;
             string path = Path.GetDirectoryName(inputFile);
