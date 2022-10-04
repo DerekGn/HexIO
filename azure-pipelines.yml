@@ -4,7 +4,7 @@ variables:
 - name: TestProject
   value: '**/*UnitTests.csproj'
 
-name: v$(Major).$(Minor).$(Patch)
+name: v$(Major).$(Minor).$(Patch).$(Build)
 
 trigger:
 - master
