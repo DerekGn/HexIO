@@ -84,12 +84,18 @@ namespace HexIO
                 throw new FileNotFoundException(Resources.FileNotFound, inputFile);
             }
 
+            string tempFileNameOld = null
             string tempFileName = null;
             string sourceFileName = inputFile;
             string path = Path.GetDirectoryName(inputFile);
 
             transforms.ToList().ForEach(transform =>
             {
+                if (tempFileName != null)
+                {
+                    tempFileNameOld = tempFileName;
+                }
+
                 tempFileName = Path.Combine(path, Guid.NewGuid().ToString());
 
                 using (StreamWriter streamWriter = _fileSystem.CreateText(tempFileName))
@@ -112,10 +118,15 @@ namespace HexIO
                     }
                 }
 
+                if (tempFileNameOld != null)
+                {
+                    _fileSystem.Delete(tempFileNameOld);
+                }
+
                 sourceFileName = tempFileName;
             });
 
-            var transformedFileName = Path.Combine(path, $"{inputFile}.transformed");
+            var transformedFileName = Path.Combine(path, $"{Path.GetFileNameWithoutExtension(inputFile)}_transformed.hex");
 
             if(_fileSystem.Exists(transformedFileName))
             {
