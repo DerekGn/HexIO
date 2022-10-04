@@ -22,8 +22,10 @@
 * SOFTWARE.
 */
 
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 
 namespace HexIO.IO
 {
@@ -49,6 +51,12 @@ namespace HexIO.IO
         public bool Exists(string path)
         {
             return File.Exists(path);
+        }
+
+        /// <inheritdoc/>
+        public IList<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
+        {
+            return Directory.GetFiles(path, searchPattern, searchOption).ToList();
         }
 
         /// <inheritdoc/>

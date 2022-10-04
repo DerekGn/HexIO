@@ -40,6 +40,8 @@ namespace HexIO
     /// </summary>
     public class IntelHexStreamTransformer : IIntelHexStreamTransformer
     {
+        internal const string TempFileExtension = "transformed.tmp";
+
         private readonly IIntelHexStreamReaderFactory _intelHexStreamReaderFactory;
         private readonly IIntelHexRecordMatcher _intelHexRecordMatcher;
         private readonly IFileSystem _fileSystem;
@@ -64,6 +66,12 @@ namespace HexIO
         /// <inheritdoc/>
         public string ApplyTransforms(string inputFile, IList<Transform> transforms)
         {
+            return ApplyTransforms(inputFile, transforms, false);
+        }
+
+        /// <inheritdoc/>
+        public string ApplyTransforms(string inputFile, IList<Transform> transforms, bool deleteTransformedFiles)
+        {
             if (string.IsNullOrWhiteSpace(inputFile))
             {
                 throw new ArgumentOutOfRangeException(nameof(inputFile));
@@ -73,8 +81,8 @@ namespace HexIO
             {
                 throw new ArgumentNullException(nameof(transforms));
             }
-            
-            if(transforms.Count == 0)
+
+            if (transforms.Count == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(transforms), Resources.TransformsExpected);
             }
@@ -90,7 +98,7 @@ namespace HexIO
 
             transforms.ToList().ForEach(transform =>
             {
-                tempFileName = Path.Combine(path, Guid.NewGuid().ToString());
+                tempFileName = Path.Combine(path, $"{Guid.NewGuid()}.{TempFileExtension}");
 
                 using (StreamWriter streamWriter = _fileSystem.CreateText(tempFileName))
                 {
@@ -115,10 +123,16 @@ namespace HexIO
                 sourceFileName = tempFileName;
             });
 
+            if(deleteTransformedFiles)
+            {
+                _fileSystem.GetFiles(path, $"*.{TempFileExtension}", SearchOption.TopDirectoryOnly).ToList()
+                    .ForEach(_fileSystem.Delete);
+            }
+
             var transformedFileName = Path.Combine(path,
                 $"{Path.GetFileNameWithoutExtension(inputFile)}.transformed{Path.GetExtension(inputFile)}");
 
-            if(_fileSystem.Exists(transformedFileName))
+            if (_fileSystem.Exists(transformedFileName))
             {
                 _fileSystem.Delete(transformedFileName);
             }

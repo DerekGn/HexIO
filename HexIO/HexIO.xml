@@ -83,6 +83,16 @@
             <returns>The updated transformed file name</returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the </exception>
         </member>
+        <member name="M:HexIO.IIntelHexStreamTransformer.ApplyTransforms(System.String,System.Collections.Generic.IList{HexIO.Transforms.Transform},System.Boolean)">
+            <summary>
+            Apply a set of <see cref="T:HexIO.Transforms.Transform"/> to an Intel hex record file
+            </summary>
+            <param name="inputFile">The input Intel Hex record file</param>
+            <param name="transforms">The set of <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:HexIO.Transforms.Transform"/></param>
+            <param name="deleteTransformedFiles">Delete the intermediate transform files</param>
+            <returns>The updated transformed file name</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the </exception>
+        </member>
         <member name="T:HexIO.IIntelHexStreamWriter">
             <summary>
             Provides a mechanism to write Intel hex records to an underlying <see cref="T:System.IO.Stream"/>
@@ -392,6 +402,9 @@
         <member name="M:HexIO.IntelHexStreamTransformer.ApplyTransforms(System.String,System.Collections.Generic.IList{HexIO.Transforms.Transform})">
             <inheritdoc/>
         </member>
+        <member name="M:HexIO.IntelHexStreamTransformer.ApplyTransforms(System.String,System.Collections.Generic.IList{HexIO.Transforms.Transform},System.Boolean)">
+            <inheritdoc/>
+        </member>
         <member name="T:HexIO.IntelHexStreamWriter">
             <summary>
             An Intel Hex stream writer
@@ -511,6 +524,9 @@
         <member name="M:HexIO.IO.FileSystem.Exists(System.String)">
             <inheritdoc/>
         </member>
+        <member name="M:HexIO.IO.FileSystem.GetFiles(System.String,System.String,System.IO.SearchOption)">
+            <inheritdoc/>
+        </member>
         <member name="M:HexIO.IO.FileSystem.Move(System.String,System.String)">
             <inheritdoc/>
         </member>
@@ -519,12 +535,6 @@
             Provides a mechanism to interact with the file system
             </summary>
         </member>
-        <member name="M:HexIO.IO.IFileSystem.Delete(System.String)">
-            <summary>
-            Deletes the specified file.
-            </summary>
-            <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
-        </member>
         <member name="M:HexIO.IO.IFileSystem.CreateText(System.String)">
             <summary>
             Creates or opens a file for writing UTF-8 encoded text. If the file already exists,
@@ -532,6 +542,12 @@
             </summary>
             <param name="path">The file to be opened for writing.</param>
             <returns>A <see cref="T:System.IO.StreamWriter"/> that writes to the specified file using UTF-8 encoding.</returns>
+        </member>
+        <member name="M:HexIO.IO.IFileSystem.Delete(System.String)">
+            <summary>
+            Deletes the specified file.
+            </summary>
+            <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
         </member>
         <member name="M:HexIO.IO.IFileSystem.Exists(System.String)">
             <summary>
@@ -543,6 +559,23 @@
             null, an invalid path, or a zero-length string. If the caller does not have sufficient
             permissions to read the specified file, no exception is thrown and the method
             returns false regardless of the existence of path.</returns>
+        </member>
+        <member name="M:HexIO.IO.IFileSystem.GetFiles(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Returns the names of files (including their paths) that match the specified search 
+            pattern in the specified directory, using a value to determine whether to search
+            subdirectories.
+            </summary>
+            <param name="path">The relative or absolute path to the directory to search. This string is not
+            case-sensitive.</param>
+            <param name="searchPattern">The search string to match against the names of files in path. This parameter 
+            can contain a combination of valid literal path and wildcard (* and ?) characters,
+            but it doesn't support regular expressions.</param>
+            <param name="searchOption">One of the enumeration values that specifies whether the search operation should
+            include all subdirectories or only the current directory.</param>
+            <returns>An array of the full names (including paths) for the files in the specified directory 
+            that match the specified search pattern and option, or an empty array if no files 
+            are found.</returns>
         </member>
         <member name="M:HexIO.IO.IFileSystem.Move(System.String,System.String)">
             <summary>

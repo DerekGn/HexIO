@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 
+using System.Collections.Generic;
 using System.IO;
 
 namespace HexIO.IO
@@ -32,17 +33,18 @@ namespace HexIO.IO
     public interface IFileSystem
     {
         /// <summary>
-        /// Deletes the specified file.
-        /// </summary>
-        /// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
-        void Delete(string path);
-        /// <summary>
         /// Creates or opens a file for writing UTF-8 encoded text. If the file already exists,
         /// its contents are overwritten.
         /// </summary>
         /// <param name="path">The file to be opened for writing.</param>
         /// <returns>A <see cref="StreamWriter"/> that writes to the specified file using UTF-8 encoding.</returns>
         StreamWriter CreateText(string path);
+
+        /// <summary>
+        /// Deletes the specified file.
+        /// </summary>
+        /// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
+        void Delete(string path);
 
         /// <summary>
         /// Determines whether the specified file exists.
@@ -54,6 +56,23 @@ namespace HexIO.IO
         /// permissions to read the specified file, no exception is thrown and the method
         /// returns false regardless of the existence of path.</returns>
         bool Exists(string path);
+
+        /// <summary>
+        /// Returns the names of files (including their paths) that match the specified search 
+        /// pattern in the specified directory, using a value to determine whether to search
+        /// subdirectories.
+        /// </summary>
+        /// <param name="path">The relative or absolute path to the directory to search. This string is not
+        /// case-sensitive.</param>
+        /// <param name="searchPattern">The search string to match against the names of files in path. This parameter 
+        /// can contain a combination of valid literal path and wildcard (* and ?) characters,
+        /// but it doesn't support regular expressions.</param>
+        /// <param name="searchOption">One of the enumeration values that specifies whether the search operation should
+        /// include all subdirectories or only the current directory.</param>
+        /// <returns>An array of the full names (including paths) for the files in the specified directory 
+        /// that match the specified search pattern and option, or an empty array if no files 
+        /// are found.</returns>
+        IList<string> GetFiles(string path, string searchPattern, SearchOption searchOption);
 
         /// <summary>
         /// Moves a specified file to a new location, providing the option to specify a new file name.
