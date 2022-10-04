@@ -83,16 +83,6 @@
             <returns>The updated transformed file name</returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the </exception>
         </member>
-        <member name="M:HexIO.IIntelHexStreamTransformer.ApplyTransforms(System.String,System.Collections.Generic.IList{HexIO.Transforms.Transform},System.Boolean)">
-            <summary>
-            Apply a set of <see cref="T:HexIO.Transforms.Transform"/> to an Intel hex record file
-            </summary>
-            <param name="inputFile">The input Intel Hex record file</param>
-            <param name="transforms">The set of <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:HexIO.Transforms.Transform"/></param>
-            <param name="deleteTransformedFiles">Delete the intermediate transform files</param>
-            <returns>The updated transformed file name</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the </exception>
-        </member>
         <member name="T:HexIO.IIntelHexStreamWriter">
             <summary>
             Provides a mechanism to write Intel hex records to an underlying <see cref="T:System.IO.Stream"/>
@@ -400,9 +390,6 @@
             <param name="intelHexStreamReaderFactory"></param>
         </member>
         <member name="M:HexIO.IntelHexStreamTransformer.ApplyTransforms(System.String,System.Collections.Generic.IList{HexIO.Transforms.Transform})">
-            <inheritdoc/>
-        </member>
-        <member name="M:HexIO.IntelHexStreamTransformer.ApplyTransforms(System.String,System.Collections.Generic.IList{HexIO.Transforms.Transform},System.Boolean)">
             <inheritdoc/>
         </member>
         <member name="T:HexIO.IntelHexStreamWriter">

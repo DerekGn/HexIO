@@ -66,12 +66,6 @@ namespace HexIO
         /// <inheritdoc/>
         public string ApplyTransforms(string inputFile, IList<Transform> transforms)
         {
-            return ApplyTransforms(inputFile, transforms, false);
-        }
-
-        /// <inheritdoc/>
-        public string ApplyTransforms(string inputFile, IList<Transform> transforms, bool deleteTransformedFiles)
-        {
             if (string.IsNullOrWhiteSpace(inputFile))
             {
                 throw new ArgumentOutOfRangeException(nameof(inputFile));
@@ -122,12 +116,6 @@ namespace HexIO
 
                 sourceFileName = tempFileName;
             });
-
-            if(deleteTransformedFiles)
-            {
-                _fileSystem.GetFiles(path, $"*.{TempFileExtension}", SearchOption.TopDirectoryOnly).ToList()
-                    .ForEach(_fileSystem.Delete);
-            }
 
             var transformedFileName = Path.Combine(path,
                 $"{Path.GetFileNameWithoutExtension(inputFile)}.transformed{Path.GetExtension(inputFile)}");

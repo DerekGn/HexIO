@@ -59,63 +59,6 @@ namespace HexIO.UnitTests
         }
 
         [Fact]
-        public void TestApplyTransformCleanupTempFiles()
-        {
-            // Arrange
-            _mockFileStream
-                .Setup(_ => _.Exists(It.IsAny<string>()))
-                .Returns(true);
-
-            var memoryStream = new MemoryStream();
-
-            var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
-
-            _mockFileStream.Setup(_ => _.CreateText(It.IsAny<string>()))
-                .Returns(streamWriter);
-
-            _mockStreamReaderFactory.Setup(_ => _.Create(It.IsAny<string>()))
-                .Returns(_mockStreamReader.Object);
-
-            _mockStreamReader
-                .SetupSequence(_ => _.ReadHexRecord())
-                .Returns(new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>()))
-                .Returns(new IntelHexRecord(0, IntelHexRecordType.EndOfFile, new List<byte>()));
-
-            _mockRecordMatcher
-                .SetupSequence(_ => _.IsMatch(It.IsAny<IntelHexRecordMatch>(), It.IsAny<IntelHexRecord>()))
-                .Returns(true)
-                .Returns(false);
-
-            _mockStreamReader
-                .SetupSequence(_ => _.EndOfStream)
-                .Returns(false)
-                .Returns(true);
-            
-            var tempFileName = $"c:\\temp\\temp.{IntelHexStreamTransformer.TempFileExtension}";
-            
-            _mockFileStream
-                .Setup(_ => _.GetFiles(
-                    It.Is<string>(p => p == "c:\\temp"),
-                    It.Is<string>(s => s == $"*.{IntelHexStreamTransformer.TempFileExtension}"),
-                    It.Is<SearchOption>(o => o == SearchOption.TopDirectoryOnly)))
-                .Returns(new List<string>() { tempFileName });
-
-            // Act
-            _transformer
-                .ApplyTransforms("c:\\temp\\filename.hex", new List<Transform>()
-                {
-                    new DeleteTransform(
-                        new IntelHexRecordMatch()
-                        {
-                            RecordType = IntelHexRecordType.ExtendedLinearAddress
-                        })
-                }, true);
-
-            // Assert
-            _mockFileStream.Verify(_ => _.Delete(tempFileName));
-        }
-
-        [Fact]
         public void TestApplyDeleteTransform()
         {
             // Arrange

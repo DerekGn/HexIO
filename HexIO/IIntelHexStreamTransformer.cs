@@ -43,17 +43,5 @@ namespace HexIO
         string ApplyTransforms(
             string inputFile,
             IList<Transform> transforms);
-
-        /// <summary>
-        /// Apply a set of <see cref="Transform"/> to an Intel hex record file
-        /// </summary>
-        /// <param name="inputFile">The input Intel Hex record file</param>
-        /// <param name="transforms">The set of <see cref="IList{T}"/> of <see cref="Transform"/></param>
-        /// <param name="deleteTransformedFiles">Delete the intermediate transform files</param>
-        /// <returns>The updated transformed file name</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if the </exception>
-        string ApplyTransforms(
-            string inputFile,
-            IList<Transform> transforms, bool deleteTransformedFiles);
     }
 }
