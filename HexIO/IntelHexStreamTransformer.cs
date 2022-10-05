@@ -66,6 +66,12 @@ namespace HexIO
         /// <inheritdoc/>
         public string ApplyTransforms(string inputFile, IList<Transform> transforms)
         {
+            return ApplyTransforms(inputFile, transforms, true);    
+        }
+
+        /// <inheritdoc/>
+        public string ApplyTransforms(string inputFile, IList<Transform> transforms, bool deleteTempFiles)
+        {
             if (string.IsNullOrWhiteSpace(inputFile))
             {
                 throw new ArgumentOutOfRangeException(nameof(inputFile));
@@ -86,15 +92,21 @@ namespace HexIO
                 throw new FileNotFoundException(Resources.FileNotFound, inputFile);
             }
 
-            string tempFileName = null;
+            string tempFileCurrent = null;
+            string tempFilePrevious = null;
             string sourceFileName = inputFile;
             string path = Path.GetDirectoryName(inputFile);
 
             transforms.ToList().ForEach(transform =>
             {
-                tempFileName = Path.Combine(path, $"{Guid.NewGuid()}.{TempFileExtension}");
+                if (tempFileCurrent != null)
+                {
+                    tempFilePrevious = tempFileCurrent;
+                }
 
-                using (StreamWriter streamWriter = _fileSystem.CreateText(tempFileName))
+                tempFileCurrent = Path.Combine(path, $"{Guid.NewGuid()}.{TempFileExtension}");
+
+                using (StreamWriter streamWriter = _fileSystem.CreateText(tempFileCurrent))
                 {
                     using (IIntelHexStreamReader intelHexStreamReader = _intelHexStreamReaderFactory.Create(sourceFileName))
                     {
@@ -114,7 +126,12 @@ namespace HexIO
                     }
                 }
 
-                sourceFileName = tempFileName;
+                if (tempFilePrevious != null && deleteTempFiles)
+                {
+                    _fileSystem.Delete(tempFilePrevious);
+                }
+
+                sourceFileName = tempFileCurrent;
             });
 
             var transformedFileName = Path.Combine(path,
@@ -125,7 +142,7 @@ namespace HexIO
                 _fileSystem.Delete(transformedFileName);
             }
 
-            _fileSystem.Move(tempFileName, transformedFileName);
+            _fileSystem.Move(tempFileCurrent, transformedFileName);
 
             return transformedFileName;
         }

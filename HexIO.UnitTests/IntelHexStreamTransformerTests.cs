@@ -234,7 +234,7 @@ namespace HexIO.UnitTests
 
             _mockStreamReader
                 .SetupSequence(_ => _.ReadHexRecord())
-                .Returns(new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>() { 0xBE, 0xEF}))
+                .Returns(new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>() { 0xBE, 0xEF }))
                 .Returns(new IntelHexRecord(0, IntelHexRecordType.EndOfFile, new List<byte>()));
 
             _mockRecordMatcher
@@ -326,6 +326,56 @@ namespace HexIO.UnitTests
         }
 
         [Fact]
+        public void TestDeleteTempFiles()
+        {
+            _mockFileStream
+                .Setup(_ => _.Exists(It.IsAny<string>()))
+                .Returns(true);
+
+            var memoryStream = new MemoryStream();
+
+            var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true);
+
+            _mockFileStream.Setup(_ => _.CreateText(It.IsAny<string>()))
+                .Returns(streamWriter);
+
+            _mockStreamReaderFactory.Setup(_ => _.Create(It.IsAny<string>()))
+                .Returns(_mockStreamReader.Object);
+
+            _mockStreamReader
+                .SetupSequence(_ => _.ReadHexRecord())
+                .Returns(new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>()))
+                .Returns(new IntelHexRecord(0, IntelHexRecordType.EndOfFile, new List<byte>()));
+
+            _mockRecordMatcher
+                .SetupSequence(_ => _.IsMatch(It.IsAny<IntelHexRecordMatch>(), It.IsAny<IntelHexRecord>()))
+                .Returns(true)
+                .Returns(false);
+
+            _mockStreamReader
+                .SetupSequence(_ => _.EndOfStream)
+                .Returns(false)
+                .Returns(true);
+
+            // Act
+            _transformer
+                .ApplyTransforms("c:\\temp\\filename.hex", new List<Transform>()
+                {
+                    new ModificationTransform(
+                        new IntelHexRecordMatch()
+                        {
+                            RecordType = IntelHexRecordType.ExtendedLinearAddress
+                        },
+                        0xAA55,
+                        IntelHexRecordType.StartLinearAddress,
+                        new List<byte>() { 0xFE, 0xED })
+                });
+
+            // Assert
+            _mockFileStream.Verify(_ => _.Delete(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
         public void TestFileNotFound()
         {
             // Arrange
@@ -334,7 +384,7 @@ namespace HexIO.UnitTests
                 .Returns(false);
 
             // Act
-            Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>() { new DeleteTransform(new IntelHexRecordMatch())});
+            Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>() { new DeleteTransform(new IntelHexRecordMatch()) });
 
             // Assert
             action.Should().Throw<FileNotFoundException>();
@@ -362,6 +412,18 @@ namespace HexIO.UnitTests
 
             // Assert
             action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("transforms");
+        }
+
+        [Fact]
+        public void TestInvalidTransformsEmpty()
+        {
+            // Arrange
+
+            // Act
+            Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>());
+
+            // Assert
+            action.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("transforms");
         }
     }
 }
