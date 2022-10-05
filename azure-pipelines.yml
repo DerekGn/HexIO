@@ -4,7 +4,7 @@ variables:
 - name: TestProject
   value: '**/*UnitTests.csproj'
 
-name: v$(Major).$(Minor).$(Patch).$(Build)
+name: $(Major).$(Minor).$(Patch).$(Build)
 
 trigger:
 - master
@@ -29,13 +29,20 @@ steps:
     inputs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
+# Workaraound for the pack command not accepting arguments
+# https://github.com/microsoft/azure-pipelines-tasks/issues/11640
   - task: DotNetCoreCLI@2
-    displayName: "Pack Project"
+    displayName: Pack
     inputs:
-      command: 'pack'
-      packagesToPack: '**/*.csproj'
-      versioningScheme: byEnvVar
-      versionEnvVar: PackageVersion
+      command: custom
+      custom: pack
+      arguments: >
+        HexIO.sln
+        --output $(Build.ArtifactStagingDirectory)
+        -p:PackageVersion=$(PackageVersion)
+        -p:Configuration=$(BuildConfiguration)
+        -p:Version=$(PackageVersion)
+        -p:AssemblyVersion=$(Build.BuildNumber)
   - task: GitHubRelease@1
     displayName: "Publish Relase To GitHub"
     inputs:
@@ -44,7 +51,7 @@ steps:
       action: 'create'
       target: '$(Build.SourceVersion)'
       tagSource: 'userSpecifiedTag'
-      tag: '$(Build.BuildNumber)'
-      title: '$(Build.BuildNumber) - $(BuildConfiguration) - $(Build.SourceBranchName)'
+      tag: 'v$(Build.BuildNumber)'
+      title: 'v$(Build.BuildNumber) - $(BuildConfiguration) - $(Build.SourceBranchName)'
       changeLogCompareToRelease: 'lastFullRelease'
       changeLogType: 'commitBased'
