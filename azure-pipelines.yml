@@ -25,7 +25,7 @@ steps:
       command: 'test'
       projects: $(TestProject)
       arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --framework:netcoreapp3.1'
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     inputs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
