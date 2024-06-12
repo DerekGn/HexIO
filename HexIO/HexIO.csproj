@@ -42,8 +42,8 @@
 
 			v3.0.0
 			Implemented System.IO.Stream based intel hex file readers and writers
-
-			v3.0.4
+			
+			v3.0.5
 			Added cleanup of generated temp files behavior.
 			Added maintaining of input file name extension.
 
