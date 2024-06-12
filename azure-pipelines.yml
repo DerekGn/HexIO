@@ -24,7 +24,7 @@ steps:
     inputs:
       command: 'test'
       projects: $(TestProject)
-      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --framework:netcoreapp3.1'
+      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --framework:net7.0'
   - task: PublishCodeCoverageResults@2
     inputs:
       codeCoverageTool: 'Cobertura'
