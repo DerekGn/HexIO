@@ -26,15 +26,18 @@ using System;
 
 namespace HexIO.Exceptions
 {
-
     [Serializable]
     public class IntelHexStreamException : Exception
     {
-        public IntelHexStreamException() { }
-        public IntelHexStreamException(string message) : base(message) { }
-        public IntelHexStreamException(string message, Exception inner) : base(message, inner) { }
-        protected IntelHexStreamException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        public IntelHexStreamException()
+        { }
+
+        public IntelHexStreamException(string message) : base(message)
+        {
+        }
+
+        public IntelHexStreamException(string message, Exception inner) : base(message, inner)
+        {
+        }
     }
 }
