@@ -27,6 +27,6 @@ jobs:
         uses: softprops/action-gh-release@v2.0.8
         with:
           files: |
-            /home/runner/work/HexIO/HexIO/bin/Release/HexIO.4.0.0.nupkg
+            /home/runner/work/HexIO/HexIO/HexIO/bin/Release/HexIO*.nupkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
