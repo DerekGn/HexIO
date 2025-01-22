@@ -42,9 +42,9 @@ namespace HexIO
     {
         internal const string TempFileExtension = "transformed.tmp";
 
-        private readonly IIntelHexStreamReaderFactory _intelHexStreamReaderFactory;
-        private readonly IIntelHexRecordMatcher _intelHexRecordMatcher;
         private readonly IFileSystem _fileSystem;
+        private readonly IIntelHexRecordMatcher _intelHexRecordMatcher;
+        private readonly IIntelHexStreamReaderFactory _intelHexStreamReaderFactory;
 
         /// <summary>
         /// Cerate an instance of a <see cref="IntelHexStreamTransformer"/>
@@ -66,7 +66,7 @@ namespace HexIO
         /// <inheritdoc/>
         public string ApplyTransforms(string inputFile, IList<Transform> transforms)
         {
-            return ApplyTransforms(inputFile, transforms, true);    
+            return ApplyTransforms(inputFile, transforms, true);
         }
 
         /// <inheritdoc/>
@@ -77,10 +77,7 @@ namespace HexIO
                 throw new ArgumentOutOfRangeException(nameof(inputFile));
             }
 
-            if (transforms is null)
-            {
-                throw new ArgumentNullException(nameof(transforms));
-            }
+            ArgumentNullException.ThrowIfNull(transforms);
 
             if (transforms.Count == 0)
             {
@@ -92,10 +89,10 @@ namespace HexIO
                 throw new FileNotFoundException(Resources.FileNotFound, inputFile);
             }
 
-            string tempFileCurrent = null;
-            string tempFilePrevious = null;
+            string? tempFileCurrent = null;
+            string? tempFilePrevious = null;
             string sourceFileName = inputFile;
-            string path = Path.GetDirectoryName(inputFile);
+            string? path = Path.GetDirectoryName(inputFile);
 
             transforms.ToList().ForEach(transform =>
             {
@@ -104,7 +101,7 @@ namespace HexIO
                     tempFilePrevious = tempFileCurrent;
                 }
 
-                tempFileCurrent = Path.Combine(path, $"{Guid.NewGuid()}.{TempFileExtension}");
+                tempFileCurrent = Path.Combine(path!, $"{Guid.NewGuid()}.{TempFileExtension}");
 
                 using (StreamWriter streamWriter = _fileSystem.CreateText(tempFileCurrent))
                 {
@@ -134,7 +131,7 @@ namespace HexIO
                 sourceFileName = tempFileCurrent;
             });
 
-            var transformedFileName = Path.Combine(path,
+            var transformedFileName = Path.Combine(path!,
                 $"{Path.GetFileNameWithoutExtension(inputFile)}.transformed{Path.GetExtension(inputFile)}");
 
             if (_fileSystem.Exists(transformedFileName))
@@ -142,12 +139,12 @@ namespace HexIO
                 _fileSystem.Delete(transformedFileName);
             }
 
-            _fileSystem.Move(tempFileCurrent, transformedFileName);
+            _fileSystem.Move(tempFileCurrent!, transformedFileName);
 
             return transformedFileName;
         }
 
-        private void ApplyTransform(
+        private static void ApplyTransform(
             Transform transform,
             StreamWriter streamWriter,
             IntelHexRecord intelHexRecord)

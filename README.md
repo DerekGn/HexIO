@@ -1,8 +1,8 @@
+![GitHub Actions](https://github.com/DerekGn/HexIO/actions/workflows/build.yml/badge.svg)
+
+[![NuGet](https://img.shields.io/nuget/v/HexIO.svg?style=flat-square)](https://www.nuget.org/packages/HexIO/)
+
 # HexIO
-
-[![Build Status](https://dev.azure.com/DerekGn/GitHub/_apis/build/status/DerekGn.HexIO?branchName=master)](https://dev.azure.com/DerekGn/GitHub/_build/latest?definitionId=5&branchName=master)
-
-[![NuGet Badge](https://buildstats.info/nuget/HexIO)](https://www.nuget.org/packages/HexIO/)
 
 A library for reading and writing hex format streams. Initial release supports intel hex formatted streams.
 
@@ -12,6 +12,12 @@ Install the HexIO package via nuget package manager console:
 
 ```
 Install-Package HexIO
+```
+
+Or from the dot net command line console
+
+```cmd
+dotnet add package HEXIO
 ```
 
 ## Whats new in Version 3.0
@@ -24,8 +30,7 @@ An additional class, the IntelHexStreamTransformer, has also been implemented to
 
 The HexIO package is compatible with the following runtimes:
 
-* .NET Standard 2.0
-* .NET Framework 4.8
+* .NET Core 8
 
 ## Using the IntelHexStreamReader
 

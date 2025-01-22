@@ -26,18 +26,30 @@ using System;
 
 namespace HexIO.Exceptions
 {
-    [Serializable]
+    /// <summary>
+    /// Represents an error that occurred during the processing of a hex stream
+    /// </summary>
     public class IntelHexStreamException : Exception
     {
+        /// <summary>
+        /// Create <see cref="IntelHexStreamException"/>
+        /// </summary>
         public IntelHexStreamException()
         { }
 
+        /// <summary>
+        /// Create <see cref="IntelHexStreamException"/>
+        /// </summary>
+        /// <param name="message">The error message</param>
         public IntelHexStreamException(string message) : base(message)
-        {
-        }
+        { }
 
+        /// <summary>
+        /// Create <see cref="IntelHexStreamException"/>
+        /// </summary>
+        /// <param name="message">The error message</param>
+        /// <param name="inner">The inner <see cref="Exception"/></param>
         public IntelHexStreamException(string message, Exception inner) : base(message, inner)
-        {
-        }
+        { }
     }
 }

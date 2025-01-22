@@ -33,7 +33,7 @@ namespace HexIO.Matching
     {
         private int? _recordLength;
         private IntelHexRecordType? _recordType;
-        private IList<byte> _data;
+        private IList<byte>? _data;
         private ushort? _offset;
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace HexIO.Matching
         /// <summary>
         /// The data to match
         /// </summary>
-        public IList<byte> Data
+        public IList<byte>? Data
         {
             get => _data;
             set

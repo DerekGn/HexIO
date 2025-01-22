@@ -239,7 +239,7 @@ namespace HexIO
             return hexRecord;
         }
 
-        private static void AssertValidHexLine(string hexLine)
+        private static void AssertValidHexLine(string? hexLine)
         {
             if (String.IsNullOrWhiteSpace(hexLine))
             {
@@ -251,19 +251,19 @@ namespace HexIO
                 throw new IntelHexStreamException(string.Format(Resources.InvalidHexRecordLength, hexLine, 11));
             }
 
-            if (!hexLine.StartsWith(":"))
+            if (!hexLine.StartsWith(':'))
             {
                 throw new IntelHexStreamException(string.Format(Resources.InvalidStartCharacter, hexLine));
             }
         }
 
-        private static List<byte> TryParseData(string hexData)
+        private static List<byte> TryParseData(string? hexData)
         {
             try
             {
                 var data = new List<byte>
                 {
-                    (byte)hexData[0]
+                    (byte)hexData![0]
                 };
 
                 for (var i = 1; i < hexData.Length; i++)
