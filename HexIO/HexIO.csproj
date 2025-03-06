@@ -25,7 +25,7 @@
 			Implemented System.IO.Stream based intel hex file readers and writers
 
 			v3.0.5
-			Added cleanup of generated temp files behavior.
+			Added clean-up of generated temp files behaviour.
 			Added maintaining of input file name extension.
 
 			v4.0.0
@@ -33,6 +33,9 @@
 			
 			v5.0.0
 			Removed .net 4.8 runtime
+			
+			v5.0.1
+			Updated dependencies
 		</PackageReleaseNotes>
 		<Company>Derek Goslin</Company>
 		<Authors>Derek Goslin</Authors>

@@ -35,15 +35,9 @@ namespace HexIO.Matching
         /// <inheritdoc/>
         public bool IsMatch(IntelHexRecordMatch match, IntelHexRecord record)
         {
-            if (match is null)
-            {
-                throw new ArgumentNullException(nameof(match));
-            }
+            ArgumentNullException.ThrowIfNull(match);
 
-            if (record is null)
-            {
-                throw new ArgumentNullException(nameof(record));
-            }
+            ArgumentNullException.ThrowIfNull(record);
 
             IntelHexRecordMatchResult result = default;
 

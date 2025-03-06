@@ -22,7 +22,6 @@
 * SOFTWARE.
 */
 
-using FluentAssertions;
 using System;
 using System.IO;
 using System.Linq;
@@ -45,7 +44,7 @@ namespace HexIO.UnitTests
             Action action = () => intelHexStreamWriter.WriteDataRecord(0, new byte[258].ToList());
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            Assert.Throws<ArgumentOutOfRangeException>(action);
         }
 
         [Fact]
@@ -58,7 +57,8 @@ namespace HexIO.UnitTests
             Action action = () => intelHexStreamWriter.WriteDataRecord(0, new byte[258].ToList());
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("data");
+            ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(action);
+            Assert.Equal("data", exception.ParamName);
         }
 
         [Fact]
@@ -75,11 +75,10 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":1055AA0000000000000000000000000000000000F1");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":1055AA0000000000000000000000000000000000F1", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -98,11 +97,10 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":020000021000EC");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":020000021000EC", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -121,11 +119,10 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":0400000310002000C9");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":0400000310002000C9", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -143,11 +140,10 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":020000045000AA");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":020000045000AA", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -166,11 +162,10 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":040000051000FFFFE9");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":040000051000FFFFE9", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
     }
 }

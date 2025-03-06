@@ -22,7 +22,6 @@
 * SOFTWARE.
 */
 
-using FluentAssertions;
 using HexIO.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -38,14 +37,15 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(new List<byte>()
+            // action
+            Action action = () => new IntelHexRecord(new List<byte>()
             {
                 (byte)':',0xFF,0,0,0,0
             });
 
             // Assert
-            act.Should().Throw<IntelHexStreamException>().WithMessage("Hex record bytes does not have required length of [0x0105]");
+            IntelHexStreamException exception = Assert.Throws<IntelHexStreamException>(action);
+            Assert.Equal("Hex record bytes does not have required length of [0x0105]", exception.Message);
         }
 
         [Fact]
@@ -53,11 +53,12 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(new byte[0x200].ToList());
+            // action
+            Action action = () => new IntelHexRecord(new byte[0x200].ToList());
 
             // Assert
-            act.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("hexRecordBytes");
+            ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(action);
+            Assert.Equal("hexRecordBytes", exception.ParamName);
         }
 
         [Fact]
@@ -65,14 +66,15 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(new List<byte>()
+            // action
+            Action action = () => new IntelHexRecord(new List<byte>()
             {
                 (byte)':',0x10,0x01,0x00,0x00,0x21,0x46,0x01,0x36,0x01,0x21,0x47,0x01,0x36,0x00,0x7E,0xFE,0x09,0xD2,0x19,0x01,0x55
             });
 
             // Assert
-            act.Should().Throw<IntelHexStreamException>().WithMessage("Checksum incorrect. Expected [0x55] Actual: [0x40]");
+            IntelHexStreamException exception = Assert.Throws<IntelHexStreamException>(action);
+            Assert.Equal("Checksum incorrect. Expected [0x55] Actual: [0x40]", exception.Message);
         }
 
         [Fact]
@@ -80,14 +82,15 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(new List<byte>()
+            // action
+            Action action = () => new IntelHexRecord(new List<byte>()
             {
                 (byte)':', 0x01, 0xFF, 0xFF, 0x06, 0xFF, 0xEF
             });
 
             // Assert
-            act.Should().Throw<IntelHexStreamException>().WithMessage("Invalid record type value: [0x06]");
+            IntelHexStreamException exception = Assert.Throws<IntelHexStreamException>(action);
+            Assert.Equal("Invalid record type value: [0x06]", exception.Message);
         }
 
         [Fact]
@@ -95,14 +98,15 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(new List<byte>()
+            // action
+            Action action = () => new IntelHexRecord(new List<byte>()
             {
                 0,0,0,0,0,0
             });
 
             // Assert
-            act.Should().Throw<IntelHexStreamException>().WithMessage("Illegal line start character");
+            IntelHexStreamException exception = Assert.Throws<IntelHexStreamException>(action);
+            Assert.Equal("Illegal line start character", exception.Message);
         }
 
         [Fact]
@@ -110,11 +114,12 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
+            // action
             Action action = () => new IntelHexRecord(null);
 
             // Assert
-            action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("hexRecordBytes");
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(action);
+            Assert.Equal("hexRecordBytes", exception.ParamName);
         }
 
         [Fact]
@@ -122,11 +127,12 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(0, IntelHexRecordType.Data, null);
+            // action
+            Action action = () => new IntelHexRecord(0, IntelHexRecordType.Data, null);
 
             // Assert
-            act.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("data");
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(action);
+            Assert.Equal("data", exception.ParamName);
         }
 
         [Fact]
@@ -134,11 +140,12 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(0, IntelHexRecordType.Data, new byte[0x200].ToList());
+            // action
+            Action action = () => new IntelHexRecord(0, IntelHexRecordType.Data, new byte[0x200].ToList());
 
             // Assert
-            act.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("data");
+            ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(action);
+            Assert.Equal("data", exception.ParamName);
         }
 
         [Fact]
@@ -146,14 +153,14 @@ namespace HexIO.UnitTests
         {
             // Arrange
 
-            // Act
-            Action act = () => new IntelHexRecord(new List<byte>()
+            // action
+            Action action = () => new IntelHexRecord(new List<byte>()
             {
                 0
             });
 
             // Assert
-            act.Should().Throw<ArgumentOutOfRangeException>();
+            Assert.Throws<ArgumentOutOfRangeException>(action);
         }
 
         [Fact]
@@ -165,16 +172,16 @@ namespace HexIO.UnitTests
                 (byte)':',0x10,0x01,0x00,0x00,0x21,0x46,0x01,0x36,0x01,0x21,0x47,0x01,0x36,0x00,0x7E,0xFE,0x09,0xD2,0x19,0x01,0x40
             };
 
-            // Act
+            // action
             var hexRecord = new IntelHexRecord(payload);
 
             // Assert
-            hexRecord.Bytes.Should().Equal(payload);
-            hexRecord.CheckSum.Should().Be(0x40);
-            hexRecord.Data.Should().Equal(new List<byte>() { 0x21, 0x46, 0x01, 0x36, 0x01, 0x21, 0x47, 0x01, 0x36, 0x00, 0x7E, 0xFE, 0x09, 0xD2, 0x19, 0x01 });
-            hexRecord.Offset.Should().Be(0x0100);
-            hexRecord.RecordLength.Should().Be(0x10);
-            hexRecord.RecordType.Should().Be(IntelHexRecordType.Data);
+            Assert.Equal(payload, hexRecord.Bytes);
+            Assert.Equal(0x40, hexRecord.CheckSum);
+            Assert.Equal(new List<byte>() { 0x21, 0x46, 0x01, 0x36, 0x01, 0x21, 0x47, 0x01, 0x36, 0x00, 0x7E, 0xFE, 0x09, 0xD2, 0x19, 0x01 }, hexRecord.Data);
+            Assert.Equal(0x100, hexRecord.Offset);
+            Assert.Equal(0x10, hexRecord.RecordLength);
+            Assert.Equal(IntelHexRecordType.Data, hexRecord.RecordType);
         }
     }
 }

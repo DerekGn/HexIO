@@ -22,14 +22,15 @@
 * SOFTWARE.
 */
 
-using FluentAssertions;
 using HexIO;
+using HexIO.Exceptions;
 using HexIO.Matching;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using static System.Collections.Specialized.BitVector32;
 
-namespace HexIOTests.Matching
+namespace HexIO.UnitTests.Matching
 {
     public class IntelHexRecordMatcherTests
     {
@@ -47,11 +48,12 @@ namespace HexIOTests.Matching
 
             var hexRecord = new IntelHexRecord(0, IntelHexRecordType.Data, new List<byte>());
 
-            // Act
-            Action act = () => _matcher.IsMatch(null, hexRecord);
+            // action
+            Action action = () => _matcher.IsMatch(null, hexRecord);
 
             // Assert
-            act.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("match");
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(action);
+            Assert.Equal("match", exception.ParamName);
         }
 
         [Fact]
@@ -59,11 +61,12 @@ namespace HexIOTests.Matching
         {
             // Arrange
 
-            // Act
-            Action act = () => _matcher.IsMatch(new IntelHexRecordMatch(), null);
+            // action
+            Action action = () => _matcher.IsMatch(new IntelHexRecordMatch(), null);
 
             // Assert
-            act.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("record");
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(action);
+            Assert.Equal("record", exception.ParamName);
         }
 
         [Fact]
@@ -77,11 +80,11 @@ namespace HexIOTests.Matching
 
             var hexRecord = new IntelHexRecord(0, IntelHexRecordType.Data, new List<byte>());
 
-            // Act
+            // action
             var result = _matcher.IsMatch(match, hexRecord);
 
             // Assert
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
         [Fact]
@@ -95,11 +98,11 @@ namespace HexIOTests.Matching
 
             var hexRecord = new IntelHexRecord(0, IntelHexRecordType.Data, new List<byte>());
 
-            // Act
+            // action
             var result = _matcher.IsMatch(match, hexRecord);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.True(result);
         }
 
         [Fact]
@@ -113,11 +116,11 @@ namespace HexIOTests.Matching
 
             var hexRecord = new IntelHexRecord(0, IntelHexRecordType.ExtendedLinearAddress, new List<byte>());
 
-            // Act
+            // action
             var result = _matcher.IsMatch(match, hexRecord);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.True(result);
         }
 
         [Fact]
@@ -131,11 +134,11 @@ namespace HexIOTests.Matching
 
             var hexRecord = new IntelHexRecord(0x1000, IntelHexRecordType.ExtendedLinearAddress, new List<byte>());
 
-            // Act
+            // action
             var result = _matcher.IsMatch(match, hexRecord);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.True(result);
         }
 
         [Fact]
@@ -149,11 +152,11 @@ namespace HexIOTests.Matching
 
             var hexRecord = new IntelHexRecord(0x1000, IntelHexRecordType.ExtendedLinearAddress, new List<byte>() { 0x30, 0xFF });
 
-            // Act
+            // action
             var result = _matcher.IsMatch(match, hexRecord);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.True(result);
         }
     }
 }
