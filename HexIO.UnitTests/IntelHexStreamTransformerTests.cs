@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 
-using FluentAssertions;
+using HexIO.Exceptions;
 using HexIO.Factories;
 using HexIO.IO;
 using HexIO.Matching;
@@ -105,10 +105,8 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -156,12 +154,11 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":00000004FC");
-                sr.ReadLine().Should().Be(":02100005DEAD5E");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":00000004FC", sr.ReadLine());
+            Assert.Equal(":02100005DEAD5E", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -207,11 +204,10 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":00100005EB");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":00100005EB", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -259,13 +255,12 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":02100005DEAD5E");
-                sr.ReadLine().Should().Be(":02000004BEEF4D");
-                sr.ReadLine().Should().Be(":02100005DEAD5E");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":02100005DEAD5E", sr.ReadLine());
+            Assert.Equal(":02000004BEEF4D", sr.ReadLine());
+            Assert.Equal(":02100005DEAD5E", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -318,11 +313,10 @@ namespace HexIO.UnitTests
             // Assert
             memoryStream.Position = 0;
 
-            using (var sr = new StreamReader(memoryStream))
-            {
-                sr.ReadLine().Should().Be(":02AA5505FEED0F");
-                sr.ReadLine().Should().Be(EofRecord);
-            }
+            using var sr = new StreamReader(memoryStream);
+
+            Assert.Equal(":02AA5505FEED0F", sr.ReadLine());
+            Assert.Equal(EofRecord, sr.ReadLine());
         }
 
         [Fact]
@@ -387,7 +381,7 @@ namespace HexIO.UnitTests
             Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>() { new DeleteTransform(new IntelHexRecordMatch()) });
 
             // Assert
-            action.Should().Throw<FileNotFoundException>();
+            Assert.Throws<FileNotFoundException>(action);
         }
 
         [Fact]
@@ -399,7 +393,8 @@ namespace HexIO.UnitTests
             Action action = () => _transformer.ApplyTransforms(null, null);
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("inputFile");
+            ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(action);
+            Assert.Equal("inputFile", exception.ParamName);
         }
 
         [Fact]
@@ -411,7 +406,8 @@ namespace HexIO.UnitTests
             Action action = () => _transformer.ApplyTransforms("filename", null);
 
             // Assert
-            action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("transforms");
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(action);
+            Assert.Equal("transforms", exception.ParamName);
         }
 
         [Fact]
@@ -423,7 +419,9 @@ namespace HexIO.UnitTests
             Action action = () => _transformer.ApplyTransforms("filename", new List<Transform>());
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>().And.ParamName.Should().Be("transforms");
+            ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(action);
+            Assert.Equal("transforms", exception.ParamName);
+
         }
     }
 }

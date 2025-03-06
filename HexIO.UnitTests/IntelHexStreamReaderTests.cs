@@ -22,7 +22,6 @@
 * SOFTWARE.
 */
 
-using FluentAssertions;
 using HexIO.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -44,7 +43,8 @@ namespace HexIO.UnitTests
             Action action = () => { intelHexStreamReader.ReadHexRecord(); };
 
             // Assert
-            action.Should().Throw<IntelHexStreamException>().And.Message.Should().Be("The stream is empty");
+            IntelHexStreamException exception = Assert.Throws<IntelHexStreamException>(action);
+            Assert.Equal("The stream is empty", exception.Message);
         }
 
         [Fact]
@@ -58,7 +58,8 @@ namespace HexIO.UnitTests
             Action action = () => { intelHexStreamReader.ReadHexRecord(); };
 
             // Assert
-            action.Should().Throw<IntelHexStreamException>().And.Message.Should().Be("An invalid Hex record has been read from the stream. Value: [ 	]");
+            IntelHexStreamException exception = Assert.Throws<IntelHexStreamException>(action);
+            Assert.Equal("An invalid Hex record has been read from the stream. Value: [ \t]", exception.Message);
         }
 
         [Fact]
@@ -72,7 +73,8 @@ namespace HexIO.UnitTests
             Action action = () => { intelHexStreamReader.ReadHexRecord(); };
 
             // Assert
-            action.Should().Throw<IntelHexStreamException>().And.Message.Should().Be("Hex record line length [AAA] is less than 11");
+            IntelHexStreamException exception = Assert.Throws<IntelHexStreamException>(action);
+            Assert.Equal("Hex record line length [AAA] is less than 11", exception.Message);
         }
 
         [Fact]
@@ -97,9 +99,9 @@ namespace HexIO.UnitTests
             }
 
             // Assert
-            hexRecords.Count.Should().Be(5);
-            hexRecords.First().RecordType.Should().Be(IntelHexRecordType.Data);
-            hexRecords.Last().RecordType.Should().Be(IntelHexRecordType.EndOfFile);
+            Assert.Equal(5, hexRecords.Count);
+            Assert.Equal(IntelHexRecordType.Data, hexRecords.First().RecordType);
+            Assert.Equal(IntelHexRecordType.EndOfFile, hexRecords.Last().RecordType);
         }
 
         [Fact]
@@ -121,8 +123,8 @@ namespace HexIO.UnitTests
             } while (!intelHexStreamReader.State.Eof);
 
             // Assert
-            hexRecords.Count.Should().Be(2);
-            intelHexStreamReader.State.UpperSegmentBaseAddress.Should().Be(0x3000);
+            Assert.Equal(2, hexRecords.Count);
+            Assert.Equal(0x3000, intelHexStreamReader.State.UpperSegmentBaseAddress);
         }
 
         [Fact]
@@ -144,9 +146,9 @@ namespace HexIO.UnitTests
             } while (!intelHexStreamReader.State.Eof);
 
             // Assert
-            hexRecords.Count.Should().Be(2);
-            intelHexStreamReader.State.SegmentAddress.CodeSegment.Should().Be(0xBEEF);
-            intelHexStreamReader.State.SegmentAddress.InstructionPointer.Should().Be(0xFEED);
+            Assert.Equal(2, hexRecords.Count);
+            Assert.Equal(0xBEEF, intelHexStreamReader.State.SegmentAddress.CodeSegment);
+            Assert.Equal(0xFEED, intelHexStreamReader.State.SegmentAddress.InstructionPointer);
         }
 
         [Fact]
@@ -168,8 +170,8 @@ namespace HexIO.UnitTests
             } while (!intelHexStreamReader.State.Eof);
 
             // Assert
-            hexRecords.Count.Should().Be(2);
-            intelHexStreamReader.State.UpperLinearBaseAddress.Should().Be(0x5000);
+            Assert.Equal(2, hexRecords.Count);
+            Assert.Equal(0x5000, intelHexStreamReader.State.UpperLinearBaseAddress);
         }
 
         [Fact]
@@ -191,8 +193,8 @@ namespace HexIO.UnitTests
             } while (!intelHexStreamReader.State.Eof);
 
             // Assert
-            hexRecords.Count.Should().Be(2);
-            intelHexStreamReader.State.ExtendedInstructionPointer.Should().Be(0xBEEFFEED);
+            Assert.Equal(2, hexRecords.Count);
+            Assert.Equal(0xBEEFFEED, intelHexStreamReader.State.ExtendedInstructionPointer);
         }
     }
 }

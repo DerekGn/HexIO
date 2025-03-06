@@ -52,10 +52,7 @@ namespace HexIO
         /// <param name="hexRecordBytes"></param>
         public IntelHexRecord(IList<byte> hexRecordBytes)
         {
-            if (hexRecordBytes == null)
-            {
-                throw new ArgumentNullException(nameof(hexRecordBytes));
-            }
+            ArgumentNullException.ThrowIfNull(hexRecordBytes);
 
             if (hexRecordBytes.Count > MaximumRecordSize)
             {
@@ -114,10 +111,7 @@ namespace HexIO
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="data"/> length is greater than <see cref="MaximumDataSize"/></exception>
         public IntelHexRecord(ushort offset, IntelHexRecordType recordType, IList<byte> data)
         {
-            if (data is null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
+            ArgumentNullException.ThrowIfNull(data);
 
             if (data.Count > MaximumDataSize)
             {
