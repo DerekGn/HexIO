@@ -42,8 +42,8 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>Copyright © Derek Goslin 2022</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryUrl>https://github.com/DerekGn/MCP2221IO</RepositoryUrl>
-		<PackageProjectUrl>https://github.com/DerekGn/MCP2221IO</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DerekGn/HexIO</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/DerekGn/HexIO</PackageProjectUrl>
 		<Description>
 			A .Net library to read and write Intel HEX files.
 
