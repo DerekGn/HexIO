@@ -30,12 +30,15 @@
 
 			v4.0.0
 			Upgraded to .net 8
-			
+
 			v5.0.0
 			Removed .net 4.8 runtime
-			
+
 			v5.0.1
 			Updated dependencies
+
+			v5.0.2
+			Updated package information
 		</PackageReleaseNotes>
 		<Company>Derek Goslin</Company>
 		<Authors>Derek Goslin</Authors>
@@ -56,9 +59,9 @@
 			04 	Extended Linear Address
 			05 	Start Linear Address
 		</Description>
-		<Version>5.0.1</Version>
-		<AssemblyVersion>5.0.1.0</AssemblyVersion>
-		<FileVersion>5.0.1.0</FileVersion>
+		<Version>5.0.2</Version>
+		<AssemblyVersion>5.0.2.0</AssemblyVersion>
+		<FileVersion>5.0.2.0</FileVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>HexIO.snk</AssemblyOriginatorKeyFile>
