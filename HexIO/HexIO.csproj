@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<Version>5.0.0</Version>
+		<Version>6.0.0</Version>
 		<PackageReleaseNotes>
 			v1.0.1 Initial release of HEXIO
 
@@ -39,6 +39,8 @@
 
 			v5.0.2
 			Updated package information
+			v6.0.0
+			Updated package information
 		</PackageReleaseNotes>
 		<Company>Derek Goslin</Company>
 		<Authors>Derek Goslin</Authors>
@@ -59,9 +61,9 @@
 			04 	Extended Linear Address
 			05 	Start Linear Address
 		</Description>
-		<Version>5.0.2</Version>
-		<AssemblyVersion>5.0.2.0</AssemblyVersion>
-		<FileVersion>5.0.2.0</FileVersion>
+		<Version>6.0.0</Version>
+		<AssemblyVersion>6.0.0.0</AssemblyVersion>
+		<FileVersion>6.0.0.0</FileVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>HexIO.snk</AssemblyOriginatorKeyFile>
