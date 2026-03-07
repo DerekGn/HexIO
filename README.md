@@ -10,7 +10,7 @@ A library for reading and writing hex format streams. Initial release supports i
 
 Install the HexIO package via nuget package manager console:
 
-```
+```cmd
 Install-Package HexIO
 ```
 
@@ -30,7 +30,7 @@ An additional class, the IntelHexStreamTransformer, has also been implemented to
 
 The HexIO package is compatible with the following runtimes:
 
-* .NET Core 8
+* .NET Core 10
 
 ## Using the IntelHexStreamReader
 
@@ -38,7 +38,7 @@ The following demonstrates the use of the IntelHexStreamReader class.
 
 Given the contents of the file sample.hex as the following snippet of intel hex record data.
 
-```
+```text
 :100C6000C0011124B7018D5D984F05C0BF01645FBD
 :100C70007F4F84E097E00E94C500E0914707F09124
 :100C800048079E898689891748F481E00115110576
